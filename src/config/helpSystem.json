@@ -1,0 +1,190 @@
+{
+  "levels": {
+    "essential": {
+      "title": "🌟 Essential Features (Start Here)",
+      "description": "Everything you need to get value from day one",
+      "commands": [
+        {
+          "command": "/help",
+          "description": "Get help with any feature",
+          "category": "navigation"
+        },
+        {
+          "command": "/profile",
+          "description": "View and edit your community profile",
+          "category": "profile"
+        },
+        {
+          "command": "/onboarding-status",
+          "description": "See your role and channel recommendations",
+          "category": "setup"
+        }
+      ],
+      "channels": [
+        "#start-here",
+        "#introductions", 
+        "#general-automation"
+      ],
+      "tips": [
+        "Start with the onboarding process in #start-here",
+        "Introduce yourself in #introductions",
+        "Ask questions in #general-automation - everyone is helpful!"
+      ]
+    },
+    "community": {
+      "title": "⭐⭐ Community Engagement",
+      "description": "Once you're comfortable, discover social features",
+      "commands": [
+        {
+          "command": "/profile edit",
+          "description": "Add your skills, experience, and goals",
+          "category": "profile"
+        },
+        {
+          "command": "/leaderboard",
+          "description": "See active community members",
+          "category": "social"
+        },
+        {
+          "command": "/poll create",
+          "description": "Create community polls",
+          "category": "engagement"
+        }
+      ],
+      "features": [
+        "React to helpful posts (builds your community score)",
+        "Use forum channels for organized discussions",
+        "Join voice channels for live conversations",
+        "Create threads for detailed conversations"
+      ],
+      "tips": [
+        "Complete your profile to help others understand your expertise",
+        "Use reactions to show appreciation - it builds community",
+        "Forum channels are great for detailed technical discussions"
+      ]
+    },
+    "advanced": {
+      "title": "⭐⭐⭐ Advanced Features",
+      "description": "Explore when you want to maximize your experience",
+      "commands": [
+        {
+          "command": "/money",
+          "description": "Track your automation earnings/savings",
+          "category": "tools"
+        },
+        {
+          "command": "/skill-assessment",
+          "description": "Test your n8n knowledge",
+          "category": "learning"
+        },
+        {
+          "command": "/vegas",
+          "description": "Fun interactive games and celebrations",
+          "category": "entertainment"
+        }
+      ],
+      "features": [
+        "Interactive financial tracking dashboard",
+        "Knowledge assessments with personalized feedback",
+        "Vegas-style entertainment commands",
+        "Advanced automation and integrations"
+      ],
+      "tips": [
+        "These features are completely optional - use what adds value",
+        "Try /money to track your automation ROI or earnings",
+        "Vegas commands are just for fun when you want to celebrate!"
+      ]
+    }
+  },
+  "quickStart": {
+    "freelancer": {
+      "title": "🛠️ Quick Start for Freelancers",
+      "week1": [
+        "Complete your profile with skills and experience",
+        "Post in #hire-me with your services",
+        "Browse #job-board for opportunities",
+        "Engage in technical discussions"
+      ],
+      "commands": ["/profile edit", "/money track-earnings"],
+      "channels": ["#hire-me", "#job-board", "#general-automation"]
+    },
+    "client": {
+      "title": "📦 Quick Start for Clients",
+      "week1": [
+        "Describe your automation needs in your profile",
+        "Post project requirements in #job-board",
+        "Browse #hire-me for potential freelancers",
+        "Ask questions in #general-automation"
+      ],
+      "commands": ["/profile edit", "/money track-savings"],
+      "channels": ["#job-board", "#hire-me", "#general-automation"]
+    },
+    "learner": {
+      "title": "🎓 Quick Start for Learners",
+      "week1": [
+        "Introduce yourself in #introductions",
+        "Ask questions in #beginner-help",
+        "Share your learning progress",
+        "Join study groups and discussions"
+      ],
+      "commands": ["/skill-assessment", "/profile edit"],
+      "channels": ["#introductions", "#beginner-help", "#general-automation"]
+    }
+  },
+  "commonQuestions": [
+    {
+      "question": "There are so many channels, where do I start?",
+      "answer": "Start with just 2-3 channels based on your role:\n• **Everyone**: #start-here, #general-automation\n• **Freelancers**: Add #hire-me\n• **Clients**: Add #job-board\n• **Learners**: Add #beginner-help"
+    },
+    {
+      "question": "What are all these commands for?",
+      "answer": "You only need `/help` to start! It will guide you to other commands as needed. Most features are discoverable naturally through conversations."
+    },
+    {
+      "question": "How do I know what role I should have?",
+      "answer": "Run `/onboarding-status` - it will show your current role and suggest changes if needed. You can also use `/re-onboard` to update your preferences."
+    },
+    {
+      "question": "Is it okay to just lurk at first?",
+      "answer": "Absolutely! Many members start by reading and learning. Post when you feel comfortable - the community is welcoming to all experience levels."
+    }
+  ],
+  "helpNavigation": {
+    "mainMenu": {
+      "title": "🎯 n8n Community Help Center",
+      "description": "Choose your experience level to see relevant features:",
+      "options": [
+        {
+          "emoji": "🌟",
+          "label": "Essential Features",
+          "value": "essential",
+          "description": "Start here - everything you need day one"
+        },
+        {
+          "emoji": "⭐⭐",
+          "label": "Community Features",
+          "value": "community",
+          "description": "Social features and engagement tools"
+        },
+        {
+          "emoji": "⭐⭐⭐",
+          "label": "Advanced Features",
+          "value": "advanced",
+          "description": "Optional tools for power users"
+        },
+        {
+          "emoji": "❓",
+          "label": "Common Questions",
+          "value": "faq",
+          "description": "Frequently asked questions"
+        },
+        {
+          "emoji": "🚀",
+          "label": "Quick Start Guide",
+          "value": "quickstart",
+          "description": "Role-specific getting started"
+        }
+      ]
+    }
+  }
+}

@@ -5,11 +5,13 @@ const ChannelManager = require('./modules/channelManager');
 const SpotlightManager = require('./modules/spotlightManager');
 const GuildStateManager = require('./modules/guildStateManager');
 const OnboardingManager = require('./modules/onboardingManager');
+const GamificationManager = require('./modules/gamificationManager');
 const { assignRoleCommand, removeRoleCommand, listRolesCommand, syncProBuilderCommand } = require('./commands/roleCommands');
 const { listChannelsCommand, channelInfoCommand, syncChannelPermissionsCommand, interviewCommand } = require('./commands/channelCommands');
 const { testSpotlightCommand, spotlightStatusCommand, spotlightConfigCommand, spotlightControlCommand } = require('./commands/spotlightCommands');
 const { manualOnboardingCommand, onboardingStatusCommand, onboardingStatsCommand, reOnboardCommand, testWelcomeCommand, testInteractiveCommand, createWelcomeCommand } = require('./commands/onboardingCommands');
 const { reactionRoleCommand, pollCommand, skillAssessmentCommand, autoModCommand, interactiveHelpCommand, activityCommand, profileCommand, leaderboardCommand, moneyCommand } = require('./commands/interactiveCommands');
+const { progressCommand, levelInfoCommand, badgesCommand, rewardsCommand, awardPointsCommand, discoverCommand, challengesCommand, enhancedProfileCommand, weeklyProgressCommand, motivationCommand } = require('./commands/gamificationCommands');
 const InteractiveHandler = require('./handlers/interactiveHandler');
 const { faqCommand, signboardCommand, showcaseCommand, tipCommand, slotCommand, eightBallCommand, celebrateCommand, moodCommand } = require('./commands/vegasCommands');
 const VegasHandler = require('./handlers/vegasHandler');
@@ -30,6 +32,7 @@ const channelManager = new ChannelManager();
 const spotlightManager = new SpotlightManager();
 const stateManager = new GuildStateManager();
 const onboardingManager = new OnboardingManager();
+const gamificationManager = new GamificationManager();
 const interactiveHandler = new InteractiveHandler();
 const vegasHandler = new VegasHandler();
 
@@ -87,6 +90,16 @@ client.once('ready', async () => {
                 profileCommand.toJSON(),
                 leaderboardCommand.toJSON(),
                 moneyCommand.toJSON(),
+                progressCommand.toJSON(),
+                levelInfoCommand.toJSON(),
+                badgesCommand.toJSON(),
+                rewardsCommand.toJSON(),
+                awardPointsCommand.toJSON(),
+                discoverCommand.toJSON(),
+                challengesCommand.toJSON(),
+                enhancedProfileCommand.toJSON(),
+                weeklyProgressCommand.toJSON(),
+                motivationCommand.toJSON(),
                 faqCommand.toJSON(),
                 signboardCommand.toJSON(),
                 showcaseCommand.toJSON(),
@@ -125,6 +138,31 @@ client.on('guildMemberAdd', async member => {
         await onboardingManager.handleNewMember(member);
     } catch (error) {
         console.error('Error handling new member:', error);
+    }
+});
+
+// Handle reactions for gamification points
+client.on('messageReactionAdd', async (reaction, user) => {
+    // Award points for helpful reactions
+    if (user.bot) return;
+    
+    const helpfulEmojis = ['👍', '❤️', '🎯', '💡', '🔥', '⭐', '✅', '🚀', '💯'];
+    if (helpfulEmojis.includes(reaction.emoji.name)) {
+        try {
+            const result = await gamificationManager.addHelpfulnessPoints(
+                reaction.message.author.id, 
+                5, 
+                'helpful_reaction'
+            );
+            
+            // Check for pending notifications and send them
+            const notifications = gamificationManager.getAndClearPendingNotifications();
+            if (notifications.levelUps.length > 0 || notifications.badges.length > 0) {
+                await sendGamificationNotifications(notifications, reaction.message.guild);
+            }
+        } catch (error) {
+            console.error('Error awarding points for reaction:', error);
+        }
     }
 });
 
@@ -1925,6 +1963,95 @@ client.on('interactionCreate', async interaction => {
         return;
     }
     
+    // Handle gamification commands
+    if (interaction.commandName === 'progress') {
+        const targetUser = interaction.options.getUser('user') || interaction.user;
+        const embed = gamificationManager.createProgressEmbed(targetUser.id);
+        await interaction.reply({ embeds: [embed], ephemeral: true });
+        return;
+    }
+    
+    if (interaction.commandName === 'leaderboard') {
+        const type = interaction.options.getString('type') || 'helpfulness';
+        const embed = gamificationManager.createLeaderboardEmbed(type, interaction.guild);
+        await interaction.reply({ embeds: [embed] });
+        return;
+    }
+    
+    if (interaction.commandName === 'levels') {
+        const category = interaction.options.getString('category') || 'helpfulness';
+        // Create levels embed - placeholder for now
+        await interaction.reply({
+            content: `📊 **${category.toUpperCase()} LEVELS**\n\n` +
+                    '🏅 **Coming Soon:** Detailed level information with:\n' +
+                    '• Level requirements and rewards\n' +
+                    '• Progress tracking and goals\n' +
+                    '• Feature unlock previews\n\n' +
+                    'Use `/progress` to see your current level!',
+            ephemeral: true
+        });
+        return;
+    }
+    
+    if (interaction.commandName === 'badges') {
+        const category = interaction.options.getString('category') || 'achievement';
+        // Create badges embed - placeholder for now
+        await interaction.reply({
+            content: `🏆 **${category.toUpperCase()} BADGES**\n\n` +
+                    '🎖️ **Coming Soon:** Badge showcase with:\n' +
+                    '• All available badges and requirements\n' +
+                    '• Your earned badges and progress\n' +
+                    '• Badge unlock conditions\n\n' +
+                    'Use `/progress` to see your earned badges!',
+            ephemeral: true
+        });
+        return;
+    }
+    
+    if (interaction.commandName === 'discover') {
+        // Feature discovery based on user level - placeholder for now
+        await interaction.reply({
+            content: '🔍 **Feature Discovery**\n\n' +
+                    '✨ **Available Features:** Based on your contribution level, you have access to:\n\n' +
+                    '• Community polls and networking\n' +
+                    '• Progress tracking and achievements\n' +
+                    '• Interactive help system\n\n' +
+                    '🎯 **Level Up to Unlock More:** Help others and track your success to unlock advanced features!\n\n' +
+                    'Use `/progress` to see your current level and next rewards!',
+            ephemeral: true
+        });
+        return;
+    }
+    
+    if (interaction.commandName === 'award-points') {
+        // Check if user has admin permissions
+        if (!interaction.member.permissions.has('Administrator')) {
+            await interaction.reply({ 
+                content: '❌ You need administrator permissions to award points.', 
+                ephemeral: true 
+            });
+            return;
+        }
+        
+        const targetUser = interaction.options.getUser('user');
+        const points = interaction.options.getInteger('points');
+        const reason = interaction.options.getString('reason') || 'Manual award by admin';
+        
+        const result = await gamificationManager.addHelpfulnessPoints(targetUser.id, points, reason);
+        
+        await interaction.reply({
+            content: `✅ Awarded ${points} points to <@${targetUser.id}> for: ${reason}\n\n` +
+                    (result.leveledUp ? `🎉 **Level Up!** ${targetUser.tag} reached level ${result.newLevel}!` : 
+                     `Current points: ${result.totalPoints}`),
+            ephemeral: true
+        });
+        
+        // Send notifications
+        const notifications = gamificationManager.getAndClearPendingNotifications();
+        await sendGamificationNotifications(notifications, interaction.guild);
+        return;
+    }
+    
     if (interaction.commandName === 'activity') {
         const channel = interaction.options.getChannel('channel');
         const timeframe = interaction.options.getString('timeframe') || '7d';
@@ -2035,6 +2162,52 @@ interactiveHandler.showCommunityStats = async function(interaction) {
     
     await interaction.reply({ embeds: [embed] });
 };
+
+// Helper function to send gamification notifications
+async function sendGamificationNotifications(notifications, guild) {
+    try {
+        // Send level up notifications
+        for (const levelUp of notifications.levelUps) {
+            const member = await guild.members.fetch(levelUp.userId);
+            if (member) {
+                // Send to a celebration channel or DM
+                const celebrationChannel = guild.channels.cache.find(ch => ch.name === 'announcements') || 
+                                         guild.channels.cache.find(ch => ch.type === 0); // Text channel
+                
+                if (celebrationChannel) {
+                    await celebrationChannel.send({
+                        content: `🎉 Congratulations <@${levelUp.userId}>!`,
+                        embeds: [levelUp.embed]
+                    });
+                }
+            }
+        }
+        
+        // Send badge notifications
+        for (const badge of notifications.badges) {
+            const member = await guild.members.fetch(badge.userId);
+            if (member) {
+                try {
+                    await member.send({
+                        content: `🏆 You've earned a new badge!`,
+                        embeds: [badge.embed]
+                    });
+                } catch (error) {
+                    // If DM fails, send to channel
+                    const badgeChannel = guild.channels.cache.find(ch => ch.name === 'announcements');
+                    if (badgeChannel) {
+                        await badgeChannel.send({
+                            content: `🏆 <@${badge.userId}> earned a new badge!`,
+                            embeds: [badge.embed]
+                        });
+                    }
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error sending gamification notifications:', error);
+    }
+}
 
 // Helper function to update spotlight configuration
 function updateSpotlightConfig(updates) {

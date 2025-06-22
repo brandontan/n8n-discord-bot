@@ -1,0 +1,385 @@
+{
+  "levels": {
+    "helpfulness": {
+      "name": "Community Contribution Level",
+      "icon": "🤝",
+      "tiers": [
+        {
+          "level": 1,
+          "name": "Member",
+          "icon": "👤",
+          "pointsRequired": 0,
+          "description": "Welcome to the community",
+          "color": "#95a5a6"
+        },
+        {
+          "level": 2,
+          "name": "Contributor",
+          "icon": "🤝",
+          "pointsRequired": 50,
+          "description": "Actively helping others",
+          "color": "#3498db",
+          "rewards": ["Community polls", "Enhanced profile", "Networking tools"]
+        },
+        {
+          "level": 3,
+          "name": "Expert",
+          "icon": "⚡",
+          "pointsRequired": 150,
+          "description": "Recognized automation expert",
+          "color": "#9b59b6",
+          "rewards": ["Advanced analytics", "Solution showcase", "Priority support"]
+        },
+        {
+          "level": 4,
+          "name": "Mentor",
+          "icon": "🎓",
+          "pointsRequired": 300,
+          "description": "Experienced community mentor",
+          "color": "#e67e22",
+          "rewards": ["Mentor channels", "Consultation features", "Success spotlights"]
+        },
+        {
+          "level": 5,
+          "name": "Authority",
+          "icon": "🏅",
+          "pointsRequired": 500,
+          "description": "Trusted automation authority",
+          "color": "#f1c40f",
+          "rewards": ["Authority lounge", "Beta features", "Advisory access"]
+        },
+        {
+          "level": 6,
+          "name": "Pioneer",
+          "icon": "🌟",
+          "pointsRequired": 1000,
+          "description": "Industry pioneer and leader",
+          "color": "#e74c3c",
+          "rewards": ["Pioneer privileges", "Industry insights", "Leadership tools"]
+        }
+      ]
+    },
+    "earnings": {
+      "name": "Business Success Level",
+      "icon": "📈",
+      "tiers": [
+        {
+          "level": 1,
+          "name": "Starting",
+          "icon": "🌱",
+          "amountRequired": 0,
+          "description": "Beginning automation journey",
+          "color": "#95a5a6"
+        },
+        {
+          "level": 2,
+          "name": "Growing",
+          "icon": "📊",
+          "amountRequired": 1000,
+          "description": "Building automation success",
+          "color": "#27ae60",
+          "rewards": ["Business analytics", "ROI tracking", "Performance insights"]
+        },
+        {
+          "level": 3,
+          "name": "Established",
+          "icon": "🎯",
+          "amountRequired": 5000,
+          "description": "Proven automation results",
+          "color": "#3498db",
+          "rewards": ["Success case studies", "Advanced reporting", "Growth metrics"]
+        },
+        {
+          "level": 4,
+          "name": "Successful",
+          "icon": "💼",
+          "amountRequired": 15000,
+          "description": "Significant business impact",
+          "color": "#9b59b6",
+          "rewards": ["Executive networking", "Strategic insights", "Partnership opportunities"]
+        },
+        {
+          "level": 5,
+          "name": "Leader",
+          "icon": "👑",
+          "amountRequired": 50000,
+          "description": "Industry success leader",
+          "color": "#f1c40f",
+          "rewards": ["Leadership circle", "Investment opportunities", "Advisory board"]
+        },
+        {
+          "level": 6,
+          "name": "Visionary",
+          "icon": "🚀",
+          "amountRequired": 100000,
+          "description": "Automation visionary",
+          "color": "#e74c3c",
+          "rewards": ["Visionary access", "Strategic partnerships", "Industry influence"]
+        }
+      ]
+    }
+  }
+  "badges": {
+    "achievement": [
+      {
+        "id": "first_help",
+        "name": "First Helper",
+        "icon": "🥇",
+        "description": "Gave your first helpful answer",
+        "color": "#f1c40f",
+        "unlocks": ["Basic casino games"]
+      },
+      {
+        "id": "helpful_streak",
+        "name": "Helping Streak",
+        "icon": "🔥",
+        "description": "Helped someone 7 days in a row",
+        "color": "#e74c3c",
+        "unlocks": ["Streak bonuses", "Special emojis"]
+      },
+      {
+        "id": "problem_solver",
+        "name": "Problem Solver",
+        "icon": "🧩",
+        "description": "Solved 10 complex problems",
+        "color": "#9b59b6",
+        "unlocks": ["Expert forums", "Solution spotlight"]
+      },
+      {
+        "id": "community_builder",
+        "name": "Community Builder",
+        "icon": "🏗️",
+        "description": "Helped 50 different people",
+        "color": "#3498db",
+        "unlocks": ["Builder tools", "Community events"]
+      }
+    ],
+    "earning": [
+      {
+        "id": "first_milestone",
+        "name": "First Success",
+        "icon": "🎯",
+        "description": "Reached your first earning milestone",
+        "color": "#27ae60",
+        "unlocks": ["Goal tracking", "Milestone celebrations"]
+      },
+      {
+        "id": "consistent_earner",
+        "name": "Consistent Earner",
+        "icon": "📈",
+        "description": "Logged earnings for 30 days",
+        "color": "#3498db",
+        "unlocks": ["Trend analysis", "Prediction tools"]
+      },
+      {
+        "id": "big_win",
+        "name": "Big Win",
+        "icon": "💥",
+        "description": "Single project worth $5000+",
+        "color": "#e74c3c",
+        "unlocks": ["High-value project board", "Premium networking"]
+      },
+      {
+        "id": "diversified",
+        "name": "Diversified",
+        "icon": "🌐",
+        "description": "Earned from 5+ different clients",
+        "color": "#9b59b6",
+        "unlocks": ["Client management tools", "Portfolio showcase"]
+      }
+    ],
+    "social": [
+      {
+        "id": "welcomer",
+        "name": "Welcomer",
+        "icon": "👋",
+        "description": "Welcomed 10 new members",
+        "color": "#f39c12",
+        "unlocks": ["Welcome customization", "New member insights"]
+      },
+      {
+        "id": "conversation_starter",
+        "name": "Conversation Starter",
+        "icon": "💬",
+        "description": "Started 25 engaging discussions",
+        "color": "#1abc9c",
+        "unlocks": ["Topic suggestions", "Discussion tools"]
+      },
+      {
+        "id": "reaction_king",
+        "name": "Reaction King",
+        "icon": "😎",
+        "description": "Received 100+ positive reactions",
+        "color": "#e67e22",
+        "unlocks": ["Custom reactions", "Reaction analytics"]
+      }
+    ],
+    "special": [
+      {
+        "id": "early_adopter",
+        "name": "Early Adopter",
+        "icon": "🚀",
+        "description": "Joined in the first month",
+        "color": "#8e44ad",
+        "unlocks": ["Pioneer privileges", "Beta features"]
+      },
+      {
+        "id": "vegas_champion",
+        "name": "Vegas Champion",
+        "icon": "🎰",
+        "description": "Won 10 casino games",
+        "color": "#f1c40f",
+        "unlocks": ["High-stakes games", "VIP casino"]
+      },
+      {
+        "id": "knowledge_seeker",
+        "name": "Knowledge Seeker",
+        "icon": "📚",
+        "description": "Completed all skill assessments",
+        "color": "#3498db",
+        "unlocks": ["Advanced assessments", "Certification path"]
+      }
+    ]
+  },
+  "rewards": {
+    "features": {
+      "level1": [
+        "Basic profile customization",
+        "Simple polls",
+        "Basic casino games (slots, 8-ball)"
+      ],
+      "level2": [
+        "Advanced polls with multiple choice",
+        "Reaction tracking",
+        "Basic money tracking"
+      ],
+      "level3": [
+        "Custom profile themes",
+        "Advanced casino games",
+        "Detailed financial analytics",
+        "Forum moderation tools"
+      ],
+      "level4": [
+        "VIP casino features",
+        "Private networking channels",
+        "Advanced goal tracking",
+        "Spotlight nominations"
+      ],
+      "level5": [
+        "Exclusive guru/mogul lounges",
+        "Beta feature access",
+        "Advanced bot customization",
+        "Partnership opportunities"
+      ],
+      "level6": [
+        "Legend/Tycoon exclusive features",
+        "Administrative privileges",
+        "Special recognition displays",
+        "Advisory board access"
+      ]
+    },
+    "cosmetic": {
+      "profileFrames": [
+        {
+          "name": "Bronze Helper",
+          "level": 2,
+          "color": "#cd7f32",
+          "description": "Bronze frame for helpful community members"
+        },
+        {
+          "name": "Silver Guide",
+          "level": 3,
+          "color": "#c0c0c0",
+          "description": "Silver frame for community guides"
+        },
+        {
+          "name": "Gold Mentor",
+          "level": 4,
+          "color": "#ffd700",
+          "description": "Gold frame for experienced mentors"
+        },
+        {
+          "name": "Diamond Guru",
+          "level": 5,
+          "color": "#b9f2ff",
+          "description": "Diamond frame for community gurus"
+        },
+        {
+          "name": "Legendary Aura",
+          "level": 6,
+          "color": "#ff6b6b",
+          "description": "Legendary animated frame"
+        }
+      ],
+      "titleColors": [
+        "#3498db",
+        "#9b59b6", 
+        "#e67e22",
+        "#f1c40f",
+        "#e74c3c"
+      ]
+    }
+  },
+  "pointSources": {
+    "helpfulness": {
+      "helpful_reaction": 5,
+      "solution_accepted": 20,
+      "detailed_answer": 10,
+      "mentoring_session": 50,
+      "welcomed_newcomer": 15,
+      "created_helpful_content": 25,
+      "resolved_conflict": 30,
+      "weekly_activity": 10
+    },
+    "bonus_multipliers": {
+      "weekend": 1.5,
+      "special_events": 2.0,
+      "monthly_challenges": 1.25
+    }
+  },
+  "levelUpRewards": {
+    "messages": [
+      "🎉 Congratulations! You've reached **{level}** level!",
+      "✨ **New Features Unlocked:** {rewards}",
+      "🎁 **Special Badge Earned:** {badge}",
+      "🚀 Keep up the amazing work! The community appreciates you!"
+    ],
+    "celebrations": [
+      "confetti_animation",
+      "level_up_sound",
+      "special_mention_in_announcements",
+      "temporary_role_highlight"
+    ]
+  },
+  "leaderboards": {
+    "helpfulness": {
+      "title": "🤝 Community Helpers Leaderboard",
+      "description": "Most helpful community members this month",
+      "rewards": {
+        "top3": "Special recognition + bonus points",
+        "top10": "Helper badge + profile highlight",
+        "participation": "Engagement badge"
+      }
+    },
+    "earnings": {
+      "title": "💰 Success Stories Leaderboard", 
+      "description": "Biggest automation successes this month",
+      "rewards": {
+        "top3": "Success spotlight + networking perks",
+        "top10": "Achiever badge + exclusive channels",
+        "participation": "Progress badge"
+      }
+    }
+  },
+  "progressTracking": {
+    "showNext": true,
+    "showProgress": true,
+    "showRewards": true,
+    "showBadges": true,
+    "notifications": {
+      "nearLevelUp": "🔥 You're only {points} points away from **{nextLevel}**! Keep helping!",
+      "newBadgeAvailable": "🏆 New badge **{badge}** is within reach! {requirement}",
+      "weeklyProgress": "📊 This week: +{points} helpfulness points, +${earnings} tracked"
+    }
+  }
+}
