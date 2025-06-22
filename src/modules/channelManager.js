@@ -157,18 +157,26 @@ class ChannelManager {
         const permissionOverwrites = await this.createPermissionOverwrites(guild, channelConfig, roleIds);
         
         try {
-            // Create forum channel with minimal parameters to avoid 50024 error
+            console.log(`🔧 Attempting forum creation for: ${channelConfig.name}`);
+            console.log(`🔧 Category ID: ${category.id}, Type: ${typeof category.id}`);
+            console.log(`🔧 Discord.js version: ${require('discord.js').version}`);
+            
+            // Try creating forum without parent first, then move it
             const forumChannel = await guild.channels.create({
                 name: channelConfig.name,
                 type: ChannelType.GuildForum,
-                parent: category.id,
                 topic: channelConfig.description || channelConfig.topic || 'Forum channel',
                 permissionOverwrites,
-                reason: 'n8n Discord Bot - Blueprint Channel Setup',
-                // Forum-specific properties
-                defaultAutoArchiveDuration: 10080, // 7 days in minutes
-                defaultThreadRateLimitPerUser: channelConfig.rateLimitPerUser || 0
+                reason: 'n8n Discord Bot - Blueprint Channel Setup'
             });
+            
+            // Move to category after creation
+            if (category && category.id) {
+                await forumChannel.edit({
+                    parent: category.id,
+                    reason: 'Moving forum to correct category'
+                });
+            }
 
             // Add tags after creation to avoid error 50024
             if (channelConfig.forumTags && channelConfig.forumTags.length > 0) {
