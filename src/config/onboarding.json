@@ -220,7 +220,7 @@
             "title": "🤝 Share Knowledge",
             "description": "Help others and contribute to community",
             "emoji": "🤝",
-            "channels": ["client-solutions", "workflow-templates", "general-chat"]
+            "channels": ["client-solutions", "workflow-templates", "share-your-tips", "general-chat"]
           },
           {
             "id": "network",

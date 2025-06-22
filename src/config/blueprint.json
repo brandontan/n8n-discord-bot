@@ -179,6 +179,13 @@
             "description": "Discuss hosting, scaling, Docker, and monitoring.",
             "private": false,
             "rateLimitPerUser": 10
+          },
+          {
+            "name": "share-your-tips",
+            "type": "text",
+            "description": "Share automation tips, tricks, and quick solutions with the community.",
+            "private": false,
+            "rateLimitPerUser": 15
           }
         ]
       },
