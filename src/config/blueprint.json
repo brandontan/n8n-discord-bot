@@ -56,6 +56,14 @@
             "private": false,
             "rateLimitPerUser": 0,
             "permissionsOverwrite": "read-only"
+          },
+          {
+            "name": "weekly-spotlight",
+            "type": "text",
+            "description": "Automated weekly spotlight posts featuring automation insights, success stories, and community content.",
+            "private": false,
+            "rateLimitPerUser": 0,
+            "permissionsOverwrite": "read-only"
           }
         ]
       },
