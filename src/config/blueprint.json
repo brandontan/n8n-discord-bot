@@ -79,13 +79,6 @@
             "rateLimitPerUser": 15
           },
           {
-            "name": "project-invite-only",
-            "type": "text",
-            "description": "🎯 Looking for specific talent? Post targeted opportunities and mention the experts you want to work with!",
-            "private": false,
-            "rateLimitPerUser": 10
-          },
-          {
             "name": "job-board",
             "type": "text",
             "description": "🏆 Quality opportunities await! Browse carefully curated projects from verified clients!",
@@ -220,17 +213,110 @@
           },
           {
             "name": "integration-issues",
-            "type": "text",
-            "description": "Debugging APIs, credentials, or integrations.",
+            "type": "forum",
+            "description": "🔧 API troubles? Connection problems? Get expert help debugging your integrations and make them work flawlessly!",
             "private": false,
-            "rateLimitPerUser": 10
+            "rateLimitPerUser": 10,
+            "forumTags": [
+              {
+                "name": "API Issues",
+                "emoji": "🔗",
+                "moderated": false
+              },
+              {
+                "name": "Authentication",
+                "emoji": "🔐",
+                "moderated": false
+              },
+              {
+                "name": "Webhooks",
+                "emoji": "📬",
+                "moderated": false
+              },
+              {
+                "name": "Database",
+                "emoji": "🗄",
+                "moderated": false
+              },
+              {
+                "name": "Cloud Services",
+                "emoji": "☁️",
+                "moderated": false
+              },
+              {
+                "name": "Solved",
+                "emoji": "✅",
+                "moderated": true
+              }
+            ]
           },
           {
             "name": "advanced-expressions",
-            "type": "text",
-            "description": "Deep dive into expressions, JS, and logic patterns.",
+            "type": "forum",
+            "description": "🧠 Master complex logic! Share advanced expressions, JavaScript tricks, and sophisticated automation patterns!",
             "private": false,
-            "rateLimitPerUser": 10
+            "rateLimitPerUser": 10,
+            "forumTags": [
+              {
+                "name": "JavaScript",
+                "emoji": "📜",
+                "moderated": false
+              },
+              {
+                "name": "Date/Time",
+                "emoji": "📅",
+                "moderated": false
+              },
+              {
+                "name": "Arrays/Objects",
+                "emoji": "📦",
+                "moderated": false
+              },
+              {
+                "name": "Math/Logic",
+                "emoji": "🧮",
+                "moderated": false
+              },
+              {
+                "name": "Regex",
+                "emoji": "🔄",
+                "moderated": false
+              },
+              {
+                "name": "Performance",
+                "emoji": "⚡",
+                "moderated": false
+              }
+            ]
+          },
+          {
+            "name": "security-compliance",
+            "type": "forum",
+            "description": "🔒 Enterprise-ready automation! Discuss security best practices, compliance requirements, and safe deployment strategies!",
+            "private": false,
+            "rateLimitPerUser": 10,
+            "forumTags": [
+              {
+                "name": "Security",
+                "emoji": "🔒",
+                "moderated": false
+              },
+              {
+                "name": "GDPR/Privacy",
+                "emoji": "🛡️",
+                "moderated": false
+              },
+              {
+                "name": "Enterprise",
+                "emoji": "🏢",
+                "moderated": false
+              },
+              {
+                "name": "Best Practices",
+                "emoji": "✅",
+                "moderated": false
+              }
+            ]
           }
         ]
       },
@@ -332,13 +418,6 @@
             "rateLimitPerUser": 10
           },
           {
-            "name": "revshare-opportunities",
-            "type": "text",
-            "description": "Partner on long-term projects with shared profits.",
-            "private": false,
-            "rateLimitPerUser": 10
-          },
-          {
             "name": "team-up",
             "type": "text",
             "description": "Agencies and experts looking for teammates.",
@@ -365,13 +444,6 @@
             "private": false,
             "rateLimitPerUser": 15
           },
-          {
-            "name": "vip-requests",
-            "type": "text",
-            "description": "Invite-only premium job listings.",
-            "private": false,
-            "rateLimitPerUser": 5
-          }
         ]
       },
       {
