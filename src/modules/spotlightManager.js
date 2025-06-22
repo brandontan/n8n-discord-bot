@@ -98,22 +98,47 @@ class SpotlightManager {
     async fetchFromN8N(webhookUrl) {
         try {
             console.log('Weekly Spotlight: Fetching from n8n webhook...');
-            const response = await fetch(webhookUrl, {
-                method: 'GET',
+            
+            const data = this.loadSpotlightData();
+            const timeout = data?.settings?.webhook_timeout || 5000;
+            
+            // Create timeout promise
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Webhook timeout')), timeout)
+            );
+            
+            // Create fetch promise
+            const fetchPromise = fetch(webhookUrl, {
+                method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                    'User-Agent': 'n8n-discord-bot/1.0'
+                },
+                body: JSON.stringify({
+                    action: 'get_weekly_spotlight',
+                    timestamp: new Date().toISOString(),
+                    guild_count: this.client?.guilds.cache.size || 0
+                })
             });
+            
+            // Race between fetch and timeout
+            const response = await Promise.race([fetchPromise, timeoutPromise]);
 
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
 
-            const data = await response.json();
-            console.log('Weekly Spotlight: Successfully fetched from n8n');
-            return this.validateSpotlightData(data);
+            const responseData = await response.json();
+            
+            // Validate the response structure
+            if (!responseData || typeof responseData !== 'object') {
+                throw new Error('Invalid response format');
+            }
+            
+            console.log('Weekly Spotlight: Successfully fetched from n8n webhook');
+            return this.validateSpotlightData(responseData);
         } catch (error) {
-            console.error('Weekly Spotlight: Error fetching from n8n:', error);
+            console.error('Weekly Spotlight: Error fetching from n8n webhook:', error.message);
             return null;
         }
     }

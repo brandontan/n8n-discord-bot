@@ -95,9 +95,15 @@
     "fallback_message": "🌟 **Weekly Spotlight** 🌟\n\nExplore the amazing world of automation with n8n! Check out our latest workflows, tutorials, and community highlights.\n\n🔗 Visit: https://n8n.io/workflows\n📚 Learn: https://docs.n8n.io\n💬 Community: https://community.n8n.io",
     "fallback_thumbnail": "",
     "max_pinned_messages": 4,
-    "enable_n8n_integration": false,
-    "n8n_webhook_url": "",
+    "enable_n8n_integration": true,
+    "n8n_webhook_url": "https://your-n8n-instance.com/webhook/spotlight-content",
     "enable_gsheets_integration": false,
-    "gsheets_url": ""
+    "gsheets_url": "",
+    "webhook_timeout": 5000,
+    "content_sources": {
+      "community_posts": "https://community.n8n.io/latest.json",
+      "blog_feed": "https://n8n.io/blog/feed.xml",
+      "github_releases": "https://api.github.com/repos/n8n-io/n8n/releases/latest"
+    }
   }
 }
