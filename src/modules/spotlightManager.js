@@ -193,7 +193,7 @@ class SpotlightManager {
             title: data.title || 'Weekly Spotlight',
             description: data.description || 'Check out this amazing content!',
             link: data.link || 'https://n8n.io',
-            thumbnail: data.thumbnail || 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=400&h=300&fit=crop',
+            thumbnail: data.thumbnail || '',
             tags: Array.isArray(data.tags) ? data.tags : (data.tags ? data.tags.split(',').map(t => t.trim()) : []),
             type: data.type || 'content'
         };
@@ -206,7 +206,7 @@ class SpotlightManager {
             title: '🌟 Weekly Spotlight',
             description: settings.fallback_message || 'Explore the amazing world of automation with n8n!',
             link: 'https://n8n.io',
-            thumbnail: settings.fallback_thumbnail || 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=400&h=300&fit=crop',
+            thumbnail: settings.fallback_thumbnail || '',
             tags: ['n8n', 'Automation', 'Workflows'],
             type: 'fallback'
         };
@@ -225,7 +225,7 @@ class SpotlightManager {
                 iconURL: 'https://n8n.io/favicon.ico'
             });
 
-        if (spotlight.thumbnail) {
+        if (spotlight.thumbnail && spotlight.thumbnail.trim() !== '') {
             embed.setThumbnail(spotlight.thumbnail);
         }
 
