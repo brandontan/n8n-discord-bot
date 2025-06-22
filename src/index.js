@@ -11,6 +11,8 @@ const { testSpotlightCommand, spotlightStatusCommand, spotlightConfigCommand, sp
 const { manualOnboardingCommand, onboardingStatusCommand, onboardingStatsCommand, reOnboardCommand, testWelcomeCommand, testInteractiveCommand, createWelcomeCommand } = require('./commands/onboardingCommands');
 const { reactionRoleCommand, pollCommand, skillAssessmentCommand, autoModCommand, interactiveHelpCommand, activityCommand, profileCommand, leaderboardCommand, moneyCommand } = require('./commands/interactiveCommands');
 const InteractiveHandler = require('./handlers/interactiveHandler');
+const { faqCommand, signboardCommand, showcaseCommand, tipCommand, slotCommand, eightBallCommand, celebrateCommand, moodCommand } = require('./commands/vegasCommands');
+const VegasHandler = require('./handlers/vegasHandler');
 const fs = require('fs');
 const path = require('path');
 
@@ -29,6 +31,7 @@ const spotlightManager = new SpotlightManager();
 const stateManager = new GuildStateManager();
 const onboardingManager = new OnboardingManager();
 const interactiveHandler = new InteractiveHandler();
+const vegasHandler = new VegasHandler();
 
 // Define the /setup slash command
 const setupCommand = new SlashCommandBuilder()
@@ -83,7 +86,15 @@ client.once('ready', async () => {
                 activityCommand.toJSON(),
                 profileCommand.toJSON(),
                 leaderboardCommand.toJSON(),
-                moneyCommand.toJSON()
+                moneyCommand.toJSON(),
+                faqCommand.toJSON(),
+                signboardCommand.toJSON(),
+                showcaseCommand.toJSON(),
+                tipCommand.toJSON(),
+                slotCommand.toJSON(),
+                eightBallCommand.toJSON(),
+                celebrateCommand.toJSON(),
+                moodCommand.toJSON()
             ];
             
             if (client.guilds.cache.size === 0) {
@@ -1856,6 +1867,61 @@ client.on('interactionCreate', async interaction => {
                 ephemeral: true
             });
         }
+        return;
+    }
+    
+    // Handle Vegas-style commands for maximum fun!
+    if (interaction.commandName === 'faq') {
+        await vegasHandler.handleFaqCommand(interaction);
+        return;
+    }
+    
+    if (interaction.commandName === 'signboard') {
+        await vegasHandler.handleSignboardCommand(interaction);
+        return;
+    }
+    
+    if (interaction.commandName === 'showcase') {
+        const demo = interaction.options.getString('demo') || 'full-tour';
+        
+        await interaction.reply({
+            content: `🎪 **${demo.toUpperCase()} DEMO** 🎪\n\n` +
+                    '🎰 **Welcome to the n8n Vegas Convention Center showcase!**\n\n' +
+                    (demo === 'money-demo' ? 
+                        '💰 **Money Dashboard Features:**\n• Track your automation empire\n• Climb financial leaderboards\n• Set and achieve goals\n• Private or public sharing\n\n🎯 **Try it now:** `/money dashboard`' :
+                    demo === 'leaderboard-demo' ?
+                        '🏆 **Leaderboard Features:**\n• Community contributions\n• Financial achievements\n• Rising star recognition\n• Monthly competitions\n\n🎯 **Try it now:** `/leaderboard`' :
+                    demo === 'profile-demo' ?
+                        '👤 **Profile Features:**\n• Professional showcase\n• Project portfolios\n• Community statistics\n• Achievement tracking\n\n🎯 **Try it now:** `/profile view`' :
+                        '🎪 **Full Feature Tour:**\n• `/money` - Financial tracking empire\n• `/leaderboard` - Community fame\n• `/profile` - Professional showcase\n• `/faq` - Complete help system\n• `/slots` - Casino fun\n• `/8ball` - Automation oracle\n• `/tip` - Random wisdom\n• `/celebrate` - Vegas parties!') +
+                    '\n\n✨ **This is just the beginning!** Explore all commands for hidden surprises!',
+            ephemeral: true
+        });
+        return;
+    }
+    
+    if (interaction.commandName === 'tip') {
+        await vegasHandler.handleTipCommand(interaction);
+        return;
+    }
+    
+    if (interaction.commandName === 'slots') {
+        await vegasHandler.handleSlotsCommand(interaction);
+        return;
+    }
+    
+    if (interaction.commandName === '8ball') {
+        await vegasHandler.handleEightBallCommand(interaction);
+        return;
+    }
+    
+    if (interaction.commandName === 'celebrate') {
+        await vegasHandler.handleCelebrateCommand(interaction);
+        return;
+    }
+    
+    if (interaction.commandName === 'mood') {
+        await vegasHandler.handleMoodCommand(interaction);
         return;
     }
     
