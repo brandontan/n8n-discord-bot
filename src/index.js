@@ -4,9 +4,11 @@ const RoleManager = require('./modules/roleManager');
 const ChannelManager = require('./modules/channelManager');
 const SpotlightManager = require('./modules/spotlightManager');
 const GuildStateManager = require('./modules/guildStateManager');
+const OnboardingManager = require('./modules/onboardingManager');
 const { assignRoleCommand, removeRoleCommand, listRolesCommand, syncProBuilderCommand } = require('./commands/roleCommands');
 const { listChannelsCommand, channelInfoCommand, syncChannelPermissionsCommand, interviewCommand } = require('./commands/channelCommands');
 const { testSpotlightCommand, spotlightStatusCommand, spotlightConfigCommand, spotlightControlCommand } = require('./commands/spotlightCommands');
+const { manualOnboardingCommand, onboardingStatusCommand, onboardingStatsCommand, reOnboardCommand, testWelcomeCommand } = require('./commands/onboardingCommands');
 const fs = require('fs');
 const path = require('path');
 
@@ -23,6 +25,7 @@ const roleManager = new RoleManager();
 const channelManager = new ChannelManager();
 const spotlightManager = new SpotlightManager();
 const stateManager = new GuildStateManager();
+const onboardingManager = new OnboardingManager();
 
 // Define the /setup slash command
 const setupCommand = new SlashCommandBuilder()
@@ -61,7 +64,12 @@ client.once('ready', async () => {
                 testSpotlightCommand.toJSON(),
                 spotlightStatusCommand.toJSON(),
                 spotlightConfigCommand.toJSON(),
-                spotlightControlCommand.toJSON()
+                spotlightControlCommand.toJSON(),
+                manualOnboardingCommand.toJSON(),
+                onboardingStatusCommand.toJSON(),
+                onboardingStatsCommand.toJSON(),
+                reOnboardCommand.toJSON(),
+                testWelcomeCommand.toJSON()
             ];
             
             if (client.guilds.cache.size === 0) {
@@ -84,6 +92,15 @@ client.once('ready', async () => {
             console.error('Error registering slash commands:', error);
         }
     }, 2000); // Wait 2 seconds for guilds to load
+});
+
+// Handle new members joining
+client.on('guildMemberAdd', async member => {
+    try {
+        await onboardingManager.handleNewMember(member);
+    } catch (error) {
+        console.error('Error handling new member:', error);
+    }
 });
 
 client.on('interactionCreate', async interaction => {
@@ -1013,6 +1030,221 @@ client.on('interactionCreate', async interaction => {
                     ephemeral: true
                 });
             }
+        }
+    }
+    
+    // Handle onboard command
+    if (interaction.commandName === 'onboard') {
+        const userType = interaction.options.getString('user-type');
+        const interests = interaction.options.getString('interests');
+        const experience = interaction.options.getString('experience');
+        const goals = interaction.options.getString('goals');
+        
+        // Build responses object
+        const responses = {
+            user_type: userType
+        };
+        
+        if (interests) {
+            responses.interests = interests.split(',').map(i => i.trim().toLowerCase());
+        }
+        
+        if (experience) {
+            responses.experience = experience;
+        }
+        
+        if (goals) {
+            responses.goals = goals.split(',').map(g => g.trim().toLowerCase());
+        }
+        
+        await interaction.reply({
+            content: '🔄 Processing your onboarding responses...',
+            ephemeral: true
+        });
+        
+        try {
+            const result = await onboardingManager.completeOnboarding(interaction.member, responses);
+            
+            if (result.success) {
+                await interaction.followUp({
+                    content: `✅ **Onboarding Complete!**\n\n` +
+                            `**Assigned Roles:** ${result.roles.join(', ') || 'Community Member'}\n` +
+                            `**Recommended Channels:** ${result.channels.length} channels selected\n\n` +
+                            `Check your DMs for a personalized welcome message and explore your recommended channels!`,
+                    ephemeral: true
+                });
+            } else {
+                await interaction.followUp({
+                    content: `❌ **Onboarding Failed**\n\n${result.error}`,
+                    ephemeral: true
+                });
+            }
+        } catch (error) {
+            console.error('Error during manual onboarding:', error);
+            await interaction.followUp({
+                content: '❌ An error occurred during onboarding. Please try again later.',
+                ephemeral: true
+            });
+        }
+    }
+    
+    // Handle onboarding-status command
+    if (interaction.commandName === 'onboarding-status') {
+        const targetUser = interaction.options.getUser('user') || interaction.user;
+        
+        // Check if user is requesting another user's status and has permission
+        if (targetUser.id !== interaction.user.id && !interaction.member.permissions.has('Administrator')) {
+            await interaction.reply({
+                content: '❌ You need Administrator permission to check other users\' onboarding status.',
+                ephemeral: true
+            });
+            return;
+        }
+        
+        try {
+            const status = onboardingManager.getUserStatus(targetUser.id);
+            
+            if (!status) {
+                await interaction.reply({
+                    content: `📋 **Onboarding Status for ${targetUser.tag}**\n\n❌ No onboarding data found.\n\nUse \`/onboard\` to complete the onboarding process.`,
+                    ephemeral: true
+                });
+                return;
+            }
+            
+            const statusMessage = [
+                `📋 **Onboarding Status for ${targetUser.tag}**\n`,
+                `✅ **Completed:** ${status.onboarding_completed ? 'Yes' : 'No'}`,
+                `📅 **Joined:** <t:${Math.floor(new Date(status.joined_at).getTime() / 1000)}:F>`,
+            ];
+            
+            if (status.onboarding_completed) {
+                statusMessage.push(`📅 **Completed:** <t:${Math.floor(new Date(status.completed_at).getTime() / 1000)}:F>`);
+                statusMessage.push(`🎭 **Assigned Roles:** ${status.assigned_roles.join(', ') || 'None'}`);
+                statusMessage.push(`📺 **Recommended Channels:** ${status.recommended_channels.length}`);
+                
+                if (status.recommended_channels.length > 0) {
+                    statusMessage.push('');
+                    statusMessage.push('**📺 Channel Recommendations:**');
+                    status.recommended_channels.slice(0, 10).forEach(channel => {
+                        statusMessage.push(`• #${channel}`);
+                    });
+                }
+            } else {
+                statusMessage.push('');
+                statusMessage.push('💡 Use `/onboard` to complete the onboarding process.');
+            }
+            
+            await interaction.reply({
+                content: statusMessage.join('\n'),
+                ephemeral: true
+            });
+            
+        } catch (error) {
+            console.error('Error getting onboarding status:', error);
+            await interaction.reply({
+                content: '❌ An error occurred while fetching onboarding status.',
+                ephemeral: true
+            });
+        }
+    }
+    
+    // Handle onboarding-stats command
+    if (interaction.commandName === 'onboarding-stats') {
+        // Check if user has administrator permission
+        if (!interaction.member.permissions.has('Administrator')) {
+            await interaction.reply({
+                content: '❌ You need Administrator permission to view onboarding statistics.',
+                ephemeral: true
+            });
+            return;
+        }
+        
+        try {
+            const stats = onboardingManager.getOnboardingStats(interaction.guild.id);
+            
+            const statsMessage = [
+                '📊 **Server Onboarding Statistics**\n',
+                `👥 **Total Users:** ${stats.total_users}`,
+                `✅ **Completed Onboarding:** ${stats.completed_onboarding}`,
+                `📈 **Completion Rate:** ${stats.completion_rate}%`,
+                ''
+            ];
+            
+            if (Object.keys(stats.role_distribution).length > 0) {
+                statsMessage.push('**🎭 Role Distribution:**');
+                Object.entries(stats.role_distribution).forEach(([role, count]) => {
+                    statsMessage.push(`• ${role}: ${count} users`);
+                });
+                statsMessage.push('');
+            }
+            
+            if (stats.popular_channels.length > 0) {
+                statsMessage.push('**📺 Most Popular Channels:**');
+                stats.popular_channels.forEach(({ channel, count }) => {
+                    statsMessage.push(`• #${channel}: ${count} recommendations`);
+                });
+            }
+            
+            await interaction.reply({
+                content: statsMessage.join('\n'),
+                ephemeral: true
+            });
+            
+        } catch (error) {
+            console.error('Error getting onboarding stats:', error);
+            await interaction.reply({
+                content: '❌ An error occurred while fetching onboarding statistics.',
+                ephemeral: true
+            });
+        }
+    }
+    
+    // Handle re-onboard command
+    if (interaction.commandName === 're-onboard') {
+        await interaction.reply({
+            content: '🔄 **Re-onboarding Process**\n\n' +
+                     'To update your preferences and channel recommendations:\n\n' +
+                     '1. Use `/onboard` command with your updated preferences\n' +
+                     '2. Your previous settings will be overridden\n' +
+                     '3. New roles and channel access will be assigned\n\n' +
+                     '💡 **Tip:** You can run `/onboard` multiple times to refine your experience!',
+            ephemeral: true
+        });
+    }
+    
+    // Handle test-welcome command
+    if (interaction.commandName === 'test-welcome') {
+        // Check if user has administrator permission
+        if (!interaction.member.permissions.has('Administrator')) {
+            await interaction.reply({
+                content: '❌ You need Administrator permission to test the welcome system.',
+                ephemeral: true
+            });
+            return;
+        }
+        
+        const targetUser = interaction.options.getUser('user');
+        
+        await interaction.reply({
+            content: `🔄 Sending test welcome message to ${targetUser.tag}...`,
+            ephemeral: true
+        });
+        
+        try {
+            const member = await interaction.guild.members.fetch(targetUser.id);
+            await onboardingManager.handleNewMember(member);
+            
+            await interaction.followUp({
+                content: `✅ Test welcome message sent to ${targetUser.tag}!\n\nCheck their DMs for the welcome message.`,
+                ephemeral: true
+            });
+        } catch (error) {
+            console.error('Error sending test welcome:', error);
+            await interaction.followUp({
+                content: '❌ An error occurred while sending the test welcome message.',
+                ephemeral: true
+            });
         }
     }
 });

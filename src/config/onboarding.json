@@ -1,0 +1,249 @@
+{
+  "onboarding": {
+    "welcome_screen": {
+      "enabled": true,
+      "description": "Welcome to the n8n Professional Network! 🚀\n\nConnect with automation experts, find freelance opportunities, and grow your automation skills. Let's tailor your experience!",
+      "welcome_channels": [
+        {
+          "channel_name": "start-here",
+          "description": "📚 Learn how this community works",
+          "emoji": "📖"
+        },
+        {
+          "channel_name": "introductions", 
+          "description": "👋 Introduce yourself to the community",
+          "emoji": "🤝"
+        },
+        {
+          "channel_name": "announcements",
+          "description": "📢 Stay updated with latest news",
+          "emoji": "📣"
+        }
+      ]
+    },
+    "prompts": [
+      {
+        "id": "user_type",
+        "type": "multiple_choice",
+        "title": "What best describes you?",
+        "options": [
+          {
+            "id": "freelancer",
+            "title": "🛠️ Freelancer",
+            "description": "I offer automation services to clients",
+            "emoji": "🛠️",
+            "role": "🛠️ Freelancer",
+            "channels": [
+              "available-for-hire",
+              "project-portfolio", 
+              "pricing-packages",
+              "co-build-requests"
+            ]
+          },
+          {
+            "id": "client",
+            "title": "📦 Client", 
+            "description": "I need automation solutions for my business",
+            "emoji": "📦",
+            "role": "📦 Client",
+            "channels": [
+              "post-a-job",
+              "project-invite-only",
+              "job-board",
+              "client-reviews"
+            ]
+          },
+          {
+            "id": "learner",
+            "title": "🎓 Learning",
+            "description": "I'm learning automation and n8n",
+            "emoji": "🎓",
+            "role": null,
+            "channels": [
+              "use-case-ideas",
+              "workflow-templates",
+              "integration-issues",
+              "general-chat"
+            ]
+          },
+          {
+            "id": "agency",
+            "title": "🏢 Agency",
+            "description": "I run an automation agency or team",
+            "emoji": "🏢", 
+            "role": "🚀 Verified Pro",
+            "channels": [
+              "team-up",
+              "revshare-opportunities",
+              "elite-listings",
+              "vip-requests"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "interests",
+        "type": "multiple_choice",
+        "title": "What automation topics interest you most?",
+        "multiple_select": true,
+        "options": [
+          {
+            "id": "ecommerce",
+            "title": "🛒 E-commerce",
+            "description": "Shopify, WooCommerce, inventory automation",
+            "emoji": "🛒",
+            "channels": ["use-case-ideas", "client-solutions"]
+          },
+          {
+            "id": "marketing",
+            "title": "📈 Marketing",
+            "description": "Email campaigns, lead generation, CRM",
+            "emoji": "📈",
+            "channels": ["client-solutions", "workflow-templates"]
+          },
+          {
+            "id": "data",
+            "title": "📊 Data & Analytics", 
+            "description": "Reporting, dashboards, data processing",
+            "emoji": "📊",
+            "channels": ["advanced-expressions", "plugin-lab"]
+          },
+          {
+            "id": "apis",
+            "title": "🔗 API Integration",
+            "description": "Custom APIs, webhooks, integrations",
+            "emoji": "🔗",
+            "channels": ["integration-issues", "advanced-expressions"]
+          },
+          {
+            "id": "ai",
+            "title": "🤖 AI & Machine Learning",
+            "description": "OpenAI, content generation, smart workflows",
+            "emoji": "🤖",
+            "channels": ["plugin-lab", "advanced-expressions"]
+          },
+          {
+            "id": "devops",
+            "title": "⚙️ DevOps & Infrastructure",
+            "description": "Self-hosting, scaling, monitoring",
+            "emoji": "⚙️",
+            "channels": ["self-hosting-devops", "plugin-lab"]
+          }
+        ]
+      },
+      {
+        "id": "experience",
+        "type": "multiple_choice", 
+        "title": "What's your n8n experience level?",
+        "options": [
+          {
+            "id": "beginner",
+            "title": "🌱 Beginner",
+            "description": "New to n8n, learning the basics",
+            "emoji": "🌱",
+            "channels": ["workflow-templates", "use-case-ideas", "general-chat"]
+          },
+          {
+            "id": "intermediate",
+            "title": "🔧 Intermediate", 
+            "description": "Building workflows, some experience",
+            "emoji": "🔧",
+            "channels": ["integration-issues", "client-solutions", "co-build-requests"]
+          },
+          {
+            "id": "advanced",
+            "title": "🚀 Advanced",
+            "description": "Complex workflows, custom nodes, expressions",
+            "emoji": "🚀",
+            "channels": ["advanced-expressions", "plugin-lab", "team-up"]
+          },
+          {
+            "id": "expert",
+            "title": "⭐ Expert",
+            "description": "Professional consultant, mentor others",
+            "emoji": "⭐",
+            "role": "🚀 Verified Pro",
+            "channels": ["elite-listings", "vip-requests", "revshare-opportunities"]
+          }
+        ]
+      },
+      {
+        "id": "goals",
+        "type": "multiple_choice",
+        "title": "What are your main goals here?",
+        "multiple_select": true,
+        "options": [
+          {
+            "id": "find_work", 
+            "title": "💼 Find Freelance Work",
+            "description": "Connect with clients needing automation",
+            "emoji": "💼",
+            "channels": ["post-a-job", "job-board", "available-for-hire"]
+          },
+          {
+            "id": "hire_talent",
+            "title": "🎯 Hire Automation Experts",
+            "description": "Find skilled freelancers for projects", 
+            "emoji": "🎯",
+            "channels": ["elite-listings", "project-invite-only", "client-reviews"]
+          },
+          {
+            "id": "learn_skills",
+            "title": "📚 Learn & Improve Skills",
+            "description": "Master automation techniques",
+            "emoji": "📚", 
+            "channels": ["workflow-templates", "use-case-ideas", "integration-issues"]
+          },
+          {
+            "id": "share_knowledge",
+            "title": "🤝 Share Knowledge",
+            "description": "Help others and contribute to community",
+            "emoji": "🤝",
+            "channels": ["client-solutions", "workflow-templates", "general-chat"]
+          },
+          {
+            "id": "network",
+            "title": "🌐 Network & Collaborate", 
+            "description": "Partner on projects and build relationships",
+            "emoji": "🌐",
+            "channels": ["co-build-requests", "team-up", "revshare-opportunities"]
+          },
+          {
+            "id": "stay_updated",
+            "title": "📡 Stay Updated",
+            "description": "Latest n8n news, features, and trends",
+            "emoji": "📡",
+            "channels": ["announcements", "weekly-spotlight", "tools-chat"]
+          }
+        ]
+      }
+    ],
+    "completion_actions": {
+      "welcome_message": {
+        "enabled": true,
+        "channel": "introductions",
+        "message_template": "🎉 **Welcome {{username}}!** \n\nThanks for completing onboarding! Based on your responses:\n\n**Your Role:** {{assigned_role}}\n**Recommended Channels:** {{recommended_channels}}\n\n💡 **Next Steps:**\n1. Share a quick intro in this channel\n2. Check out your personalized channel recommendations\n3. Set up your profile with your automation skills\n\nWelcome to the n8n automation community! 🚀"
+      },
+      "auto_role_assignment": true,
+      "channel_recommendations": true,
+      "private_welcome_dm": {
+        "enabled": true,
+        "message_template": "👋 **Welcome to n8n Professional Network!**\n\nI've set up your account based on your onboarding responses:\n\n**Assigned Role:** {{assigned_role}}\n**Access to:** {{channel_count}} specialized channels\n\n🎯 **Quick Tips:**\n• Use `/list-channels` to see all available channels\n• Type `/assign-role` if you need additional roles later\n• Join discussions in channels that match your interests\n\n**Need help?** Just ask in #general-chat - our community is here to help!\n\nHappy automating! 🤖✨"
+      }
+    },
+    "role_mapping": {
+      "freelancer": "🛠️ Freelancer",
+      "client": "📦 Client", 
+      "agency": "🚀 Verified Pro",
+      "expert": "🚀 Verified Pro"
+    },
+    "channel_categories": {
+      "job_seekers": ["available-for-hire", "project-portfolio", "pricing-packages", "post-a-job", "job-board"],
+      "employers": ["elite-listings", "project-invite-only", "client-reviews", "vip-requests"],
+      "learners": ["workflow-templates", "use-case-ideas", "integration-issues", "general-chat"],
+      "collaborators": ["co-build-requests", "team-up", "revshare-opportunities"],
+      "technical": ["advanced-expressions", "plugin-lab", "self-hosting-devops"],
+      "community": ["introductions", "general-chat", "tools-chat", "off-topic"]
+    }
+  }
+}
