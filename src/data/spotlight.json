@@ -1,0 +1,103 @@
+{
+  "spotlights": [
+    {
+      "id": "automation-showcase-1",
+      "title": "🚀 Automation Showcase: E-commerce Order Processing",
+      "description": "Discover how to build a complete e-commerce order processing workflow that integrates Shopify, inventory management, and customer notifications using n8n.",
+      "link": "https://n8n.io/workflows/ecommerce-order-processing",
+      "thumbnail": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop",
+      "tags": ["E-commerce", "Shopify", "Automation", "Workflows"],
+      "type": "workflow"
+    },
+    {
+      "id": "community-spotlight-1",
+      "title": "💡 Community Spotlight: Advanced API Integration",
+      "description": "Featured community member shares their innovative approach to handling complex API integrations with error handling and retry mechanisms.",
+      "link": "https://community.n8n.io/t/advanced-api-integration-patterns",
+      "thumbnail": "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=400&h=300&fit=crop",
+      "tags": ["API", "Integration", "Community", "Best Practices"],
+      "type": "community"
+    },
+    {
+      "id": "tutorial-spotlight-1",
+      "title": "📚 Tutorial: Building Your First AI-Powered Workflow",
+      "description": "Step-by-step guide to creating intelligent workflows that leverage AI services for content generation and data analysis.",
+      "link": "https://n8n.io/blog/ai-powered-workflows-tutorial",
+      "thumbnail": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=300&fit=crop",
+      "tags": ["AI", "Tutorial", "OpenAI", "Machine Learning"],
+      "type": "tutorial"
+    },
+    {
+      "id": "feature-spotlight-1",
+      "title": "✨ New Feature: Enhanced Error Handling",
+      "description": "Explore the latest error handling improvements that make your workflows more robust and reliable with automatic retries and detailed logging.",
+      "link": "https://n8n.io/blog/enhanced-error-handling",
+      "thumbnail": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop",
+      "tags": ["Features", "Error Handling", "Reliability", "Updates"],
+      "type": "feature"
+    },
+    {
+      "id": "automation-showcase-2",
+      "title": "🔄 Marketing Automation: Lead Nurturing Pipeline",
+      "description": "Build a comprehensive lead nurturing system that scores leads, sends personalized emails, and tracks engagement across multiple channels.",
+      "link": "https://n8n.io/workflows/lead-nurturing-pipeline",
+      "thumbnail": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop",
+      "tags": ["Marketing", "Lead Generation", "Email", "CRM"],
+      "type": "workflow"
+    },
+    {
+      "id": "community-spotlight-2",
+      "title": "🏆 Community Hero: Database Migration Automation",
+      "description": "Community member showcases their brilliant solution for automating complex database migrations with zero downtime.",
+      "link": "https://community.n8n.io/t/database-migration-automation",
+      "thumbnail": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=300&fit=crop",
+      "tags": ["Database", "Migration", "DevOps", "Community"],
+      "type": "community"
+    },
+    {
+      "id": "tutorial-spotlight-2",
+      "title": "🎯 Mastering Webhooks: Real-time Data Processing",
+      "description": "Complete guide to setting up and optimizing webhooks for real-time data processing and instant workflow triggers.",
+      "link": "https://n8n.io/blog/mastering-webhooks-tutorial",
+      "thumbnail": "https://images.unsplash.com/photo-1551434678-e076c223a692?w=400&h=300&fit=crop",
+      "tags": ["Webhooks", "Real-time", "Integration", "Tutorial"],
+      "type": "tutorial"
+    },
+    {
+      "id": "feature-spotlight-2",
+      "title": "🎨 New Feature: Visual Workflow Designer",
+      "description": "Introducing the enhanced visual workflow designer with improved drag-and-drop functionality and better node organization tools.",
+      "link": "https://n8n.io/blog/visual-workflow-designer",
+      "thumbnail": "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=400&h=300&fit=crop",
+      "tags": ["UI/UX", "Designer", "Visual", "Workflow"],
+      "type": "feature"
+    },
+    {
+      "id": "automation-showcase-3",
+      "title": "📊 Data Analytics: Automated Reporting Pipeline",
+      "description": "Create powerful automated reporting systems that collect data from multiple sources, process it, and generate beautiful visualizations.",
+      "link": "https://n8n.io/workflows/automated-reporting",
+      "thumbnail": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop",
+      "tags": ["Analytics", "Reporting", "Data Processing", "Visualization"],
+      "type": "workflow"
+    },
+    {
+      "id": "community-spotlight-3",
+      "title": "🌟 Success Story: Fortune 500 Implementation",
+      "description": "Learn how a Fortune 500 company transformed their operations using n8n workflows, reducing manual work by 80%.",
+      "link": "https://community.n8n.io/t/fortune-500-success-story",
+      "thumbnail": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=400&h=300&fit=crop",
+      "tags": ["Success Story", "Enterprise", "Case Study", "ROI"],
+      "type": "community"
+    }
+  ],
+  "settings": {
+    "fallback_message": "🌟 **Weekly Spotlight** 🌟\n\nExplore the amazing world of automation with n8n! Check out our latest workflows, tutorials, and community highlights.\n\n🔗 Visit: https://n8n.io/workflows\n📚 Learn: https://docs.n8n.io\n💬 Community: https://community.n8n.io",
+    "fallback_thumbnail": "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=400&h=300&fit=crop",
+    "max_pinned_messages": 4,
+    "enable_n8n_integration": false,
+    "n8n_webhook_url": "",
+    "enable_gsheets_integration": false,
+    "gsheets_url": ""
+  }
+}

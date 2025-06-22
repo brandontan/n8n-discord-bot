@@ -1,0 +1,213 @@
+{
+  "guilds": {
+    "test-guild-123": {
+      "name": "Test Guild",
+      "categories": {
+        "👋 Welcome": {
+          "id": "mock-channel-1750563800358-0.4837867017048052",
+          "private": false,
+          "createdAt": "2025-06-22T03:43:20.358Z"
+        },
+        "🎯 Find Experts": {
+          "id": "mock-channel-1750563804367-0.5840819238918009",
+          "private": false,
+          "createdAt": "2025-06-22T03:43:24.367Z"
+        },
+        "🚀 Hire Me Zone": {
+          "id": "mock-channel-1750563808376-0.38034053682127444",
+          "private": false,
+          "createdAt": "2025-06-22T03:43:28.377Z"
+        },
+        "💬 Automation Chat": {
+          "id": "mock-channel-1750563812383-0.912004082406312",
+          "private": false,
+          "createdAt": "2025-06-22T03:43:32.383Z"
+        },
+        "⚒️ Build & Learn": {
+          "id": "mock-channel-1750563817393-0.5799535391581119",
+          "private": false,
+          "createdAt": "2025-06-22T03:43:37.393Z"
+        },
+        "🤝 Collab Lounge": {
+          "id": "mock-channel-1750563821399-0.9610852768357343",
+          "private": false,
+          "createdAt": "2025-06-22T03:43:41.399Z"
+        },
+        "🏆 Verified Talent": {
+          "id": "mock-channel-1750563825405-0.27985093885619716",
+          "private": false,
+          "createdAt": "2025-06-22T03:43:45.405Z"
+        },
+        "☕ Lounge": {
+          "id": "mock-channel-1750563829410-0.19458040568766255",
+          "private": false,
+          "createdAt": "2025-06-22T03:43:49.410Z"
+        },
+        "🔒 Client ↔ Talent": {
+          "id": "mock-channel-1750563833417-0.25515428251697214",
+          "private": true,
+          "createdAt": "2025-06-22T03:43:53.417Z"
+        }
+      },
+      "channels": {
+        "start-here": {
+          "id": "mock-channel-1750563800358-0.5424246484367774",
+          "categoryId": "mock-channel-1750563800358-0.4837867017048052",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:20.358Z"
+        },
+        "introductions": {
+          "id": "mock-channel-1750563801361-0.2552826033778306",
+          "categoryId": "mock-channel-1750563800358-0.4837867017048052",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:21.362Z"
+        },
+        "announcements": {
+          "id": "mock-channel-1750563802363-0.5956170950018802",
+          "categoryId": "mock-channel-1750563800358-0.4837867017048052",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:22.364Z"
+        },
+        "post-a-job": {
+          "id": "mock-channel-1750563804368-0.8089438392395278",
+          "categoryId": "mock-channel-1750563804367-0.5840819238918009",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:24.368Z"
+        },
+        "project-invite-only": {
+          "id": "mock-channel-1750563805370-0.8332991077398864",
+          "categoryId": "mock-channel-1750563804367-0.5840819238918009",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:25.371Z"
+        },
+        "job-board": {
+          "id": "mock-channel-1750563806373-0.12280714754457378",
+          "categoryId": "mock-channel-1750563804367-0.5840819238918009",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:26.374Z"
+        },
+        "available-for-hire": {
+          "id": "mock-channel-1750563808377-0.545773024485795",
+          "categoryId": "mock-channel-1750563808376-0.38034053682127444",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:28.377Z"
+        },
+        "project-portfolio": {
+          "id": "mock-channel-1750563809379-0.3404963900112006",
+          "categoryId": "mock-channel-1750563808376-0.38034053682127444",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:29.379Z"
+        },
+        "pricing-packages": {
+          "id": "mock-channel-1750563810380-0.014457925773850189",
+          "categoryId": "mock-channel-1750563808376-0.38034053682127444",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:30.380Z"
+        },
+        "use-case-ideas": {
+          "id": "mock-channel-1750563812384-0.6457891834881977",
+          "categoryId": "mock-channel-1750563812383-0.912004082406312",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:32.384Z"
+        },
+        "client-solutions": {
+          "id": "mock-channel-1750563813385-0.8219621918530242",
+          "categoryId": "mock-channel-1750563812383-0.912004082406312",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:33.385Z"
+        },
+        "integration-issues": {
+          "id": "mock-channel-1750563814387-0.31846012488094466",
+          "categoryId": "mock-channel-1750563812383-0.912004082406312",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:34.387Z"
+        },
+        "advanced-expressions": {
+          "id": "mock-channel-1750563815389-0.12500663284056523",
+          "categoryId": "mock-channel-1750563812383-0.912004082406312",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:35.389Z"
+        },
+        "workflow-templates": {
+          "id": "mock-channel-1750563817393-0.08000274004905217",
+          "categoryId": "mock-channel-1750563817393-0.5799535391581119",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:37.393Z"
+        },
+        "plugin-lab": {
+          "id": "mock-channel-1750563818395-0.7857312304717261",
+          "categoryId": "mock-channel-1750563817393-0.5799535391581119",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:38.395Z"
+        },
+        "self-hosting-devops": {
+          "id": "mock-channel-1750563819397-0.6073409645550623",
+          "categoryId": "mock-channel-1750563817393-0.5799535391581119",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:39.397Z"
+        },
+        "co-build-requests": {
+          "id": "mock-channel-1750563821399-0.9128327988369327",
+          "categoryId": "mock-channel-1750563821399-0.9610852768357343",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:41.399Z"
+        },
+        "revshare-opportunities": {
+          "id": "mock-channel-1750563822400-0.32512418023110845",
+          "categoryId": "mock-channel-1750563821399-0.9610852768357343",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:42.400Z"
+        },
+        "team-up": {
+          "id": "mock-channel-1750563823402-0.779501377184745",
+          "categoryId": "mock-channel-1750563821399-0.9610852768357343",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:43.402Z"
+        },
+        "elite-listings": {
+          "id": "mock-channel-1750563825405-0.19646879396656103",
+          "categoryId": "mock-channel-1750563825405-0.27985093885619716",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:45.405Z"
+        },
+        "client-reviews": {
+          "id": "mock-channel-1750563826406-0.8870105254403389",
+          "categoryId": "mock-channel-1750563825405-0.27985093885619716",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:46.406Z"
+        },
+        "vip-requests": {
+          "id": "mock-channel-1750563827408-0.42840811468448425",
+          "categoryId": "mock-channel-1750563825405-0.27985093885619716",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:47.408Z"
+        },
+        "general-chat": {
+          "id": "mock-channel-1750563829410-0.3618609909297006",
+          "categoryId": "mock-channel-1750563829410-0.19458040568766255",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:49.410Z"
+        },
+        "tools-chat": {
+          "id": "mock-channel-1750563830412-0.2969806350087336",
+          "categoryId": "mock-channel-1750563829410-0.19458040568766255",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:50.412Z"
+        },
+        "off-topic": {
+          "id": "mock-channel-1750563831414-0.2977756693127185",
+          "categoryId": "mock-channel-1750563829410-0.19458040568766255",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:51.414Z"
+        },
+        "private-matching": {
+          "id": "mock-channel-1750563833417-0.34004561342578765",
+          "categoryId": "mock-channel-1750563833417-0.25515428251697214",
+          "type": 0,
+          "createdAt": "2025-06-22T03:43:53.417Z"
+        }
+      },
+      "setupDate": "2025-06-22T03:43:20.356Z"
+    }
+  }
+}

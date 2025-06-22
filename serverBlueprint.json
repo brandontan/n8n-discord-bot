@@ -1,0 +1,285 @@
+{
+  "_meta": {
+    "description": "Server Blueprint Template for n8n Discord Builder Bot",
+    "version": "1.0.0",
+    "last_updated": "2024-01-01",
+    "notes": [
+      "This is a template file - copy and customize for your community needs",
+      "Role names must be unique and should include descriptive emojis",
+      "Channel names must be lowercase, alphanumeric, and use hyphens",
+      "Private channels require 'allowedRoles' to be specified",
+      "Permission overwrites: 'read-only' makes channels view-only for @everyone"
+    ]
+  },
+  "roles": [
+    {
+      "name": "🛠️ Custom Role 1",
+      "color": "#1abc9c",
+      "mentionable": true,
+      "permissions": ["SendMessages", "ViewChannel", "AttachFiles"],
+      "description": "Description of what this role represents"
+    },
+    {
+      "name": "📦 Custom Role 2", 
+      "color": "#e67e22",
+      "mentionable": true,
+      "permissions": ["SendMessages", "ViewChannel"],
+      "description": "Another role for your community"
+    },
+    {
+      "name": "🚀 VIP Role",
+      "color": "#9b59b6",
+      "mentionable": true,
+      "permissions": ["SendMessages", "ViewChannel", "UseApplicationCommands"],
+      "description": "Special permissions for verified members"
+    },
+    {
+      "name": "👑 Admin",
+      "color": "#e74c3c", 
+      "mentionable": false,
+      "permissions": ["Administrator"],
+      "description": "Server administrators and moderators"
+    }
+  ],
+  "channels": {
+    "categories": [
+      {
+        "name": "👋 Getting Started",
+        "private": false,
+        "channels": [
+          {
+            "name": "welcome",
+            "type": "text",
+            "description": "Welcome new members and provide server overview",
+            "private": false,
+            "rateLimitPerUser": 0
+          },
+          {
+            "name": "rules-and-guidelines", 
+            "type": "text",
+            "description": "Community rules and posting guidelines",
+            "private": false,
+            "rateLimitPerUser": 0,
+            "permissionsOverwrite": "read-only"
+          },
+          {
+            "name": "introductions",
+            "type": "text", 
+            "description": "Introduce yourself to the community",
+            "private": false,
+            "rateLimitPerUser": 30
+          }
+        ]
+      },
+      {
+        "name": "💬 General Discussion",
+        "private": false,
+        "channels": [
+          {
+            "name": "general-chat",
+            "type": "text",
+            "description": "General community discussion",
+            "private": false,
+            "rateLimitPerUser": 5
+          },
+          {
+            "name": "questions-and-help",
+            "type": "text",
+            "description": "Ask questions and get help from the community",
+            "private": false,
+            "rateLimitPerUser": 10
+          },
+          {
+            "name": "announcements",
+            "type": "text",
+            "description": "Important community announcements",
+            "private": false,
+            "rateLimitPerUser": 0,
+            "permissionsOverwrite": "read-only"
+          }
+        ]
+      },
+      {
+        "name": "🔧 Project Collaboration",
+        "private": false,
+        "channels": [
+          {
+            "name": "project-showcase",
+            "type": "text", 
+            "description": "Share your projects and get feedback",
+            "private": false,
+            "rateLimitPerUser": 20
+          },
+          {
+            "name": "collaboration-requests",
+            "type": "text",
+            "description": "Find collaborators for your projects",
+            "private": false,
+            "rateLimitPerUser": 15
+          },
+          {
+            "name": "feedback-exchange",
+            "type": "text",
+            "description": "Exchange feedback and reviews",
+            "private": false,
+            "rateLimitPerUser": 10
+          }
+        ]
+      },
+      {
+        "name": "🎯 Resources",
+        "private": false,
+        "channels": [
+          {
+            "name": "useful-links",
+            "type": "text",
+            "description": "Curated collection of helpful resources",
+            "private": false,
+            "permissionsOverwrite": "read-only"
+          },
+          {
+            "name": "templates-and-tools",
+            "type": "text",
+            "description": "Share templates, tools, and utilities",
+            "private": false,
+            "rateLimitPerUser": 30
+          },
+          {
+            "name": "learning-resources",
+            "type": "text",
+            "description": "Educational content and tutorials", 
+            "private": false,
+            "rateLimitPerUser": 20
+          }
+        ]
+      },
+      {
+        "name": "🎵 Voice Channels",
+        "private": false,
+        "channels": [
+          {
+            "name": "General Voice",
+            "type": "voice",
+            "description": "General voice chat for community members",
+            "private": false
+          },
+          {
+            "name": "Study/Work Together",
+            "type": "voice", 
+            "description": "Co-working and study sessions",
+            "private": false
+          },
+          {
+            "name": "Events & Meetings",
+            "type": "voice",
+            "description": "Community events and scheduled meetings",
+            "private": false
+          }
+        ]
+      },
+      {
+        "name": "🔒 VIP Area",
+        "private": true,
+        "channels": [
+          {
+            "name": "vip-discussion", 
+            "type": "text",
+            "description": "Private discussion area for VIP members",
+            "private": true,
+            "allowedRoles": ["👑 Admin", "🚀 VIP Role"]
+          },
+          {
+            "name": "private-feedback",
+            "type": "text",
+            "description": "Private feedback and suggestions",
+            "private": true,
+            "allowedRoles": ["👑 Admin", "🚀 VIP Role"],
+            "rateLimitPerUser": 15
+          }
+        ]
+      },
+      {
+        "name": "☕ Off-Topic",
+        "private": false,
+        "channels": [
+          {
+            "name": "random-chat",
+            "type": "text",
+            "description": "Random conversations and casual chat",
+            "private": false,
+            "rateLimitPerUser": 3
+          },
+          {
+            "name": "memes-and-fun",
+            "type": "text",
+            "description": "Share memes, jokes, and fun content",
+            "private": false,
+            "rateLimitPerUser": 10
+          },
+          {
+            "name": "weekly-spotlight",
+            "type": "text",
+            "description": "Weekly community highlights and featured content",
+            "private": false,
+            "rateLimitPerUser": 0,
+            "permissionsOverwrite": "read-only"
+          }
+        ]
+      }
+    ]
+  },
+  "customization": {
+    "setup_instructions": [
+      "1. Copy this file to a new name (e.g., 'my-server-blueprint.json')",
+      "2. Customize roles, colors, and permissions to match your community",
+      "3. Modify channel structure and descriptions for your use case",
+      "4. Update the bot's module files to reference your custom blueprint",
+      "5. Test with DRY_RUN=true before applying to your server"
+    ],
+    "role_guidelines": {
+      "naming": "Use descriptive names with emojis for visual appeal",
+      "colors": "Use hex color codes (#RRGGBB format)",
+      "permissions": "Discord permission names (case-sensitive)",
+      "mentionable": "Set to false for admin/mod roles to prevent spam"
+    },
+    "channel_guidelines": {
+      "naming": "Use lowercase, hyphens for spaces, no special characters",
+      "types": "Supported: 'text', 'voice', 'forum' (forum requires additional setup)",
+      "private": "Private channels require 'allowedRoles' array",
+      "rate_limits": "In seconds, 0 = no limit, max = 21600 (6 hours)"
+    },
+    "permission_overwrites": {
+      "read-only": "Makes channel read-only for @everyone role",
+      "custom": "Define custom permission overwrites in channel object"
+    }
+  },
+  "examples": {
+    "forum_channel": {
+      "name": "community-forum",
+      "type": "forum", 
+      "description": "Community forum with topics and tags",
+      "private": false,
+      "forum_tags": [
+        {"name": "Question", "emoji": "❓"},
+        {"name": "Discussion", "emoji": "💬"},
+        {"name": "Solved", "emoji": "✅"}
+      ]
+    },
+    "advanced_permissions": {
+      "name": "admin-only-channel",
+      "type": "text",
+      "description": "Channel with custom permission overwrites", 
+      "private": true,
+      "permissionOverwrites": [
+        {
+          "id": "@everyone",
+          "deny": ["ViewChannel", "SendMessages"]
+        },
+        {
+          "roleId": "👑 Admin",
+          "allow": ["ViewChannel", "SendMessages", "ManageMessages"]
+        }
+      ]
+    }
+  }
+}

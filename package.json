@@ -1,0 +1,43 @@
+{
+  "name": "n8n-discord-builder",
+  "version": "1.0.0",
+  "description": "A comprehensive Discord bot for n8n automation communities, freelancer networks, and client collaboration spaces",
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=16.9.0",
+    "npm": ">=7.0.0"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dry-run": "DRY_RUN=true node src/index.js",
+    "check-env": "node -e \"console.log('Environment check:', { token: !!process.env.DISCORD_TOKEN, tz: process.env.TZ || 'UTC' })\""
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "n8n",
+    "automation",
+    "community",
+    "freelancer",
+    "management"
+  ],
+  "author": "n8n Discord Builder Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/n8n-discord-builder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/n8n-discord-builder/issues"
+  },
+  "homepage": "https://github.com/your-username/n8n-discord-builder#readme",
+  "dependencies": {
+    "discord.js": "^14.20.0",
+    "dotenv": "^16.5.0",
+    "node-cron": "^4.1.1"
+  },
+  "devDependencies": {},
+  "optionalDependencies": {}
+}

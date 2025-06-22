@@ -1,0 +1,273 @@
+{
+  "roles": [
+    {
+      "name": "🛠️ Freelancer",
+      "color": "#1abc9c",
+      "mentionable": true,
+      "permissions": ["SendMessages", "ViewChannel", "AttachFiles"],
+      "description": "Independent automation experts available for hire"
+    },
+    {
+      "name": "📦 Client",
+      "color": "#e67e22",
+      "mentionable": true,
+      "permissions": ["SendMessages", "ViewChannel"],
+      "description": "Businesses and individuals seeking automation solutions"
+    },
+    {
+      "name": "🚀 Verified Pro",
+      "color": "#9b59b6",
+      "mentionable": true,
+      "permissions": ["SendMessages", "ViewChannel", "UseApplicationCommands"],
+      "description": "Verified top-tier freelancers and agencies"
+    },
+    {
+      "name": "👑 Admin",
+      "color": "#e74c3c",
+      "mentionable": false,
+      "permissions": ["Administrator"],
+      "description": "Server administrators and moderators"
+    }
+  ],
+  "channels": {
+    "categories": [
+      {
+        "name": "👋 Welcome",
+        "private": false,
+        "channels": [
+          {
+            "name": "start-here",
+            "type": "text",
+            "description": "Welcome to n8npro! Learn how this server works and how to get started.",
+            "private": false,
+            "rateLimitPerUser": 0
+          },
+          {
+            "name": "introductions",
+            "type": "text",
+            "description": "Introduce yourself: Are you a Freelancer, Client, or Agency?",
+            "private": false,
+            "rateLimitPerUser": 10
+          },
+          {
+            "name": "announcements",
+            "type": "text",
+            "description": "Official announcements, updates, events and more.",
+            "private": false,
+            "rateLimitPerUser": 0,
+            "permissionsOverwrite": "read-only"
+          }
+        ]
+      },
+      {
+        "name": "🎯 Find Experts",
+        "private": false,
+        "channels": [
+          {
+            "name": "post-a-job",
+            "type": "text",
+            "description": "Post your automation jobs here. Include budget, scope, timeline.",
+            "private": false,
+            "rateLimitPerUser": 15
+          },
+          {
+            "name": "project-invite-only",
+            "type": "text",
+            "description": "Post private project listings with @mentions.",
+            "private": false,
+            "rateLimitPerUser": 10
+          },
+          {
+            "name": "job-board",
+            "type": "text",
+            "description": "Curated client-approved projects. Read-only channel.",
+            "private": false,
+            "permissionsOverwrite": "read-only"
+          }
+        ]
+      },
+      {
+        "name": "🚀 Hire Me Zone",
+        "private": false,
+        "channels": [
+          {
+            "name": "available-for-hire",
+            "type": "text",
+            "description": "Freelancers post their availability, timezone, and skillset.",
+            "private": false,
+            "rateLimitPerUser": 20
+          },
+          {
+            "name": "project-portfolio",
+            "type": "text",
+            "description": "Showcase your client work, screenshots, testimonials.",
+            "private": false,
+            "rateLimitPerUser": 30
+          },
+          {
+            "name": "pricing-packages",
+            "type": "text",
+            "description": "Post fixed-price offers for common services (audits, workflows).",
+            "private": false,
+            "rateLimitPerUser": 30
+          }
+        ]
+      },
+      {
+        "name": "💬 Automation Chat",
+        "private": false,
+        "channels": [
+          {
+            "name": "use-case-ideas",
+            "type": "text",
+            "description": "Brainstorm automation ideas or ask for inspiration.",
+            "private": false,
+            "rateLimitPerUser": 10
+          },
+          {
+            "name": "client-solutions",
+            "type": "text",
+            "description": "Share how automation solved real client problems.",
+            "private": false,
+            "rateLimitPerUser": 10
+          },
+          {
+            "name": "integration-issues",
+            "type": "text",
+            "description": "Debugging APIs, credentials, or integrations.",
+            "private": false,
+            "rateLimitPerUser": 10
+          },
+          {
+            "name": "advanced-expressions",
+            "type": "text",
+            "description": "Deep dive into expressions, JS, and logic patterns.",
+            "private": false,
+            "rateLimitPerUser": 10
+          }
+        ]
+      },
+      {
+        "name": "⚒️ Build & Learn",
+        "private": false,
+        "channels": [
+          {
+            "name": "workflow-templates",
+            "type": "text",
+            "description": "Post or download reusable JSON templates for workflows.",
+            "private": false,
+            "rateLimitPerUser": 15
+          },
+          {
+            "name": "plugin-lab",
+            "type": "text",
+            "description": "Build, test, and get feedback on custom nodes.",
+            "private": false,
+            "rateLimitPerUser": 15
+          },
+          {
+            "name": "self-hosting-devops",
+            "type": "text",
+            "description": "Discuss hosting, scaling, Docker, and monitoring.",
+            "private": false,
+            "rateLimitPerUser": 10
+          }
+        ]
+      },
+      {
+        "name": "🤝 Collab Lounge",
+        "private": false,
+        "channels": [
+          {
+            "name": "co-build-requests",
+            "type": "text",
+            "description": "Partner up for complex or multi-skill projects.",
+            "private": false,
+            "rateLimitPerUser": 10
+          },
+          {
+            "name": "revshare-opportunities",
+            "type": "text",
+            "description": "Partner on long-term projects with shared profits.",
+            "private": false,
+            "rateLimitPerUser": 10
+          },
+          {
+            "name": "team-up",
+            "type": "text",
+            "description": "Agencies and experts looking for teammates.",
+            "private": false,
+            "rateLimitPerUser": 10
+          }
+        ]
+      },
+      {
+        "name": "🏆 Verified Talent",
+        "private": false,
+        "channels": [
+          {
+            "name": "elite-listings",
+            "type": "text",
+            "description": "Verified freelancers/agencies. Read-only list with badge access.",
+            "private": false,
+            "permissionsOverwrite": "read-only"
+          },
+          {
+            "name": "client-reviews",
+            "type": "text",
+            "description": "Clients leave feedback and testimonials for freelancers.",
+            "private": false,
+            "rateLimitPerUser": 15
+          },
+          {
+            "name": "vip-requests",
+            "type": "text",
+            "description": "Invite-only premium job listings.",
+            "private": false,
+            "rateLimitPerUser": 5
+          }
+        ]
+      },
+      {
+        "name": "☕ Lounge",
+        "private": false,
+        "channels": [
+          {
+            "name": "general-chat",
+            "type": "text",
+            "description": "Talk about anything – community, trends, memes.",
+            "private": false,
+            "rateLimitPerUser": 5
+          },
+          {
+            "name": "tools-chat",
+            "type": "text",
+            "description": "Discuss Airtable, Zapier, Notion, Make, etc.",
+            "private": false,
+            "rateLimitPerUser": 10
+          },
+          {
+            "name": "off-topic",
+            "type": "text",
+            "description": "Fun, hobbies, and random stuff.",
+            "private": false,
+            "rateLimitPerUser": 5
+          }
+        ]
+      },
+      {
+        "name": "🔒 Client ↔ Talent",
+        "private": true,
+        "channels": [
+          {
+            "name": "private-matching",
+            "type": "text",
+            "description": "Private space for client-freelancer discussions and negotiations.",
+            "private": true,
+            "allowedRoles": ["👑 Admin", "🚀 Verified Pro"]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "guilds": {
+    "test-guild-123": {
+      "name": "Test Guild",
+      "roles": {
+        "Bot Manager": {
+          "id": "bot-manager-role-id"
+        },
+        "Workflow Reviewer": {
+          "id": "workflow-reviewer-role-id"
+        },
+        "Pro Builder": {
+          "id": "pro-builder-role-id"
+        }
+      }
+    }
+  }
+}
