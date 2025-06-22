@@ -4,7 +4,7 @@
       "id": "automation-showcase-1",
       "title": "🚀 Automation Showcase: E-commerce Order Processing",
       "description": "Discover how to build a complete e-commerce order processing workflow that integrates Shopify, inventory management, and customer notifications using n8n.",
-      "link": "https://n8n.io/workflows/ecommerce-order-processing",
+      "link": "https://n8n.io/workflows",
       "thumbnail": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop",
       "tags": ["E-commerce", "Shopify", "Automation", "Workflows"],
       "type": "workflow"
@@ -13,7 +13,7 @@
       "id": "community-spotlight-1",
       "title": "💡 Community Spotlight: Advanced API Integration",
       "description": "Featured community member shares their innovative approach to handling complex API integrations with error handling and retry mechanisms.",
-      "link": "https://community.n8n.io/t/advanced-api-integration-patterns",
+      "link": "https://community.n8n.io",
       "thumbnail": "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=400&h=300&fit=crop",
       "tags": ["API", "Integration", "Community", "Best Practices"],
       "type": "community"
@@ -22,7 +22,7 @@
       "id": "tutorial-spotlight-1",
       "title": "📚 Tutorial: Building Your First AI-Powered Workflow",
       "description": "Step-by-step guide to creating intelligent workflows that leverage AI services for content generation and data analysis.",
-      "link": "https://n8n.io/blog/ai-powered-workflows-tutorial",
+      "link": "https://docs.n8n.io",
       "thumbnail": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=300&fit=crop",
       "tags": ["AI", "Tutorial", "OpenAI", "Machine Learning"],
       "type": "tutorial"
@@ -31,7 +31,7 @@
       "id": "feature-spotlight-1",
       "title": "✨ New Feature: Enhanced Error Handling",
       "description": "Explore the latest error handling improvements that make your workflows more robust and reliable with automatic retries and detailed logging.",
-      "link": "https://n8n.io/blog/enhanced-error-handling",
+      "link": "https://docs.n8n.io/try-it-out/",
       "thumbnail": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop",
       "tags": ["Features", "Error Handling", "Reliability", "Updates"],
       "type": "feature"
@@ -40,7 +40,7 @@
       "id": "automation-showcase-2",
       "title": "🔄 Marketing Automation: Lead Nurturing Pipeline",
       "description": "Build a comprehensive lead nurturing system that scores leads, sends personalized emails, and tracks engagement across multiple channels.",
-      "link": "https://n8n.io/workflows/lead-nurturing-pipeline",
+      "link": "https://n8n.io/workflows",
       "thumbnail": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop",
       "tags": ["Marketing", "Lead Generation", "Email", "CRM"],
       "type": "workflow"
