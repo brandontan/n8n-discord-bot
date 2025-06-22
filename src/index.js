@@ -39,38 +39,51 @@ client.once('ready', async () => {
     spotlightManager.start();
     console.log('Weekly Spotlight automation started');
     
-    // Register the slash command
-    const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
-    
-    try {
-        console.log('Registering slash commands...');
+    // Wait a moment for guild cache to populate
+    setTimeout(async () => {
+        // Register the slash command
+        const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
         
-        const commands = [
-            setupCommand.toJSON(),
-            assignRoleCommand.toJSON(),
-            removeRoleCommand.toJSON(),
-            listRolesCommand.toJSON(),
-            syncProBuilderCommand.toJSON(),
-            listChannelsCommand.toJSON(),
-            channelInfoCommand.toJSON(),
-            syncChannelPermissionsCommand.toJSON(),
-            interviewCommand.toJSON(),
-            testSpotlightCommand.toJSON(),
-            spotlightStatusCommand.toJSON(),
-            spotlightConfigCommand.toJSON(),
-            spotlightControlCommand.toJSON()
-        ];
-        
-        for (const guild of client.guilds.cache.values()) {
-            await rest.put(
-                Routes.applicationGuildCommands(client.user.id, guild.id),
-                { body: commands }
-            );
-            console.log(`Registered commands for guild: ${guild.name}`);
+        try {
+            console.log('Registering slash commands...');
+            console.log(`Found ${client.guilds.cache.size} guilds`);
+            
+            const commands = [
+                setupCommand.toJSON(),
+                assignRoleCommand.toJSON(),
+                removeRoleCommand.toJSON(),
+                listRolesCommand.toJSON(),
+                syncProBuilderCommand.toJSON(),
+                listChannelsCommand.toJSON(),
+                channelInfoCommand.toJSON(),
+                syncChannelPermissionsCommand.toJSON(),
+                interviewCommand.toJSON(),
+                testSpotlightCommand.toJSON(),
+                spotlightStatusCommand.toJSON(),
+                spotlightConfigCommand.toJSON(),
+                spotlightControlCommand.toJSON()
+            ];
+            
+            if (client.guilds.cache.size === 0) {
+                console.log('No guilds found yet, registering global commands as fallback');
+                await rest.put(
+                    Routes.applicationCommands(client.user.id),
+                    { body: commands }
+                );
+                console.log('Global commands registered');
+            } else {
+                for (const guild of client.guilds.cache.values()) {
+                    await rest.put(
+                        Routes.applicationGuildCommands(client.user.id, guild.id),
+                        { body: commands }
+                    );
+                    console.log(`Registered commands for guild: ${guild.name}`);
+                }
+            }
+        } catch (error) {
+            console.error('Error registering slash commands:', error);
         }
-    } catch (error) {
-        console.error('Error registering slash commands:', error);
-    }
+    }, 2000); // Wait 2 seconds for guilds to load
 });
 
 client.on('interactionCreate', async interaction => {
