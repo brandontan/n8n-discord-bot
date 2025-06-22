@@ -80,7 +80,7 @@ class OnboardingManager {
     async sendWelcomeDM(member, config) {
         try {
             const embed = new EmbedBuilder()
-                .setTitle('🚀 Welcome to n8n Professional Network!')
+                .setTitle('🚀 Welcome to the n8n Automation Community!')
                 .setDescription(config.onboarding.welcome_screen.description)
                 .setColor(0x7289DA)
                 .addFields(

@@ -2,7 +2,7 @@
   "onboarding": {
     "welcome_screen": {
       "enabled": true,
-      "description": "Welcome to the n8n Professional Network! 🚀\n\nConnect with automation experts, find freelance opportunities, and grow your automation skills. Let's tailor your experience!",
+      "description": "Welcome to the n8n automation community! 🚀\n\nConnect with fellow automation enthusiasts, share knowledge, collaborate on projects, and grow your skills together. Let's tailor your experience!",
       "welcome_channels": [
         {
           "channel_name": "start-here",
@@ -249,7 +249,7 @@
       "channel_recommendations": true,
       "private_welcome_dm": {
         "enabled": true,
-        "message_template": "👋 **Welcome to n8n Professional Network!**\n\nI've set up your account based on your onboarding responses:\n\n**Assigned Role:** {{assigned_role}}\n**Access to:** {{channel_count}} specialized channels\n\n🎯 **Quick Tips:**\n• Use `/list-channels` to see all available channels\n• Type `/assign-role` if you need additional roles later\n• Join discussions in channels that match your interests\n\n**Need help?** Just ask in #general-chat - our community is here to help!\n\nHappy automating! 🤖✨"
+        "message_template": "👋 **Welcome to the n8n automation community!**\n\nI've set up your access based on your onboarding responses:\n\n**Your Role:** {{assigned_role}}\n**Access to:** {{channel_count}} specialized channels\n\n🎯 **Quick Tips:**\n• Use `/list-channels` to see all available channels\n• Join discussions in channels that match your interests\n• Share your knowledge and learn from others\n\n**Need help?** Just ask in #general-chat - our community is here to support each other!\n\nHappy automating! 🤖✨"
       }
     },
     "role_mapping": {

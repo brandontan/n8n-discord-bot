@@ -38,7 +38,7 @@
           {
             "name": "start-here",
             "type": "text",
-            "description": "Welcome to n8npro! Learn how this server works and how to get started.",
+            "description": "Welcome to the n8n community! Learn how this server works and how to get started.",
             "private": false,
             "rateLimitPerUser": 0
           },
