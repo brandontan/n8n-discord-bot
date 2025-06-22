@@ -1,11 +1,11 @@
-# 🚀 PRODUCTION DEPLOYMENT: n8n Professional Hub
+# 🚀 PRODUCTION DEPLOYMENT: n8n Professional Network
 
 ## ✅ **DEPLOYMENT CHECKLIST**
 
 ### 1. Discord Bot Setup (5 minutes)
 - [ ] Go to: https://discord.com/developers/applications
-- [ ] Create application: "n8n Professional Hub"  
-- [ ] Add Bot with username: "n8n-hub-bot"
+- [ ] Create application: "n8n Professional Network"  
+- [ ] Add Bot with username: "n8n-network-bot"
 - [ ] Copy Bot Token (keep secret!)
 - [ ] Enable Server Members Intent
 - [ ] Enable Message Content Intent
@@ -15,7 +15,7 @@
 - [ ] Sign up at: https://render.com
 - [ ] New Web Service → Connect GitHub
 - [ ] Repository: brandontan/n8n-discord-community
-- [ ] Name: n8n-professional-hub
+- [ ] Name: n8n-professional-network
 - [ ] Environment: Node
 - [ ] Build: `npm install`
 - [ ] Start: `npm start`
@@ -28,7 +28,7 @@
 - [ ] SPOTLIGHT_ENABLED: true
 
 ### 4. Discord Server Creation (2 minutes)
-- [ ] Create Discord server: "n8n Professional Hub"
+- [ ] Create Discord server: "n8n Professional Network"
 - [ ] Invite bot using generated URL
 - [ ] Verify bot appears with "BOT" tag
 - [ ] Bot should be online (green status)
@@ -131,7 +131,7 @@
 
 ## 🚀 **READY FOR LAUNCH!**
 
-Your **n8n Professional Hub** is production-ready with:
+Your **n8n Professional Network** is production-ready with:
 ✅ Professional Discord server structure
 ✅ Automated bot management  
 ✅ Role and permission system

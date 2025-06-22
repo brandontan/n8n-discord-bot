@@ -1,7 +1,7 @@
 {
-  "name": "n8n-discord-builder",
+  "name": "n8n-professional-network",
   "version": "1.0.0",
-  "description": "A comprehensive Discord bot for n8n automation communities, freelancer networks, and client collaboration spaces",
+  "description": "Discord bot for the n8n Professional Network - connecting automation experts, freelancers, and clients",
   "main": "src/index.js",
   "engines": {
     "node": ">=16.9.0",
@@ -23,7 +23,7 @@
     "freelancer",
     "management"
   ],
-  "author": "n8n Discord Builder Team",
+  "author": "n8n Professional Network Team",
   "license": "MIT",
   "repository": {
     "type": "git",

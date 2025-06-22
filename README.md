@@ -1,6 +1,6 @@
-# n8n Discord Builder Bot
+# n8n Professional Network Bot
 
-A comprehensive Discord bot designed for n8n automation communities, freelancer networks, and client collaboration spaces. This bot automatically sets up Discord servers with pre-configured roles, channels, and advanced features like weekly spotlights and interview coordination.
+A comprehensive Discord bot designed for the n8n Professional Network community. This bot automatically sets up Discord servers with pre-configured roles, channels, and advanced features like weekly spotlights and interview coordination for n8n professionals, freelancers, and clients.
 
 ## 🚀 Features
 
