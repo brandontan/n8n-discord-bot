@@ -133,7 +133,7 @@ const profileCommand = new SlashCommandBuilder()
             .setName('edit')
             .setDescription('Edit your profile with interactive form'));
 
-// Leaderboard Command
+// Leaderboard Command (Community Focus)
 const leaderboardCommand = new SlashCommandBuilder()
     .setName('leaderboard')
     .setDescription('View community leaderboards')
@@ -145,8 +145,125 @@ const leaderboardCommand = new SlashCommandBuilder()
                 { name: '💬 Most Active Contributors', value: 'messages' },
                 { name: '🆘 Most Helpful (Solved Tags)', value: 'helpful' },
                 { name: '📋 Most Shared Templates', value: 'templates' },
-                { name: '🎯 Best Solutions', value: 'solutions' }
+                { name: '🎯 Best Solutions', value: 'solutions' },
+                { name: '⭐ Rising Stars (New Contributors)', value: 'rising' },
+                { name: '🔥 Weekly Champions', value: 'weekly' }
             ));
+
+// Financial Dashboard Command
+const moneyCommand = new SlashCommandBuilder()
+    .setName('money')
+    .setDescription('Financial dashboard and earnings tracking')
+    .addSubcommand(subcommand =>
+        subcommand
+            .setName('dashboard')
+            .setDescription('View your financial dashboard'))
+    .addSubcommand(subcommand =>
+        subcommand
+            .setName('update')
+            .setDescription('Update your financial data')
+            .addStringOption(option =>
+                option.setName('type')
+                    .setDescription('What to update')
+                    .setRequired(true)
+                    .addChoices(
+                        { name: '💰 Monthly Revenue', value: 'revenue' },
+                        { name: '📊 Completed Projects', value: 'projects' },
+                        { name: '💵 Hourly Rate', value: 'rate' },
+                        { name: '🎯 Goals & Targets', value: 'goals' }
+                    ))
+            .addNumberOption(option =>
+                option.setName('amount')
+                    .setDescription('Amount/number to set')
+                    .setRequired(true)))
+    .addSubcommand(subcommand =>
+        subcommand
+            .setName('project')
+            .setDescription('Log a completed project')
+            .addStringOption(option =>
+                option.setName('title')
+                    .setDescription('Project title')
+                    .setRequired(true))
+            .addNumberOption(option =>
+                option.setName('value')
+                    .setDescription('Project value (USD)')
+                    .setRequired(true))
+            .addStringOption(option =>
+                option.setName('client')
+                    .setDescription('Client name (optional)')
+                    .setRequired(false)))
+    .addSubcommand(subcommand =>
+        subcommand
+            .setName('leaderboard')
+            .setDescription('View financial leaderboards')
+            .addStringOption(option =>
+                option.setName('type')
+                    .setDescription('Leaderboard type')
+                    .setRequired(false)
+                    .addChoices(
+                        { name: '📈 Top Earners (This Month)', value: 'monthly' },
+                        { name: '🚀 Biggest Growth', value: 'growth' },
+                        { name: '⚡ Most Projects', value: 'projects' },
+                        { name: '💎 Highest Rates', value: 'rates' },
+                        { name: '🏆 Annual Champions', value: 'annual' }
+                    )))
+    .addSubcommand(subcommand =>
+        subcommand
+            .setName('privacy')
+            .setDescription('Configure your privacy settings')
+            .addBooleanOption(option =>
+                option.setName('show-revenue')
+                    .setDescription('Show revenue in leaderboards')
+                    .setRequired(false))
+            .addBooleanOption(option =>
+                option.setName('show-projects')
+                    .setDescription('Show project count')
+                    .setRequired(false))
+            .addBooleanOption(option =>
+                option.setName('show-rate')
+                    .setDescription('Show hourly rate')
+                    .setRequired(false))
+            .addBooleanOption(option =>
+                option.setName('anonymous-only')
+                    .setDescription('Only show anonymous rankings')
+                    .setRequired(false)))
+    .addSubcommand(subcommand =>
+        subcommand
+            .setName('stats')
+            .setDescription('View community financial statistics'));
+
+// Enhanced Profile Command with Financial Data
+const enhancedProfileCommand = new SlashCommandBuilder()
+    .setName('profile')
+    .setDescription('View or edit your community profile')
+    .addSubcommand(subcommand =>
+        subcommand
+            .setName('view')
+            .setDescription('View a user profile')
+            .addUserOption(option =>
+                option.setName('user')
+                    .setDescription('User to view (optional, defaults to you)')
+                    .setRequired(false)))
+    .addSubcommand(subcommand =>
+        subcommand
+            .setName('edit')
+            .setDescription('Edit your profile with interactive form'))
+    .addSubcommand(subcommand =>
+        subcommand
+            .setName('showcase')
+            .setDescription('Add a project showcase')
+            .addStringOption(option =>
+                option.setName('title')
+                    .setDescription('Project title')
+                    .setRequired(true))
+            .addStringOption(option =>
+                option.setName('description')
+                    .setDescription('Project description')
+                    .setRequired(true))
+            .addStringOption(option =>
+                option.setName('link')
+                    .setDescription('Project link or demo')
+                    .setRequired(false)))
 
 module.exports = {
     reactionRoleCommand,
@@ -155,6 +272,7 @@ module.exports = {
     autoModCommand,
     interactiveHelpCommand,
     activityCommand,
-    profileCommand,
-    leaderboardCommand
+    profileCommand: enhancedProfileCommand,
+    leaderboardCommand,
+    moneyCommand
 };

@@ -9,6 +9,8 @@ const { assignRoleCommand, removeRoleCommand, listRolesCommand, syncProBuilderCo
 const { listChannelsCommand, channelInfoCommand, syncChannelPermissionsCommand, interviewCommand } = require('./commands/channelCommands');
 const { testSpotlightCommand, spotlightStatusCommand, spotlightConfigCommand, spotlightControlCommand } = require('./commands/spotlightCommands');
 const { manualOnboardingCommand, onboardingStatusCommand, onboardingStatsCommand, reOnboardCommand, testWelcomeCommand, testInteractiveCommand, createWelcomeCommand } = require('./commands/onboardingCommands');
+const { reactionRoleCommand, pollCommand, skillAssessmentCommand, autoModCommand, interactiveHelpCommand, activityCommand, profileCommand, leaderboardCommand, moneyCommand } = require('./commands/interactiveCommands');
+const InteractiveHandler = require('./handlers/interactiveHandler');
 const fs = require('fs');
 const path = require('path');
 
@@ -26,6 +28,7 @@ const channelManager = new ChannelManager();
 const spotlightManager = new SpotlightManager();
 const stateManager = new GuildStateManager();
 const onboardingManager = new OnboardingManager();
+const interactiveHandler = new InteractiveHandler();
 
 // Define the /setup slash command
 const setupCommand = new SlashCommandBuilder()
@@ -71,7 +74,16 @@ client.once('ready', async () => {
                 reOnboardCommand.toJSON(),
                 testWelcomeCommand.toJSON(),
                 testInteractiveCommand.toJSON(),
-                createWelcomeCommand.toJSON()
+                createWelcomeCommand.toJSON(),
+                reactionRoleCommand.toJSON(),
+                pollCommand.toJSON(),
+                skillAssessmentCommand.toJSON(),
+                autoModCommand.toJSON(),
+                interactiveHelpCommand.toJSON(),
+                activityCommand.toJSON(),
+                profileCommand.toJSON(),
+                leaderboardCommand.toJSON(),
+                moneyCommand.toJSON()
             ];
             
             if (client.guilds.cache.size === 0) {
@@ -170,6 +182,30 @@ client.on('interactionCreate', async interaction => {
             } else {
                 await interaction.reply({
                     content: '❌ This onboarding session is not for you.',
+                    ephemeral: true
+                });
+            }
+            return;
+        }
+        
+        // Handle interactive command buttons
+        if (customId.startsWith('money_')) {
+            await interactiveHandler.handleMoneyButtonInteraction(interaction);
+            return;
+        }
+        
+        if (customId.startsWith('profile_')) {
+            // Handle profile buttons (edit, add showcase, etc.)
+            if (customId === 'profile_edit') {
+                // Show profile edit modal - implement later
+                await interaction.reply({
+                    content: '⚠️ Profile editing modal coming soon! Use `/profile edit` for now.',
+                    ephemeral: true
+                });
+            } else if (customId === 'profile_add_showcase') {
+                // Show add showcase modal - implement later
+                await interaction.reply({
+                    content: '⚠️ Project showcase modal coming soon! Use `/profile showcase` for now.',
                     ephemeral: true
                 });
             }
@@ -323,6 +359,37 @@ client.on('interactionCreate', async interaction => {
                     ephemeral: true
                 });
             }
+            return;
+        }
+    }
+    
+    // Handle modal submissions
+    if (interaction.isModalSubmit()) {
+        const customId = interaction.customId;
+        
+        if (customId === 'money_quick_update_modal') {
+            // Handle the financial quick update modal
+            const revenue = interaction.fields.getTextInputValue('revenue_input');
+            const projects = interaction.fields.getTextInputValue('projects_input');
+            const rate = interaction.fields.getTextInputValue('rate_input');
+            
+            const userId = interaction.user.id;
+            const userData = await interactiveHandler.getUserFinancialData(userId);
+            
+            if (revenue) userData.monthlyRevenue = parseFloat(revenue);
+            if (projects) userData.monthlyProjects = parseInt(projects);
+            if (rate) userData.hourlyRate = parseFloat(rate);
+            
+            await interactiveHandler.saveUserFinancialData(userId, userData);
+            
+            await interaction.reply({
+                content: '✅ **Financial Data Updated Successfully!**\n\n' +
+                        (revenue ? `💰 Monthly Revenue: $${parseFloat(revenue).toLocaleString()}\n` : '') +
+                        (projects ? `📊 Projects: ${projects}\n` : '') +
+                        (rate ? `💵 Hourly Rate: $${parseFloat(rate).toLocaleString()}/hr\n` : '') +
+                        '\nGreat work! Keep tracking your progress!',
+                ephemeral: true
+            });
             return;
         }
     }
@@ -1547,7 +1614,346 @@ client.on('interactionCreate', async interaction => {
             });
         }
     }
+    
+    // Handle new interactive commands
+    if (interaction.commandName === 'money') {
+        await interactiveHandler.handleMoneyCommand(interaction);
+        return;
+    }
+    
+    if (interaction.commandName === 'profile') {
+        await interactiveHandler.handleProfileCommand(interaction);
+        return;
+    }
+    
+    if (interaction.commandName === 'leaderboard') {
+        await interactiveHandler.handleLeaderboardCommand(interaction);
+        return;
+    }
+    
+    // Handle other interactive commands with placeholder responses
+    if (interaction.commandName === 'reaction-roles') {
+        await interaction.reply({
+            content: '🎯 **Reaction Roles System**\n\n' +
+                    'This feature allows you to create interactive role assignment messages.\n\n' +
+                    '⚠️ **Coming Soon:** Full reaction role automation with custom emojis and role mappings.\n\n' +
+                    'For now, use `/assign-role` for manual role management.',
+            ephemeral: true
+        });
+        return;
+    }
+    
+    if (interaction.commandName === 'poll') {
+        const question = interaction.options.getString('question');
+        const optionsString = interaction.options.getString('options');
+        const duration = interaction.options.getInteger('duration') || 24;
+        const anonymous = interaction.options.getBoolean('anonymous') || false;
+        
+        const options = optionsString.split(',').map(opt => opt.trim()).slice(0, 10);
+        
+        if (options.length < 2) {
+            await interaction.reply({
+                content: '❌ **Invalid Poll Options**\n\nPlease provide at least 2 options separated by commas.\n\nExample: `Yes, No, Maybe`',
+                ephemeral: true
+            });
+            return;
+        }
+        
+        const { EmbedBuilder } = require('discord.js');
+        
+        const pollEmbed = new EmbedBuilder()
+            .setTitle(`📊 ${question}`)
+            .setColor('#7289da')
+            .setDescription(options.map((opt, index) => `${index + 1}️⃣ ${opt}`).join('\n'))
+            .addFields([
+                { name: '⏰ Duration', value: `${duration} hours`, inline: true },
+                { name: '🔒 Anonymous', value: anonymous ? 'Yes' : 'No', inline: true },
+                { name: '👤 Created by', value: interaction.user.tag, inline: true }
+            ])
+            .setFooter({ text: 'React with numbers to vote!' })
+            .setTimestamp();
+        
+        const pollMessage = await interaction.reply({ embeds: [pollEmbed], fetchReply: true });
+        
+        // Add reaction emojis
+        const numberEmojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
+        for (let i = 0; i < Math.min(options.length, numberEmojis.length); i++) {
+            await pollMessage.react(numberEmojis[i]);
+        }
+        
+        return;
+    }
+    
+    if (interaction.commandName === 'skill-assessment') {
+        const category = interaction.options.getString('category');
+        
+        await interaction.reply({
+            content: `🧠 **n8n Skill Assessment - ${category.toUpperCase()}**\n\n` +
+                    `Ready to test your knowledge in ${category}?\n\n` +
+                    '⚠️ **Coming Soon:** Interactive skill assessments with:\n' +
+                    '• Multiple choice questions\n' +
+                    '• Practical scenario challenges\n' +
+                    '• Automatic role assignment based on scores\n' +
+                    '• Skill level badges and recognition\n\n' +
+                    'For now, share your experience in the relevant channels!',
+            ephemeral: true
+        });
+        return;
+    }
+    
+    if (interaction.commandName === 'auto-mod') {
+        // Check if user has administrator permission
+        if (!interaction.member.permissions.has('Administrator')) {
+            await interaction.reply({
+                content: '❌ You need Administrator permission to configure auto-moderation.',
+                ephemeral: true
+            });
+            return;
+        }
+        
+        await interaction.reply({
+            content: '🛡️ **Auto-Moderation Configuration**\n\n' +
+                    '⚠️ **Coming Soon:** Advanced auto-moderation features including:\n\n' +
+                    '• Spam detection and filtering\n' +
+                    '• Suspicious link blocking\n' +
+                    '• Excessive caps filtering\n' +
+                    '• Custom keyword filters\n' +
+                    '• Automatic warnings and timeouts\n\n' +
+                    'Discord\'s built-in AutoMod is recommended for now.',
+            ephemeral: true
+        });
+        return;
+    }
+    
+    if (interaction.commandName === 'help') {
+        const category = interaction.options.getString('category');
+        
+        const helpContent = {
+            'getting-started': {
+                title: '🚀 Getting Started Guide',
+                content: [
+                    '**Welcome to the n8n Automation Community!**\n',
+                    '📋 **First Steps:**',
+                    '• Complete `/onboard` for personalized experience',
+                    '• Introduce yourself in #introductions',
+                    '• Explore channels matching your role\n',
+                    '🔧 **Basic Commands:**',
+                    '• `/profile view` - See your community profile',
+                    '• `/leaderboard` - View community rankings',
+                    '• `/money dashboard` - Track your earnings (freelancers)\n',
+                    '💡 **Need help?** Ask in #general-chat or use `/help` with other categories!'
+                ]
+            },
+            'finding-work': {
+                title: '💼 Finding Work Guide',
+                content: [
+                    '**Ready to find automation projects?**\n',
+                    '📋 **Job Channels:**',
+                    '• #post-a-job - Browse client project postings',
+                    '• #available-for-hire - Showcase your skills',
+                    '• #project-portfolio - View completed work examples\n',
+                    '🎯 **Pro Tips:**',
+                    '• Complete your `/profile` with showcases',
+                    '• Track earnings with `/money` commands',
+                    '• Engage in technical discussions to build reputation\n',
+                    '🏆 **Stand Out:** Get "Verified Pro" status by demonstrating expertise!'
+                ]
+            },
+            'hiring': {
+                title: '👥 Hiring Talent Guide',
+                content: [
+                    '**Looking to hire automation experts?**\n',
+                    '📋 **Hiring Process:**',
+                    '• Post in #post-a-job with clear requirements',
+                    '• Browse #available-for-hire for talent',
+                    '• Use `/interview start @candidate` for private discussions\n',
+                    '🎯 **Best Practices:**',
+                    '• Be specific about project scope and budget',
+                    '• Check portfolios in #project-portfolio',
+                    '• Look for active community contributors\n',
+                    '💡 **Tip:** Verified Pros have demonstrated expertise!'
+                ]
+            },
+            'technical': {
+                title: '🔧 Technical Help',
+                content: [
+                    '**Need technical assistance?**\n',
+                    '📋 **Help Channels:**',
+                    '• #integration-issues - API and connection problems',
+                    '• #advanced-expressions - Complex logic and coding',
+                    '• #general-chat - Quick questions and discussions\n',
+                    '🎯 **When Asking for Help:**',
+                    '• Describe your workflow goal clearly',
+                    '• Share error messages or screenshots',
+                    '• Mention what you\'ve already tried\n',
+                    '⭐ **Pro Tip:** Use forum channels with tags for better organization!'
+                ]
+            },
+            'forums': {
+                title: '🎯 Forum Features',
+                content: [
+                    '**Make the most of our forum channels!**\n',
+                    '📋 **Forum Benefits:**',
+                    '• Organized discussions with tags',
+                    '• Mark solutions for future reference',
+                    '• Level-based filtering (Beginner → Expert)\n',
+                    '🏷️ **Available Tags:**',
+                    '• Skill Level: Beginner, Intermediate, Advanced, Expert',
+                    '• Topics: API, Data, AI/ML, E-commerce, Marketing\n',
+                    '✅ **Mark Solutions:** Help others by marking helpful replies as solutions!'
+                ]
+            },
+            'advanced': {
+                title: '⭐ Advanced Features',
+                content: [
+                    '**Unlock advanced community features!**\n',
+                    '💰 **Financial Tracking:**',
+                    '• `/money dashboard` - View earnings overview',
+                    '• `/money update` - Log revenue and projects',
+                    '• `/money leaderboard` - See top earners\n',
+                    '🏆 **Community Recognition:**',
+                    '• `/leaderboard` - Community contribution rankings',
+                    '• `/profile showcase` - Add portfolio highlights',
+                    '• Earn "Verified Pro" status through expertise\n',
+                    '🔧 **Pro Tools:** More advanced features coming soon!'
+                ]
+            }
+        };
+        
+        if (category && helpContent[category]) {
+            const help = helpContent[category];
+            await interaction.reply({
+                content: `${help.title}\n\n${help.content.join('\n')}`,
+                ephemeral: true
+            });
+        } else {
+            // Show all categories
+            await interaction.reply({
+                content: '📚 **Interactive Help System**\n\n' +
+                        'Choose a category for detailed help:\n\n' +
+                        '🚀 `/help getting-started` - New user guide\n' +
+                        '💼 `/help finding-work` - Freelancer resources\n' +
+                        '👥 `/help hiring` - Client hiring guide\n' +
+                        '🔧 `/help technical` - Technical assistance\n' +
+                        '🎯 `/help forums` - Forum channel usage\n' +
+                        '⭐ `/help advanced` - Advanced features\n\n' +
+                        '💡 **Quick Help:** Use `/onboard` to personalize your experience!',
+                ephemeral: true
+            });
+        }
+        return;
+    }
+    
+    if (interaction.commandName === 'activity') {
+        const channel = interaction.options.getChannel('channel');
+        const timeframe = interaction.options.getString('timeframe') || '7d';
+        
+        const targetChannel = channel || interaction.channel;
+        
+        await interaction.reply({
+            content: `📊 **Channel Activity Analysis**\n\n` +
+                    `**Channel:** ${targetChannel}\n` +
+                    `**Timeframe:** ${timeframe}\n\n` +
+                    '⚠️ **Coming Soon:** Detailed activity analytics including:\n\n' +
+                    '• Message count and trends\n' +
+                    '• Active user statistics\n' +
+                    '• Peak activity times\n' +
+                    '• Popular topics and keywords\n\n' +
+                    'Use Discord\'s built-in Server Insights for now.',
+            ephemeral: true
+        });
+        return;
+    }
 });
+
+// Add missing privacy setting handler for money command
+interactiveHandler.updatePrivacySettings = async function(interaction) {
+    const showRevenue = interaction.options.getBoolean('show-revenue');
+    const showProjects = interaction.options.getBoolean('show-projects');
+    const showRate = interaction.options.getBoolean('show-rate');
+    const anonymousOnly = interaction.options.getBoolean('anonymous-only');
+    
+    const userId = interaction.user.id;
+    const userData = await this.getUserFinancialData(userId);
+    
+    userData.privacy = userData.privacy || {};
+    if (showRevenue !== null) userData.privacy.showRevenue = showRevenue;
+    if (showProjects !== null) userData.privacy.showProjects = showProjects;
+    if (showRate !== null) userData.privacy.showRate = showRate;
+    if (anonymousOnly !== null) userData.privacy.anonymousOnly = anonymousOnly;
+    
+    await this.saveUserFinancialData(userId, userData);
+    
+    await interaction.reply({
+        content: '✅ **Privacy Settings Updated!**\n\n' +
+                `🔒 **Current Settings:**\n` +
+                `• Show Revenue: ${userData.privacy.showRevenue ? '✅' : '❌'}\n` +
+                `• Show Projects: ${userData.privacy.showProjects ? '✅' : '❌'}\n` +
+                `• Show Rate: ${userData.privacy.showRate ? '✅' : '❌'}\n` +
+                `• Anonymous Only: ${userData.privacy.anonymousOnly ? '✅' : '❌'}\n\n` +
+                'Your privacy preferences have been saved and will be respected in all leaderboards.',
+        ephemeral: true
+    });
+};
+
+// Add missing community stats handler
+interactiveHandler.showCommunityStats = async function(interaction) {
+    const allUsers = await this.getAllFinancialData();
+    
+    const stats = {
+        totalUsers: Object.keys(allUsers).length,
+        totalRevenue: 0,
+        totalProjects: 0,
+        avgMonthlyRevenue: 0,
+        avgHourlyRate: 0
+    };
+    
+    const rates = [];
+    const revenues = [];
+    
+    Object.values(allUsers).forEach(user => {
+        if (user.totalRevenue) {
+            stats.totalRevenue += user.totalRevenue;
+            revenues.push(user.totalRevenue);
+        }
+        if (user.totalProjects) stats.totalProjects += user.totalProjects;
+        if (user.hourlyRate) rates.push(user.hourlyRate);
+        if (user.monthlyRevenue) revenues.push(user.monthlyRevenue);
+    });
+    
+    if (revenues.length > 0) {
+        stats.avgMonthlyRevenue = revenues.reduce((a, b) => a + b, 0) / revenues.length;
+    }
+    
+    if (rates.length > 0) {
+        stats.avgHourlyRate = rates.reduce((a, b) => a + b, 0) / rates.length;
+    }
+    
+    const embed = new EmbedBuilder()
+        .setTitle('📊 Community Financial Statistics')
+        .setColor('#00ff00')
+        .addFields([
+            {
+                name: '👥 Community Overview',
+                value: `**Active Users:** ${stats.totalUsers}\n**Total Projects:** ${stats.totalProjects}\n**Combined Revenue:** $${stats.totalRevenue.toLocaleString()}`,
+                inline: true
+            },
+            {
+                name: '💰 Averages',
+                value: `**Avg Monthly:** $${Math.round(stats.avgMonthlyRevenue).toLocaleString()}\n**Avg Hourly Rate:** $${Math.round(stats.avgHourlyRate)}/hr`,
+                inline: true
+            },
+            {
+                name: '📈 Growth',
+                value: 'Community growing strong!\nMore stats coming soon...',
+                inline: true
+            }
+        ])
+        .setFooter({ text: 'Data is anonymized and aggregated • Privacy settings respected' })
+        .setTimestamp();
+    
+    await interaction.reply({ embeds: [embed] });
+};
 
 // Helper function to update spotlight configuration
 function updateSpotlightConfig(updates) {
