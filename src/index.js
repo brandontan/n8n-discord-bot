@@ -104,6 +104,100 @@ client.on('guildMemberAdd', async member => {
 });
 
 client.on('interactionCreate', async interaction => {
+    // Handle button interactions
+    if (interaction.isButton()) {
+        const customId = interaction.customId;
+        
+        // Handle onboarding start button
+        if (customId.startsWith('start_onboarding_')) {
+            const userId = customId.split('_')[2];
+            if (userId === interaction.user.id) {
+                await onboardingManager.handleStartOnboarding(interaction);
+            } else {
+                await interaction.reply({
+                    content: '❌ This onboarding session is not for you.',
+                    ephemeral: true
+                });
+            }
+            return;
+        }
+        
+        // Handle multi-select toggle buttons
+        if (customId.startsWith('onboard_multi_')) {
+            const parts = customId.split('_');
+            const questionIndex = parseInt(parts[2]);
+            const optionId = parts[3];
+            const userId = parts[4];
+            
+            if (userId === interaction.user.id) {
+                await onboardingManager.handleMultiSelectToggle(interaction, questionIndex, optionId);
+            } else {
+                await interaction.reply({
+                    content: '❌ This onboarding session is not for you.',
+                    ephemeral: true
+                });
+            }
+            return;
+        }
+        
+        // Handle continue buttons
+        if (customId.startsWith('onboard_continue_')) {
+            const parts = customId.split('_');
+            const questionIndex = parseInt(parts[2]);
+            const userId = parts[3];
+            
+            if (userId === interaction.user.id) {
+                await onboardingManager.handleQuestionResponse(interaction, questionIndex, []);
+            } else {
+                await interaction.reply({
+                    content: '❌ This onboarding session is not for you.',
+                    ephemeral: true
+                });
+            }
+            return;
+        }
+        
+        // Handle skip buttons
+        if (customId.startsWith('onboard_skip_')) {
+            const parts = customId.split('_');
+            const questionIndex = parseInt(parts[2]);
+            const userId = parts[3];
+            
+            if (userId === interaction.user.id) {
+                await onboardingManager.handleQuestionResponse(interaction, questionIndex, []);
+            } else {
+                await interaction.reply({
+                    content: '❌ This onboarding session is not for you.',
+                    ephemeral: true
+                });
+            }
+            return;
+        }
+    }
+    
+    // Handle select menu interactions
+    if (interaction.isStringSelectMenu()) {
+        const customId = interaction.customId;
+        
+        // Handle onboarding select menus
+        if (customId.startsWith('onboard_select_')) {
+            const parts = customId.split('_');
+            const questionIndex = parseInt(parts[2]);
+            const userId = parts[3];
+            
+            if (userId === interaction.user.id) {
+                const selectedValues = interaction.values;
+                await onboardingManager.handleQuestionResponse(interaction, questionIndex, selectedValues);
+            } else {
+                await interaction.reply({
+                    content: '❌ This onboarding session is not for you.',
+                    ephemeral: true
+                });
+            }
+            return;
+        }
+    }
+    
     if (!interaction.isChatInputCommand()) return;
     
     if (interaction.commandName === 'setup') {
