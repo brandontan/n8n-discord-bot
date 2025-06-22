@@ -157,18 +157,32 @@ class ChannelManager {
         const permissionOverwrites = await this.createPermissionOverwrites(guild, channelConfig, roleIds);
         
         try {
-            console.log(`🔧 Attempting forum creation for: ${channelConfig.name}`);
-            console.log(`🔧 Category ID: ${category.id}, Type: ${typeof category.id}`);
+            console.log(`🔧 === FORUM CREATION DEBUG START ===`);
+            console.log(`🔧 Channel name: ${channelConfig.name}`);
+            console.log(`🔧 Channel type requested: ${channelConfig.type}`);
+            console.log(`🔧 Category: ${category.name} (ID: ${category.id})`);
+            console.log(`🔧 Category type: ${typeof category.id}`);
             console.log(`🔧 Discord.js version: ${require('discord.js').version}`);
+            console.log(`🔧 Guild: ${guild.name} (ID: ${guild.id})`);
+            console.log(`🔧 Bot permissions in guild:`, guild.members.me.permissions.toArray());
+            console.log(`🔧 Channel description: ${channelConfig.description || 'none'}`);
+            console.log(`🔧 Permission overwrites count: ${permissionOverwrites.length}`);
+            console.log(`🔧 Forum tags to add: ${channelConfig.forumTags?.length || 0}`);
             
-            // Try creating forum without parent first, then move it
-            const forumChannel = await guild.channels.create({
+            const createOptions = {
                 name: channelConfig.name,
                 type: ChannelType.GuildForum,
                 topic: channelConfig.description || channelConfig.topic || 'Forum channel',
                 permissionOverwrites,
                 reason: 'n8n Discord Bot - Blueprint Channel Setup'
-            });
+            };
+            
+            console.log(`🔧 Create options:`, JSON.stringify(createOptions, null, 2));
+            console.log(`🔧 ChannelType.GuildForum value:`, ChannelType.GuildForum);
+            
+            // Try creating forum without parent first, then move it
+            console.log(`🔧 Attempting guild.channels.create()...`);
+            const forumChannel = await guild.channels.create(createOptions);
             
             // Move to category after creation
             if (category && category.id) {
@@ -215,7 +229,25 @@ class ChannelManager {
             return forumChannel;
             
         } catch (error) {
-            console.error(`❌ Error creating forum channel ${channelConfig.name}:`, error);
+            console.error(`❌ FORUM CREATION FAILED for ${channelConfig.name}:`);
+            console.error(`❌ Error message: ${error.message}`);
+            console.error(`❌ Error code: ${error.code}`);
+            console.error(`❌ Error status: ${error.status}`);
+            console.error(`❌ Full error object:`, JSON.stringify(error, null, 2));
+            console.error(`❌ Stack trace:`, error.stack);
+            
+            if (error.code === 50024) {
+                console.error(`❌ ERROR 50024 ANALYSIS:`);
+                console.error(`❌ This means Discord rejected our forum channel creation parameters`);
+                console.error(`❌ Possible causes:`);
+                console.error(`❌ 1. Invalid channel type value (got: ${ChannelType.GuildForum})`);
+                console.error(`❌ 2. Missing required permissions`);
+                console.error(`❌ 3. Discord.js version incompatibility`);
+                console.error(`❌ 4. Guild doesn't support forums`);
+                console.error(`❌ 5. Invalid permission overwrites structure`);
+            }
+            
+            console.error(`❌ === FORUM CREATION DEBUG END ===`);
             
             // Fallback: create as regular text channel if forum creation fails
             console.log(`🔄 Falling back to text channel for: ${channelConfig.name}`);
@@ -240,9 +272,7 @@ class ChannelManager {
         if (channelConfig.type === 'voice') {
             channelType = ChannelType.GuildVoice;
         } else if (channelConfig.type === 'forum') {
-            // Forums are broken - create as text channel instead
-            console.log(`⚠️ Forum requested for ${channelConfig.name} but creating as text due to Discord API issues`);
-            channelType = ChannelType.GuildText;
+            return await this.createForumChannel(guild, channelConfig, category, roleIds);
         }
 
         return await guild.channels.create({
