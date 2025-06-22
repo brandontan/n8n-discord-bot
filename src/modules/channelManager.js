@@ -559,15 +559,33 @@ class ChannelManager {
                         if (categoryConfig.channels && categoryConfig.channels.length > 0) {
                             for (const channelConfig of categoryConfig.channels) {
                                 try {
-                                    // Check if channel already exists
-                                    let existingChannel = guild.channels.cache.find(
-                                        channel => channel.name === channelConfig.name && 
-                                                  channel.parentId === category.id
-                                    );
-                                    
-                                    if (existingChannel) {
-                                        console.log(`Channel '${channelConfig.name}' already exists, skipping creation`);
-                                        results.skippedChannels.push(channelConfig.name);
+                        // Check if channel already exists
+                        let existingChannel = guild.channels.cache.find(
+                            channel => channel.name === channelConfig.name && 
+                                      channel.parentId === category.id
+                        );
+                        
+                        // Check if channel exists but is wrong type (e.g., text vs forum)
+                        if (existingChannel) {
+                            const expectedType = channelConfig.type === 'forum' ? ChannelType.GuildForum : 
+                                                channelConfig.type === 'voice' ? ChannelType.GuildVoice : 
+                                                ChannelType.GuildText;
+                            
+                            if (existingChannel.type !== expectedType) {
+                                console.log(`⚠️ Channel '${channelConfig.name}' exists but wrong type (${existingChannel.type} vs ${expectedType}). Deleting and recreating...`);
+                                try {
+                                    await existingChannel.delete('Wrong channel type - recreating with correct type');
+                                    console.log(`🗑️ Deleted mismatched channel: ${channelConfig.name}`);
+                                    existingChannel = null; // Mark as deleted so we recreate below
+                                } catch (deleteError) {
+                                    console.error(`❌ Could not delete mismatched channel ${channelConfig.name}:`, deleteError.message);
+                                }
+                            }
+                        }
+                        
+                        if (existingChannel) {
+                            console.log(`Channel '${channelConfig.name}' already exists with correct type, skipping creation`);
+                            results.skippedChannels.push(channelConfig.name);
                                         
                                         // Store existing channel data
                                         guildData.channels[channelConfig.name] = {
