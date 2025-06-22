@@ -1040,6 +1040,29 @@ client.on('interactionCreate', async interaction => {
         const experience = interaction.options.getString('experience');
         const goals = interaction.options.getString('goals');
         
+        // Debug logging
+        console.log('Onboarding command received:');
+        console.log('- userType:', userType);
+        console.log('- interests:', interests);
+        console.log('- experience:', experience);
+        console.log('- goals:', goals);
+        
+        // Validate user type
+        const validUserTypes = ['freelancer', 'client', 'learner', 'agency'];
+        if (!validUserTypes.includes(userType)) {
+            await interaction.reply({
+                content: `❌ **Invalid user type: "${userType}"**\n\n` +
+                        `Please select one of the following options from the dropdown:\n` +
+                        `• 🛠️ **Freelancer** - I offer automation services\n` +
+                        `• 📦 **Client** - I need automation solutions\n` +
+                        `• 🎓 **Learning** - I'm learning automation\n` +
+                        `• 🏢 **Agency** - I run an automation agency\n\n` +
+                        `**Tip:** Use the dropdown menu, don't type custom values!`,
+                ephemeral: true
+            });
+            return;
+        }
+        
         // Build responses object
         const responses = {
             user_type: userType
