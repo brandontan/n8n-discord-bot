@@ -240,7 +240,9 @@ class ChannelManager {
         if (channelConfig.type === 'voice') {
             channelType = ChannelType.GuildVoice;
         } else if (channelConfig.type === 'forum') {
-            return await this.createForumChannel(guild, channelConfig, category, roleIds);
+            // Forums are broken - create as text channel instead
+            console.log(`⚠️ Forum requested for ${channelConfig.name} but creating as text due to Discord API issues`);
+            channelType = ChannelType.GuildText;
         }
 
         return await guild.channels.create({
