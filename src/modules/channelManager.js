@@ -271,33 +271,42 @@ class ChannelManager {
             }
         }
         
-        // Also check for common bot-created names and variations
-        const commonBotChannelNames = [
+        // Only include bot-specific channel names (be more conservative)
+        const knownBotChannelNames = [
             'start-here', 'introductions', 'announcements', 'weekly-spotlight',
             'post-a-job', 'job-board', 'available-for-hire', 'project-portfolio',
             'pricing-packages', 'plugin-lab', 'self-hosting-devops', 'share-your-tips',
             'co-build-requests', 'team-up', 'elite-listings', 'client-reviews',
-            'general-chat', 'tools-chat', 'off-topic', 'private-matching',
+            'tools-chat', 'private-matching',
             'use-case-ideas', 'client-solutions', 'integration-issues', 'advanced-expressions',
             'security-compliance', 'workflow-templates'
         ];
         
-        commonBotChannelNames.forEach(name => blueprintChannelNames.add(name));
+        // Only add known bot channels, not common names like 'general' or 'off-topic'
+        knownBotChannelNames.forEach(name => blueprintChannelNames.add(name));
         
-        console.log(`${isDryRun ? '[DRY RUN] ' : ''}🔍 Scanning for channels matching blueprint patterns...`);
+        // Add safeguards - never delete these common channels
+        const protectedChannels = ['general', 'off-topic', 'random', 'chat', 'main', 'lobby'];
         
-        // Step 1: Delete all channels that match blueprint names (including those not in categories)
+        console.log(`${isDryRun ? '[DRY RUN] ' : ''}🔍 Scanning for bot-created channels (with protections)...`);
+        console.log(`${isDryRun ? '[DRY RUN] ' : ''}🛡️ Protected channels: ${protectedChannels.join(', ')}`);
+        
+        // Step 1: Delete channels that match blueprint names but protect common ones
         const allChannels = Array.from(guild.channels.cache.values());
         const channelsToDelete = allChannels.filter(channel => {
             if (channel.type === ChannelType.GuildCategory) return false;
             
-            // Check if channel name matches any blueprint channel
+            // Never delete protected channels
             const channelNameClean = channel.name.replace(/[^a-z0-9-]/g, '').toLowerCase();
+            if (protectedChannels.includes(channelNameClean)) {
+                console.log(`🛡️ Protecting channel: #${channel.name}`);
+                return false;
+            }
+            
+            // Only delete if exact match or very specific bot pattern
             for (const blueprintName of blueprintChannelNames) {
                 const blueprintNameClean = blueprintName.replace(/[^a-z0-9-]/g, '').toLowerCase();
-                if (channelNameClean === blueprintNameClean || 
-                    channelNameClean.includes(blueprintNameClean) ||
-                    blueprintNameClean.includes(channelNameClean)) {
+                if (channelNameClean === blueprintNameClean) {
                     return true;
                 }
             }
