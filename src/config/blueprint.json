@@ -100,10 +100,62 @@
           },
           {
             "name": "🎨┃project-portfolio",
-            "type": "text",
+            "type": "forum",
             "description": "🎨 Showcase your masterpieces! Share client work, success stories, and testimonials that make you shine!",
             "private": false,
-            "rateLimitPerUser": 30
+            "rateLimitPerUser": 30,
+            "forumTags": [
+              {
+                "name": "Beginner",
+                "emoji": "🌱",
+                "moderated": false
+              },
+              {
+                "name": "Intermediate",
+                "emoji": "🔧",
+                "moderated": false
+              },
+              {
+                "name": "Advanced",
+                "emoji": "🚀",
+                "moderated": false
+              },
+              {
+                "name": "Expert/Professional",
+                "emoji": "⭐",
+                "moderated": false
+              },
+              {
+                "name": "AI & ML",
+                "emoji": "🤖",
+                "moderated": false
+              },
+              {
+                "name": "E-commerce",
+                "emoji": "🛒",
+                "moderated": false
+              },
+              {
+                "name": "Marketing",
+                "emoji": "📈",
+                "moderated": false
+              },
+              {
+                "name": "Data Processing",
+                "emoji": "📊",
+                "moderated": false
+              },
+              {
+                "name": "API Integration",
+                "emoji": "🔗",
+                "moderated": false
+              },
+              {
+                "name": "Workflow Templates",
+                "emoji": "📋",
+                "moderated": false
+              }
+            ]
           },
           {
             "name": "💰┃pricing-packages",
