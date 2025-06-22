@@ -101,21 +101,21 @@
           {
             "name": "available-for-hire",
             "type": "text",
-            "description": "Freelancers post their availability, timezone, and skillset.",
+            "description": "💼 Ready to work? Show off your skills, availability, and timezone! Let clients know you're ready for amazing projects!",
             "private": false,
             "rateLimitPerUser": 20
           },
           {
             "name": "project-portfolio",
             "type": "text",
-            "description": "Showcase your client work, screenshots, testimonials.",
+            "description": "🎨 Showcase your masterpieces! Share client work, success stories, and testimonials that make you shine!",
             "private": false,
             "rateLimitPerUser": 30
           },
           {
             "name": "pricing-packages",
             "type": "text",
-            "description": "Post fixed-price offers for common services (audits, workflows).",
+            "description": "💰 Smart pricing made simple! Post your service packages and fixed-price offers that clients will love!",
             "private": false,
             "rateLimitPerUser": 30
           }
