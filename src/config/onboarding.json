@@ -128,6 +128,27 @@
             "description": "Self-hosting, scaling, monitoring",
             "emoji": "⚙️",
             "channels": ["self-hosting-devops", "plugin-lab"]
+          },
+          {
+            "id": "crm",
+            "title": "👥 CRM & Outreach",
+            "description": "Customer relations, sales automation, outreach",
+            "emoji": "👥",
+            "channels": ["client-solutions", "workflow-templates"]
+          },
+          {
+            "id": "saas",
+            "title": "🚀 SaaS & SaaS Ops",
+            "description": "SaaS automation, operations, user onboarding",
+            "emoji": "🚀",
+            "channels": ["use-case-ideas", "advanced-expressions"]
+          },
+          {
+            "id": "nocode",
+            "title": "🔧 No-Code Tools",
+            "description": "Notion, Airtable, Make, Zapier integrations",
+            "emoji": "🔧",
+            "channels": ["integration-issues", "workflow-templates"]
           }
         ]
       },
