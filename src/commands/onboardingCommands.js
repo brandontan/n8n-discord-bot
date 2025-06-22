@@ -61,10 +61,16 @@ const testWelcomeCommand = new SlashCommandBuilder()
             .setDescription('User to send test welcome message to')
             .setRequired(true));
 
+// Interactive onboarding test command
+const testInteractiveCommand = new SlashCommandBuilder()
+    .setName('test-interactive')
+    .setDescription('Test the interactive onboarding questions (admin only)');
+
 module.exports = {
     manualOnboardingCommand,
     onboardingStatusCommand,
     onboardingStatsCommand,
     reOnboardCommand,
-    testWelcomeCommand
+    testWelcomeCommand,
+    testInteractiveCommand
 };

@@ -8,7 +8,7 @@ const OnboardingManager = require('./modules/onboardingManager');
 const { assignRoleCommand, removeRoleCommand, listRolesCommand, syncProBuilderCommand } = require('./commands/roleCommands');
 const { listChannelsCommand, channelInfoCommand, syncChannelPermissionsCommand, interviewCommand } = require('./commands/channelCommands');
 const { testSpotlightCommand, spotlightStatusCommand, spotlightConfigCommand, spotlightControlCommand } = require('./commands/spotlightCommands');
-const { manualOnboardingCommand, onboardingStatusCommand, onboardingStatsCommand, reOnboardCommand, testWelcomeCommand } = require('./commands/onboardingCommands');
+const { manualOnboardingCommand, onboardingStatusCommand, onboardingStatsCommand, reOnboardCommand, testWelcomeCommand, testInteractiveCommand } = require('./commands/onboardingCommands');
 const fs = require('fs');
 const path = require('path');
 
@@ -69,7 +69,8 @@ client.once('ready', async () => {
                 onboardingStatusCommand.toJSON(),
                 onboardingStatsCommand.toJSON(),
                 reOnboardCommand.toJSON(),
-                testWelcomeCommand.toJSON()
+                testWelcomeCommand.toJSON(),
+                testInteractiveCommand.toJSON()
             ];
             
             if (client.guilds.cache.size === 0) {
@@ -1360,6 +1361,28 @@ client.on('interactionCreate', async interaction => {
             console.error('Error sending test welcome:', error);
             await interaction.followUp({
                 content: '❌ An error occurred while sending the test welcome message.',
+                ephemeral: true
+            });
+        }
+    }
+    
+    // Handle test-interactive command
+    if (interaction.commandName === 'test-interactive') {
+        // Check if user has administrator permission
+        if (!interaction.member.permissions.has('Administrator')) {
+            await interaction.reply({
+                content: '❌ You need Administrator permission to test the interactive onboarding.',
+                ephemeral: true
+            });
+            return;
+        }
+        
+        try {
+            await onboardingManager.handleStartOnboarding(interaction);
+        } catch (error) {
+            console.error('Error starting test interactive onboarding:', error);
+            await interaction.reply({
+                content: '❌ An error occurred while starting the interactive onboarding test.',
                 ephemeral: true
             });
         }
