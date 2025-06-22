@@ -285,6 +285,18 @@ class GuildStateManager {
                     "• Consider upgrading your Discord server for higher limits"
                 ]
             };
+        } else if (error.code === 50024) {
+            return {
+                title: "Forum Channel Configuration Error",
+                message: "There was an issue creating forum channels with the specified tags or configuration.",
+                suggestions: [
+                    "• This is usually caused by too many forum tags or invalid tag configuration",
+                    "• The bot has automatically fallen back to creating text channels instead",
+                    "• Forum channels have been created but some tags may be missing",
+                    "• You can manually add forum tags later in Discord channel settings",
+                    "• Re-run /setup to retry - the bot will skip existing channels and only retry failed ones"
+                ]
+            };
         }
         
         return {

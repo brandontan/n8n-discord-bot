@@ -151,35 +151,72 @@ class ChannelManager {
     }
 
     /**
-     * Create forum channel with available tags
+     * Create forum channel with available tags (fixed for error 50024)
      */
     async createForumChannel(guild, channelConfig, category, roleIds) {
         const permissionOverwrites = await this.createPermissionOverwrites(guild, channelConfig, roleIds);
         
-        const forumChannel = await guild.channels.create({
-            name: channelConfig.name,
-            type: ChannelType.GuildForum,
-            parent: category,
-            topic: channelConfig.description || channelConfig.topic,
-            permissionOverwrites,
-            reason: 'n8n Discord Bot - Blueprint Channel Setup'
-        });
+        try {
+            // Create forum channel without tags first
+            const forumChannel = await guild.channels.create({
+                name: channelConfig.name,
+                type: ChannelType.GuildForum,
+                parent: category,
+                topic: channelConfig.description || channelConfig.topic,
+                permissionOverwrites,
+                reason: 'n8n Discord Bot - Blueprint Channel Setup'
+            });
 
-        // Set available tags for forum
-        if (channelConfig.availableTags && channelConfig.availableTags.length > 0) {
-            try {
-                await forumChannel.edit({
-                    availableTags: channelConfig.availableTags.map(tag => ({
-                        name: tag,
-                        moderated: false
-                    }))
-                });
-            } catch (error) {
-                console.error(`Error setting forum tags for ${channelConfig.name}:`, error);
+            // Add tags after creation to avoid error 50024
+            if (channelConfig.forumTags && channelConfig.forumTags.length > 0) {
+                try {
+                    // Limit to 20 tags maximum (Discord limit)
+                    const tagsToAdd = channelConfig.forumTags.slice(0, 20).map(tag => {
+                        // Ensure tag format is correct
+                        if (typeof tag === 'string') {
+                            return {
+                                name: tag.substring(0, 20), // Max 20 chars for tag name
+                                moderated: false
+                            };
+                        } else {
+                            return {
+                                name: (tag.name || 'Tag').substring(0, 20),
+                                moderated: tag.moderated || false,
+                                emoji: tag.emoji || null
+                            };
+                        }
+                    });
+                    
+                    // Wait a moment before editing
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
+                    await forumChannel.edit({
+                        availableTags: tagsToAdd
+                    });
+                    
+                    console.log(`✅ Successfully added ${tagsToAdd.length} tags to forum: ${channelConfig.name}`);
+                } catch (tagError) {
+                    console.warn(`⚠️ Could not add tags to forum ${channelConfig.name}:`, tagError.message);
+                    // Forum channel still created successfully, just without tags
+                }
             }
-        }
 
-        return forumChannel;
+            return forumChannel;
+            
+        } catch (error) {
+            console.error(`❌ Error creating forum channel ${channelConfig.name}:`, error);
+            
+            // Fallback: create as regular text channel if forum creation fails
+            console.log(`🔄 Falling back to text channel for: ${channelConfig.name}`);
+            return await guild.channels.create({
+                name: channelConfig.name,
+                type: ChannelType.GuildText,
+                parent: category,
+                topic: channelConfig.description || channelConfig.topic,
+                permissionOverwrites,
+                reason: 'n8n Discord Bot - Blueprint Channel Setup (Fallback)'
+            });
+        }
     }
 
     /**
