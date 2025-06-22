@@ -1036,6 +1036,29 @@ client.on('error', error => {
     console.error('Discord client error:', error);
 });
 
+// Health check endpoint for Render.com
+const http = require('http');
+const PORT = process.env.PORT || 3000;
+
+const server = http.createServer((req, res) => {
+    if (req.url === '/health' || req.url === '/') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+            status: 'healthy',
+            bot: client.user ? client.user.tag : 'connecting',
+            uptime: process.uptime(),
+            timestamp: new Date().toISOString()
+        }));
+    } else {
+        res.writeHead(404);
+        res.end('Not Found');
+    }
+});
+
+server.listen(PORT, () => {
+    console.log(`Health check server running on port ${PORT}`);
+});
+
 // Login to Discord
 client.login(process.env.DISCORD_TOKEN).catch(error => {
     console.error('Failed to login to Discord:', error);
