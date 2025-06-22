@@ -157,14 +157,17 @@ class ChannelManager {
         const permissionOverwrites = await this.createPermissionOverwrites(guild, channelConfig, roleIds);
         
         try {
-            // Create forum channel without tags first
+            // Create forum channel with minimal parameters to avoid 50024 error
             const forumChannel = await guild.channels.create({
                 name: channelConfig.name,
                 type: ChannelType.GuildForum,
-                parent: category,
-                topic: channelConfig.description || channelConfig.topic,
+                parent: category.id,
+                topic: channelConfig.description || channelConfig.topic || 'Forum channel',
                 permissionOverwrites,
-                reason: 'n8n Discord Bot - Blueprint Channel Setup'
+                reason: 'n8n Discord Bot - Blueprint Channel Setup',
+                // Forum-specific properties
+                defaultAutoArchiveDuration: 10080, // 7 days in minutes
+                defaultThreadRateLimitPerUser: channelConfig.rateLimitPerUser || 0
             });
 
             // Add tags after creation to avoid error 50024
