@@ -206,7 +206,68 @@ class ChannelManager {
     }
 
     /**
+     * Delete existing bot-created categories and channels for a clean rebuild
+     */
+    async deleteExistingBotCategories(guild) {
+        const isDryRun = this.stateManager.isDryRun();
+        console.log(`${isDryRun ? '[DRY RUN] ' : ''}🗑️ Cleaning up existing bot-created categories for fresh rebuild...`);
+        
+        // List of bot-created category names (with and without emojis)
+        const botCategoryNames = [
+            '👋 Welcome', 'Welcome',
+            '🎯 Find Experts', 'Find Experts', 
+            '🚀 Hire Me Zone', 'Hire Me Zone',
+            '💬 Automation Chat', 'Automation Chat',
+            '⚒️ Build & Learn', 'Build & Learn',
+            '🤝 Collab Lounge', 'Collab Lounge', 
+            '🏆 Verified Talent', 'Verified Talent',
+            '☕ Lounge', 'Lounge',
+            '🔒 Client ↔ Talent', 'Client ↔ Talent'
+        ];
+        
+        const deletedCategories = [];
+        let deletedChannelsCount = 0;
+        
+        for (const categoryName of botCategoryNames) {
+            const existingCategory = guild.channels.cache.find(
+                channel => channel.type === ChannelType.GuildCategory && 
+                          channel.name === categoryName
+            );
+            
+            if (existingCategory) {
+                if (isDryRun) {
+                    console.log(`[DRY RUN] Would delete category: ${categoryName}`);
+                    const childChannels = guild.channels.cache.filter(ch => ch.parentId === existingCategory.id);
+                    console.log(`[DRY RUN] Would delete ${childChannels.size} channels in this category`);
+                    deletedChannelsCount += childChannels.size;
+                } else {
+                    console.log(`🗑️ Deleting category: ${categoryName}`);
+                    const childChannels = guild.channels.cache.filter(ch => ch.parentId === existingCategory.id);
+                    deletedChannelsCount += childChannels.size;
+                    
+                    try {
+                        await existingCategory.delete('Clean rebuild for enhanced community engagement');
+                        deletedCategories.push(categoryName);
+                        console.log(`✅ Deleted category: ${categoryName} (${childChannels.size} channels)`);
+                    } catch (error) {
+                        console.warn(`⚠️ Could not delete category ${categoryName}:`, error.message);
+                    }
+                }
+            }
+        }
+        
+        if (deletedCategories.length > 0 || isDryRun) {
+            console.log(`${isDryRun ? '[DRY RUN] ' : ''}🎉 Cleanup complete! ${isDryRun ? 'Would delete' : 'Deleted'} ${deletedCategories.length} categories and ${deletedChannelsCount} channels`);
+        } else {
+            console.log('ℹ️ No existing bot categories found to delete');
+        }
+        
+        return { deletedCategories, deletedChannelsCount };
+    }
+    
+    /**
      * Setup channels and categories for a guild based on blueprint with error handling and state tracking
+     * Now includes automatic cleanup and rebuild for maximum community engagement
      */
     async setupGuildChannels(guild) {
         const isDryRun = this.stateManager.isDryRun();

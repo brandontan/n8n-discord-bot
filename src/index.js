@@ -410,26 +410,41 @@ client.on('interactionCreate', async interaction => {
         console.log(`${isDryRun ? '[DRY RUN] ' : ''}Setup command received from server owner: ${interaction.user.tag} in guild: ${interaction.guild.name}`);
         
         await interaction.reply({
-            content: `${isDryRun ? '🧪 **[DRY RUN MODE]** ' : ''}n8n Discord workflow builder setup initiated! 🚀\n${isDryRun ? 'No actual changes will be made. Actions will be logged only.' : 'Setting up roles and channels...'}`,
+            content: `${isDryRun ? '🧪 **[DRY RUN MODE]** ' : ''}🎨 **Enhanced Community Setup Initiated!** 🚀\n\n` +
+                    `${isDryRun ? '🧪 No actual changes will be made. Actions will be logged only.' : '🗑️ Cleaning up old structure...\n🎯 Building colorful, interactive channels...\n💫 Creating maximum community engagement!'}\n\n` +
+                    `⏱️ This will take a moment for the best experience!`,
             ephemeral: true
         });
         
         try {
-            // Setup roles based on blueprint with error handling
+            // Step 1: Clean up existing bot-created categories for fresh rebuild
+            const cleanupResult = await channelManager.deleteExistingBotCategories(interaction.guild);
+            
+            if (cleanupResult.deletedCategories.length > 0 || isDryRun) {
+                await interaction.followUp({
+                    content: `${isDryRun ? '🧪 **[DRY RUN]** ' : ''}🗑️ **Cleanup Complete!**\n\n` +
+                            `${isDryRun ? 'Would delete' : 'Deleted'}: ${cleanupResult.deletedCategories.length} categories, ${cleanupResult.deletedChannelsCount} channels\n\n` +
+                            `🎯 **Ready for fresh, beautiful rebuild!**`,
+                    ephemeral: true
+                });
+            }
+            
+            // Step 2: Setup roles based on blueprint with error handling
             const roleResult = await roleManager.setupGuildRoles(interaction.guild);
             
             // Update user about role completion and starting channel setup
             await interaction.followUp({
-                content: `${isDryRun ? '🧪 ' : ''}✅ **Role Setup Complete!**\n🔧 **Starting channel setup...**`,
+                content: `${isDryRun ? '🧪 ' : ''}✅ **Role Setup Complete!**\n🎨 **Building colorful channels with emojis...**`,
                 ephemeral: true
             });
             
-            // Setup channels and categories based on blueprint with error handling
+            // Step 3: Setup channels and categories based on blueprint with error handling
             const channelResult = await channelManager.setupGuildChannels(interaction.guild);
             
             // Create comprehensive results message with error handling
             const resultMessage = [
-                `${isDryRun ? '🧪 **[DRY RUN]** ' : ''}🎉 **n8n Discord Setup ${roleResult.success && channelResult.success ? 'Complete' : 'Completed with Issues'}!**\n`,
+                `${isDryRun ? '🧪 **[DRY RUN]** ' : ''}🎉 **Enhanced Community Setup ${roleResult.success && channelResult.success ? 'Complete' : 'Completed with Issues'}!** 🌟\n`,
+                cleanupResult.deletedCategories.length > 0 ? `🗑️ **Cleanup:** ${isDryRun ? 'Would delete' : 'Deleted'} ${cleanupResult.deletedCategories.length} old categories\n` : '',
                 '**📋 Role Setup:**',
                 `• Total roles in blueprint: ${roleResult.total}`,
                 `• Created: ${roleResult.created.length} new roles`,
@@ -506,9 +521,9 @@ client.on('interactionCreate', async interaction => {
             }
             
             if (allErrors.length === 0) {
-                resultMessage.push(`${isDryRun ? '🧪 **Dry run completed successfully!** No actual changes were made.' : '🎯 **Ready to use!** Check out your new channels and use role assignment commands to manage permissions.'}`);
+                resultMessage.push(`${isDryRun ? '🧪 **Dry run completed successfully!** No actual changes were made.' : '🎯 **Ready for Amazing Community Engagement!** 🚀\n\n🌟 Your server now features:\n• Beautiful emoji-enhanced channels\n• Interactive forum discussions\n• Engaging community categories\n• Professional marketplace structure\n\n💡 Use role assignment commands to manage permissions!'}`);
             } else {
-                resultMessage.push(`${isDryRun ? '🧪 **Dry run completed with simulated issues.**' : '⚠️ **Partially complete.** Some items failed due to permission issues. See above for solutions.'}`);
+                resultMessage.push(`${isDryRun ? '🧪 **Dry run completed with simulated issues.**' : '⚠️ **Setup mostly complete!** Some items failed due to permission issues. See above for solutions.\n\n🎉 Your beautiful channels are ready for community engagement!'}`);
             }
             
             // Split long messages to avoid Discord's character limit
