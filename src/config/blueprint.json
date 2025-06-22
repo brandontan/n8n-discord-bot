@@ -127,17 +127,96 @@
         "channels": [
           {
             "name": "use-case-ideas",
-            "type": "text",
-            "description": "Brainstorm automation ideas or ask for inspiration.",
+            "type": "forum",
+            "description": "💡 Share automation ideas and get inspired! Post your concepts and browse what others are building!",
             "private": false,
-            "rateLimitPerUser": 10
+            "rateLimitPerUser": 10,
+            "forumTags": [
+              {
+                "name": "Beginner",
+                "emoji": "🌱",
+                "moderated": false
+              },
+              {
+                "name": "Intermediate",
+                "emoji": "🔧",
+                "moderated": false
+              },
+              {
+                "name": "Advanced",
+                "emoji": "🚀",
+                "moderated": false
+              },
+              {
+                "name": "Expert/Pro",
+                "emoji": "⭐",
+                "moderated": false
+              },
+              {
+                "name": "E-commerce",
+                "emoji": "🛒",
+                "moderated": false
+              },
+              {
+                "name": "Marketing",
+                "emoji": "📈",
+                "moderated": false
+              },
+              {
+                "name": "Data & Analytics",
+                "emoji": "📊",
+                "moderated": false
+              },
+              {
+                "name": "API Integration",
+                "emoji": "🔗",
+                "moderated": false
+              }
+            ]
           },
           {
             "name": "client-solutions",
-            "type": "text",
-            "description": "Share how automation solved real client problems.",
+            "type": "forum",
+            "description": "🎯 Real-world success stories! Share how automation solved actual client problems and inspire others!",
             "private": false,
-            "rateLimitPerUser": 10
+            "rateLimitPerUser": 10,
+            "forumTags": [
+              {
+                "name": "Beginner",
+                "emoji": "🌱",
+                "moderated": false
+              },
+              {
+                "name": "Intermediate",
+                "emoji": "🔧",
+                "moderated": false
+              },
+              {
+                "name": "Advanced",
+                "emoji": "🚀",
+                "moderated": false
+              },
+              {
+                "name": "Expert/Pro",
+                "emoji": "⭐",
+                "moderated": false
+              },
+              {
+                "name": "Case Study",
+                "emoji": "📝",
+                "moderated": false
+              },
+              {
+                "name": "Before/After",
+                "emoji": "📊",
+                "moderated": false
+              },
+              {
+                "name": "ROI Success",
+                "emoji": "💰",
+                "moderated": false
+              }
+            ]
           },
           {
             "name": "integration-issues",
@@ -161,10 +240,62 @@
         "channels": [
           {
             "name": "workflow-templates",
-            "type": "text",
-            "description": "Post or download reusable JSON templates for workflows.",
+            "type": "forum",
+            "description": "📋 Share and discover amazing workflow templates! Post your masterpieces and find inspiration from the community!",
             "private": false,
-            "rateLimitPerUser": 15
+            "rateLimitPerUser": 15,
+            "forumTags": [
+              {
+                "name": "Beginner",
+                "emoji": "🌱",
+                "moderated": false
+              },
+              {
+                "name": "Intermediate",
+                "emoji": "🔧",
+                "moderated": false
+              },
+              {
+                "name": "Advanced",
+                "emoji": "🚀",
+                "moderated": false
+              },
+              {
+                "name": "Expert/Pro",
+                "emoji": "⭐",
+                "moderated": false
+              },
+              {
+                "name": "E-commerce",
+                "emoji": "🛒",
+                "moderated": false
+              },
+              {
+                "name": "Marketing",
+                "emoji": "📈",
+                "moderated": false
+              },
+              {
+                "name": "CRM",
+                "emoji": "👥",
+                "moderated": false
+              },
+              {
+                "name": "Data Processing",
+                "emoji": "📊",
+                "moderated": false
+              },
+              {
+                "name": "API & Webhooks",
+                "emoji": "🔗",
+                "moderated": false
+              },
+              {
+                "name": "AI & GPT",
+                "emoji": "🤖",
+                "moderated": false
+              }
+            ]
           },
           {
             "name": "plugin-lab",
