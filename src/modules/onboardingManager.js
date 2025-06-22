@@ -556,10 +556,77 @@ class OnboardingManager {
 
         await interaction.reply({ embeds: [embed], ephemeral: true });
 
-        // Send completion messages in public channels
+    // Send completion messages in public channels
         await this.sendCompletionMessages(member, result, config);
 
         console.log(`Onboarding: Interactive flow completed for ${member.user.tag} - Roles: ${result.roles.join(', ')}, Channels: ${result.channels.length}`);
+    }
+
+    // Create welcome interactive message with buttons
+    async createWelcomeInteractiveMessage(guild) {
+        const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
+        
+        const welcomeChannel = guild.channels.cache.find(ch => ch.name === 'start-here');
+        if (!welcomeChannel) return;
+
+        const embed = new EmbedBuilder()
+            .setTitle('🎉 Welcome to the n8n Automation Community!')
+            .setDescription(
+                'Ready to dive into the world of automation? Let\'s get you set up for success!\n\n' +
+                '👆 **Click the buttons below to get started:**'
+            )
+            .setColor(0x7289DA)
+            .addFields(
+                {
+                    name: '🚀 Quick Start',
+                    value: 'New to n8n? Start your onboarding journey and get personalized channel access!',
+                    inline: true
+                },
+                {
+                    name: '👋 Say Hello',
+                    value: 'Jump straight to introductions and meet the community!',
+                    inline: true
+                },
+                {
+                    name: '🎯 Get Role',
+                    value: 'Quickly select your role: Freelancer, Client, or Agency!',
+                    inline: true
+                }
+            )
+            .setFooter({ 
+                text: 'Welcome aboard! We\'re excited to have you here! 🤖✨',
+                iconURL: guild.iconURL()
+            });
+
+        const onboardButton = new ButtonBuilder()
+            .setCustomId('welcome_start_onboarding')
+            .setLabel('🚀 Start Onboarding')
+            .setStyle(ButtonStyle.Primary);
+
+        const introButton = new ButtonBuilder()
+            .setCustomId('welcome_go_intro')
+            .setLabel('👋 Say Hello')
+            .setStyle(ButtonStyle.Secondary);
+
+        const roleButton = new ButtonBuilder()
+            .setCustomId('welcome_quick_role')
+            .setLabel('🎯 Get Role')
+            .setStyle(ButtonStyle.Success);
+
+        const helpButton = new ButtonBuilder()
+            .setCustomId('welcome_get_help')
+            .setLabel('❓ Need Help')
+            .setStyle(ButtonStyle.Secondary);
+
+        const row1 = new ActionRowBuilder().addComponents([onboardButton, introButton]);
+        const row2 = new ActionRowBuilder().addComponents([roleButton, helpButton]);
+
+        await welcomeChannel.send({ 
+            embeds: [embed], 
+            components: [row1, row2]
+        });
+
+        console.log('Welcome interactive message created in #start-here');
     }
 
     // Handle multi-select button toggles

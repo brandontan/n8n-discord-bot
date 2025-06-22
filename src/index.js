@@ -8,7 +8,7 @@ const OnboardingManager = require('./modules/onboardingManager');
 const { assignRoleCommand, removeRoleCommand, listRolesCommand, syncProBuilderCommand } = require('./commands/roleCommands');
 const { listChannelsCommand, channelInfoCommand, syncChannelPermissionsCommand, interviewCommand } = require('./commands/channelCommands');
 const { testSpotlightCommand, spotlightStatusCommand, spotlightConfigCommand, spotlightControlCommand } = require('./commands/spotlightCommands');
-const { manualOnboardingCommand, onboardingStatusCommand, onboardingStatsCommand, reOnboardCommand, testWelcomeCommand, testInteractiveCommand } = require('./commands/onboardingCommands');
+const { manualOnboardingCommand, onboardingStatusCommand, onboardingStatsCommand, reOnboardCommand, testWelcomeCommand, testInteractiveCommand, createWelcomeCommand } = require('./commands/onboardingCommands');
 const fs = require('fs');
 const path = require('path');
 
@@ -70,7 +70,8 @@ client.once('ready', async () => {
                 onboardingStatsCommand.toJSON(),
                 reOnboardCommand.toJSON(),
                 testWelcomeCommand.toJSON(),
-                testInteractiveCommand.toJSON()
+                testInteractiveCommand.toJSON(),
+                createWelcomeCommand.toJSON()
             ];
             
             if (client.guilds.cache.size === 0) {
@@ -174,6 +175,96 @@ client.on('interactionCreate', async interaction => {
             }
             return;
         }
+        
+        // Handle welcome interactive buttons
+        if (customId === 'welcome_start_onboarding') {
+            await onboardingManager.handleStartOnboarding(interaction);
+            return;
+        }
+        
+        if (customId === 'welcome_go_intro') {
+            const introChannel = interaction.guild.channels.cache.find(ch => ch.name === 'introductions');
+            if (introChannel) {
+                await interaction.reply({
+                    content: `🚀 Great choice! Head over to ${introChannel} to introduce yourself to the community!`,
+                    ephemeral: true
+                });
+            } else {
+                await interaction.reply({
+                    content: '🚀 Time to introduce yourself! Look for the introductions channel to share your story!',
+                    ephemeral: true
+                });
+            }
+            return;
+        }
+        
+        if (customId === 'welcome_quick_role') {
+            const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require('discord.js');
+            
+            const selectMenu = new StringSelectMenuBuilder()
+                .setCustomId('quick_role_select')
+                .setPlaceholder('Choose your role...')
+                .addOptions([
+                    new StringSelectMenuOptionBuilder()
+                        .setLabel('🛠️ Freelancer')
+                        .setDescription('I offer automation services')
+                        .setValue('freelancer')
+                        .setEmoji('🛠️'),
+                    new StringSelectMenuOptionBuilder()
+                        .setLabel('📦 Client')
+                        .setDescription('I need automation solutions')
+                        .setValue('client')
+                        .setEmoji('📦'),
+                    new StringSelectMenuOptionBuilder()
+                        .setLabel('🎓 Learning')
+                        .setDescription('I\'m learning automation')
+                        .setValue('learner')
+                        .setEmoji('🎓'),
+                    new StringSelectMenuOptionBuilder()
+                        .setLabel('🏢 Agency')
+                        .setDescription('I run an automation agency')
+                        .setValue('agency')
+                        .setEmoji('🏢')
+                ]);
+
+            const row = new ActionRowBuilder().addComponents(selectMenu);
+
+            await interaction.reply({
+                content: '🎯 **Quick Role Selection**\n\nChoose your role to get instant access to relevant channels!',
+                components: [row],
+                ephemeral: true
+            });
+            return;
+        }
+        
+        if (customId === 'welcome_get_help') {
+            const helpText = [
+                '🚀 **Welcome to the n8n Automation Community!**\n',
+                '📚 **Getting Started:**',
+                '• Complete onboarding for personalized experience',
+                '• Introduce yourself in #introductions',
+                '• Browse channels that match your interests\n',
+                '🔧 **Need Technical Help?**',
+                '• #integration-issues - API and connection problems',
+                '• #advanced-expressions - Complex logic and coding',
+                '• #general-chat - Quick questions and discussions\n',
+                '🎯 **Looking for Work/Talent?**',
+                '• #post-a-job - Clients post projects',
+                '• #available-for-hire - Freelancers showcase skills',
+                '• #project-portfolio - View completed work\n',
+                '🤝 **Community Guidelines:**',
+                '• Be helpful and respectful',
+                '• Share knowledge freely',
+                '• Use appropriate channels for topics',
+                '• Search before posting duplicates'
+            ];
+            
+            await interaction.reply({
+                content: helpText.join('\n'),
+                ephemeral: true
+            });
+            return;
+        }
     }
     
     // Handle select menu interactions
@@ -192,6 +283,43 @@ client.on('interactionCreate', async interaction => {
             } else {
                 await interaction.reply({
                     content: '❌ This onboarding session is not for you.',
+                    ephemeral: true
+                });
+            }
+            return;
+        }
+        
+        // Handle quick role selection
+        if (customId === 'quick_role_select') {
+            const selectedRole = interaction.values[0];
+            const responses = { user_type: selectedRole };
+            
+            await interaction.reply({
+                content: '🔄 Processing your role selection...',
+                ephemeral: true
+            });
+            
+            try {
+                const result = await onboardingManager.completeOnboarding(interaction.member, responses);
+                
+                if (result.success) {
+                    await interaction.followUp({
+                        content: `✅ **Role Assigned Successfully!**\n\n` +
+                                `**Your Role:** ${result.roles.join(', ') || 'Community Member'}\n` +
+                                `**Recommended Channels:** ${result.channels.length} channels\n\n` +
+                                `💡 For a complete personalized experience, try \`/test-interactive\` to answer all onboarding questions!`,
+                        ephemeral: true
+                    });
+                } else {
+                    await interaction.followUp({
+                        content: `❌ **Role Assignment Failed**\n\n${result.error}`,
+                        ephemeral: true
+                    });
+                }
+            } catch (error) {
+                console.error('Error during quick role assignment:', error);
+                await interaction.followUp({
+                    content: '❌ An error occurred during role assignment. Please try again later.',
                     ephemeral: true
                 });
             }
@@ -1383,6 +1511,38 @@ client.on('interactionCreate', async interaction => {
             console.error('Error starting test interactive onboarding:', error);
             await interaction.reply({
                 content: '❌ An error occurred while starting the interactive onboarding test.',
+                ephemeral: true
+            });
+        }
+    }
+    
+    // Handle create-welcome-interactive command
+    if (interaction.commandName === 'create-welcome-interactive') {
+        // Check if user has administrator permission
+        if (!interaction.member.permissions.has('Administrator')) {
+            await interaction.reply({
+                content: '❌ You need Administrator permission to create interactive welcome messages.',
+                ephemeral: true
+            });
+            return;
+        }
+        
+        await interaction.reply({
+            content: '🔄 Creating interactive welcome message in #start-here...',
+            ephemeral: true
+        });
+        
+        try {
+            await onboardingManager.createWelcomeInteractiveMessage(interaction.guild);
+            
+            await interaction.followUp({
+                content: '✅ **Interactive Welcome Message Created!**\n\nCheck the #start-here channel for the new interactive welcome message with buttons!',
+                ephemeral: true
+            });
+        } catch (error) {
+            console.error('Error creating interactive welcome message:', error);
+            await interaction.followUp({
+                content: '❌ An error occurred while creating the interactive welcome message.',
                 ephemeral: true
             });
         }

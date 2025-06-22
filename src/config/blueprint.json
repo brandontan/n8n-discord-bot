@@ -38,21 +38,21 @@
           {
             "name": "start-here",
             "type": "text",
-            "description": "Welcome to the n8n community! Learn how this server works and how to get started.",
+            "description": "🎉 New here? Start your journey! Learn the ropes and discover all the amazing things this community has to offer!",
             "private": false,
             "rateLimitPerUser": 0
           },
           {
             "name": "introductions",
             "type": "text",
-            "description": "Introduce yourself: Are you a Freelancer, Client, or Agency?",
+            "description": "👋 Tell us your story! Share what brings you to automation and let's get to know each other!",
             "private": false,
             "rateLimitPerUser": 10
           },
           {
             "name": "announcements",
             "type": "text",
-            "description": "Official announcements, updates, events and more.",
+            "description": "📢 Stay in the loop! Important updates, exciting news, and community events you won't want to miss!",
             "private": false,
             "rateLimitPerUser": 0,
             "permissionsOverwrite": "read-only"
@@ -60,7 +60,7 @@
           {
             "name": "weekly-spotlight",
             "type": "text",
-            "description": "Automated weekly spotlight posts featuring automation insights, success stories, and community content.",
+            "description": "✨ Weekly dose of inspiration! Amazing automation stories, clever solutions, and community wins to spark your creativity!",
             "private": false,
             "rateLimitPerUser": 0,
             "permissionsOverwrite": "read-only"
@@ -74,21 +74,21 @@
           {
             "name": "post-a-job",
             "type": "text",
-            "description": "Post your automation jobs here. Include budget, scope, timeline.",
+            "description": "💼 Got a project? Share the details! Tell us about your budget, timeline, and what awesome automation you need built!",
             "private": false,
             "rateLimitPerUser": 15
           },
           {
             "name": "project-invite-only",
             "type": "text",
-            "description": "Post private project listings with @mentions.",
+            "description": "🎯 Looking for specific talent? Post targeted opportunities and mention the experts you want to work with!",
             "private": false,
             "rateLimitPerUser": 10
           },
           {
             "name": "job-board",
             "type": "text",
-            "description": "Curated client-approved projects. Read-only channel.",
+            "description": "🏆 Quality opportunities await! Browse carefully curated projects from verified clients!",
             "private": false,
             "permissionsOverwrite": "read-only"
           }
