@@ -174,13 +174,26 @@ class ChannelManager {
             
             // Check if guild supports forum channels (community feature)
             const guildFeatures = guild.features || [];
-            console.log(`🏢 Guild features: ${guildFeatures.join(', ')}`);
+            console.log(`🏢 Guild features: ${guildFeatures.join(', ') || 'None detected'}`);
+            console.log(`🔍 Full guild feature array:`, guildFeatures);
+            console.log(`🔍 Looking for COMMUNITY feature...`);
             
             // Forum channels require COMMUNITY feature
-            if (!guildFeatures.includes('COMMUNITY')) {
-                console.warn(`⚠️ Guild ${guild.name} does not have COMMUNITY feature enabled, falling back to text channel`);
+            const hasCommunity = guildFeatures.includes('COMMUNITY');
+            console.log(`🏢 COMMUNITY feature detected: ${hasCommunity ? '✅ YES' : '❌ NO'}`);
+            
+            if (!hasCommunity) {
+                console.warn(`⚠️ Guild ${guild.name} does not have COMMUNITY feature enabled`);
+                console.warn(`⚠️ To enable forum channels:`);
+                console.warn(`⚠️ 1. Go to Discord Server Settings`);
+                console.warn(`⚠️ 2. Click 'Enable Community'`);
+                console.warn(`⚠️ 3. Complete the setup wizard`);
+                console.warn(`⚠️ 4. Then run /setup again`);
+                console.warn(`⚠️ Falling back to text channel for now...`);
                 throw new Error('Guild does not support forum channels - COMMUNITY feature required');
             }
+            
+            console.log(`✅ Community feature confirmed! Proceeding with forum creation...`);
             
             // Validate channel name for Discord API
             const validChannelName = channelConfig.name

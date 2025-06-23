@@ -1,0 +1,237 @@
+{
+  "guilds": {
+    "1386230412983931001": {
+      "guildName": "n8n Professional Network",
+      "setupStatus": "completed",
+      "roles": {
+        "🛠️ Freelancer": {
+          "id": "1386235380382306325",
+          "status": "existing",
+          "timestamp": "2025-06-23T00:55:31.709Z"
+        },
+        "📦 Client": {
+          "id": "1386235384433737728",
+          "status": "existing",
+          "timestamp": "2025-06-23T00:55:31.712Z"
+        },
+        "🚀 Verified Pro": {
+          "id": "1386235387403440229",
+          "status": "existing",
+          "timestamp": "2025-06-23T00:55:31.714Z"
+        },
+        "👑 Admin": {
+          "id": "1386235391446880277",
+          "status": "existing",
+          "timestamp": "2025-06-23T00:55:31.716Z"
+        }
+      },
+      "channels": {
+        "🚀┃start-here": {
+          "id": "1386509953065287901",
+          "categoryId": "1386509951123591211",
+          "status": "created",
+          "timestamp": "2025-06-23T00:55:33.055Z"
+        },
+        "👋┃introductions": {
+          "id": "1386509959122128947",
+          "categoryId": "1386509951123591211",
+          "status": "created",
+          "timestamp": "2025-06-23T00:55:34.455Z"
+        },
+        "📢┃announcements": {
+          "id": "1386509964805406772",
+          "categoryId": "1386509951123591211",
+          "status": "created",
+          "timestamp": "2025-06-23T00:55:35.899Z"
+        },
+        "✨┃weekly-spotlight": {
+          "id": "1386509972199964773",
+          "categoryId": "1386509951123591211",
+          "status": "created",
+          "timestamp": "2025-06-23T00:55:37.614Z"
+        },
+        "💼┃post-a-job": {
+          "id": "1386509984149405757",
+          "categoryId": "1386509982408900618",
+          "status": "created",
+          "timestamp": "2025-06-23T00:55:40.432Z"
+        },
+        "🏆┃job-board": {
+          "id": "1386509990268768266",
+          "categoryId": "1386509982408900618",
+          "status": "created",
+          "timestamp": "2025-06-23T00:55:41.939Z"
+        },
+        "🙋‍♂️┃available-for-hire": {
+          "id": "1386510008912445661",
+          "categoryId": "1386510000695808151",
+          "status": "created",
+          "timestamp": "2025-06-23T00:55:46.398Z"
+        },
+        "🎨┃project-portfolio": {
+          "id": "1386510015371939910",
+          "categoryId": "1386510000695808151",
+          "status": "created",
+          "timestamp": "2025-06-23T00:55:47.908Z"
+        },
+        "💰┃pricing-packages": {
+          "id": "1386510021491429386",
+          "categoryId": "1386510000695808151",
+          "status": "created",
+          "timestamp": "2025-06-23T00:55:49.365Z"
+        },
+        "💡┃use-case-ideas": {
+          "id": "1386510033747181689",
+          "categoryId": "1386510031377141822",
+          "status": "created",
+          "timestamp": "2025-06-23T00:55:52.254Z"
+        },
+        "🎯┃client-solutions": {
+          "id": "1386510040042835978",
+          "categoryId": "1386510031377141822",
+          "status": "created",
+          "timestamp": "2025-06-23T00:55:53.898Z"
+        },
+        "🔧┃integration-issues": {
+          "id": "1386510046980079710",
+          "categoryId": "1386510031377141822",
+          "status": "created",
+          "timestamp": "2025-06-23T00:55:55.503Z"
+        },
+        "🧠┃advanced-expressions": {
+          "id": "1386510053544296538",
+          "categoryId": "1386510031377141822",
+          "status": "created",
+          "timestamp": "2025-06-23T00:55:58.166Z"
+        },
+        "🔒┃security-compliance": {
+          "id": "1386510064872980701",
+          "categoryId": "1386510031377141822",
+          "status": "created",
+          "timestamp": "2025-06-23T00:55:59.828Z"
+        },
+        "📋┃workflow-templates": {
+          "id": "1386510077975859324",
+          "categoryId": "1386510075538964672",
+          "status": "created",
+          "timestamp": "2025-06-23T00:56:02.944Z"
+        },
+        "🧪┃plugin-lab": {
+          "id": "1386510085009965228",
+          "categoryId": "1386510075538964672",
+          "status": "created",
+          "timestamp": "2025-06-23T00:56:04.530Z"
+        },
+        "🐳┃self-hosting-devops": {
+          "id": "1386510091490037780",
+          "categoryId": "1386510075538964672",
+          "status": "created",
+          "timestamp": "2025-06-23T00:56:06.178Z"
+        },
+        "💡┃share-your-tips": {
+          "id": "1386510098465034382",
+          "categoryId": "1386510075538964672",
+          "status": "created",
+          "timestamp": "2025-06-23T00:56:07.687Z"
+        },
+        "🤝┃co-build-requests": {
+          "id": "1386510111660314719",
+          "categoryId": "1386510109256978562",
+          "status": "created",
+          "timestamp": "2025-06-23T00:56:10.965Z"
+        },
+        "👥┃team-up": {
+          "id": "1386510118190973083",
+          "categoryId": "1386510109256978562",
+          "status": "created",
+          "timestamp": "2025-06-23T00:56:12.461Z"
+        },
+        "💎┃elite-listings": {
+          "id": "1386510137468125246",
+          "categoryId": "1386510128605298788",
+          "status": "created",
+          "timestamp": "2025-06-23T00:56:17.228Z"
+        },
+        "⭐┃client-reviews": {
+          "id": "1386510144724271104",
+          "categoryId": "1386510128605298788",
+          "status": "created",
+          "timestamp": "2025-06-23T00:56:18.731Z"
+        },
+        "💬┃general-chat": {
+          "id": "1386510157067976876",
+          "categoryId": "1386510154542878741",
+          "status": "created",
+          "timestamp": "2025-06-23T00:56:21.695Z"
+        },
+        "🛠️┃tools-chat": {
+          "id": "1386510163153784865",
+          "categoryId": "1386510154542878741",
+          "status": "created",
+          "timestamp": "2025-06-23T00:56:23.252Z"
+        },
+        "🎮┃off-topic": {
+          "id": "1386510170300879028",
+          "categoryId": "1386510154542878741",
+          "status": "created",
+          "timestamp": "2025-06-23T00:56:24.927Z"
+        },
+        "🤝┃private-matching": {
+          "id": "1386510182930059377",
+          "categoryId": "1386510180895817759",
+          "status": "created",
+          "timestamp": "2025-06-23T00:56:27.909Z"
+        }
+      },
+      "categories": {
+        "👋 Welcome": {
+          "id": "1386509951123591211",
+          "status": "created",
+          "timestamp": "2025-06-23T00:55:32.606Z"
+        },
+        "🎯 Find Experts": {
+          "id": "1386509982408900618",
+          "status": "created",
+          "timestamp": "2025-06-23T00:55:40.021Z"
+        },
+        "🚀 Hire Me Zone": {
+          "id": "1386510000695808151",
+          "status": "created",
+          "timestamp": "2025-06-23T00:55:44.409Z"
+        },
+        "💬 Automation Chat": {
+          "id": "1386510031377141822",
+          "status": "created",
+          "timestamp": "2025-06-23T00:55:51.841Z"
+        },
+        "⚒️ Build & Learn": {
+          "id": "1386510075538964672",
+          "status": "created",
+          "timestamp": "2025-06-23T00:56:02.326Z"
+        },
+        "🤝 Collab Lounge": {
+          "id": "1386510109256978562",
+          "status": "created",
+          "timestamp": "2025-06-23T00:56:10.454Z"
+        },
+        "🏆 Verified Talent": {
+          "id": "1386510128605298788",
+          "status": "created",
+          "timestamp": "2025-06-23T00:56:14.883Z"
+        },
+        "☕ Lounge": {
+          "id": "1386510154542878741",
+          "status": "created",
+          "timestamp": "2025-06-23T00:56:21.149Z"
+        },
+        "🔒 Client ↔ Talent": {
+          "id": "1386510180895817759",
+          "status": "created",
+          "timestamp": "2025-06-23T00:56:27.419Z"
+        }
+      },
+      "lastUpdate": "2025-06-23T00:56:29.918Z",
+      "errors": []
+    }
+  }
+}

@@ -13,6 +13,36 @@
           "id": "pro-builder-role-id"
         }
       }
+    },
+    "1386230412983931001": {
+      "name": "n8n Professional Network",
+      "roles": {
+        "🛠️ Freelancer": {
+          "id": "1386235380382306325",
+          "position": 4,
+          "color": "#1abc9c",
+          "createdAt": "2025-06-23T00:55:31.709Z"
+        },
+        "📦 Client": {
+          "id": "1386235384433737728",
+          "position": 3,
+          "color": "#e67e22",
+          "createdAt": "2025-06-23T00:55:31.712Z"
+        },
+        "🚀 Verified Pro": {
+          "id": "1386235387403440229",
+          "position": 2,
+          "color": "#9b59b6",
+          "createdAt": "2025-06-23T00:55:31.713Z"
+        },
+        "👑 Admin": {
+          "id": "1386235391446880277",
+          "position": 1,
+          "color": "#e74c3c",
+          "createdAt": "2025-06-23T00:55:31.715Z"
+        }
+      },
+      "setupDate": "2025-06-23T00:55:31.705Z"
     }
   }
 }

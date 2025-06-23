@@ -482,9 +482,34 @@ client.on('interactionCreate', async interaction => {
             const isDryRun = stateManager.isDryRun();
             console.log(`${isDryRun ? '[DRY RUN] ' : ''}Setup processing for guild: ${interaction.guild.name}`);
             
+            // Check Community feature status first
+            const guild = interaction.guild;
+            const guildFeatures = guild.features || [];
+            const hasCommunity = guildFeatures.includes('COMMUNITY');
+            
+            console.log(`[SETUP] Guild features: ${guildFeatures.join(', ') || 'None'}`);
+            console.log(`[SETUP] Community feature enabled: ${hasCommunity ? 'YES' : 'NO'}`);
+            
+            if (!hasCommunity) {
+                await interaction.editReply({
+                    content: '⚠️ **Community Feature Required** ⚠️\n\n' +
+                            '🚨 Your Discord server needs **Community features** enabled to create forum channels!\n\n' +
+                            '**How to fix:**\n' +
+                            '1. Go to **Server Settings**\n' +
+                            '2. Click **"Enable Community"**\n' +
+                            '3. Complete the setup wizard\n' +
+                            '4. Run `/setup` again\n\n' +
+                            '⏱️ This will enable forum channels, better organization, and community features!\n\n' +
+                            '🔄 **Proceeding with text channels for now...**'
+                });
+                // Continue setup but with warning
+            }
+            
             // Update with progress
             await interaction.editReply({
-                content: '🎨 **Setup Started!** 🚀\n\n🗑️ **Step 1:** Cleaning up old structure...'
+                content: `🎨 **Setup Started!** 🚀\n\n` +
+                        `${hasCommunity ? '✅ Community features detected!' : '⚠️ Community features missing (forum channels will be text channels)'} \n\n` +
+                        `🗑️ **Step 1:** Cleaning up old structure...`
             });
             // Step 1: Clean up existing bot-created categories for fresh rebuild
             await interaction.editReply({
