@@ -369,11 +369,26 @@ class CommunityManager {
             const welcomeScreenOptions = {
                 enabled: true,
                 description: "Join n8n's Discord for collaborative learning, expert insights, and innovative solutions in automation and integration",
-                welcomeChannels: welcomeChannels.slice(0, 5) // Discord limit is 5 channels
+                welcome_channels: welcomeChannels.slice(0, 5).map(ch => ({
+                    channel_id: ch.channel.id,
+                    description: ch.description,
+                    emoji_name: ch.emoji
+                })) // Discord limit is 5 channels
             };
 
-            await guild.setWelcomeScreen(welcomeScreenOptions);
-            console.log('📋 Welcome Screen configured via Discord API');
+            try {
+                // Use REST API for welcome screen
+                const { REST, Routes } = require('discord.js');
+                const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+                
+                await rest.patch(Routes.guildWelcomeScreen(guild.id), {
+                    body: welcomeScreenOptions
+                });
+                console.log('📋 Welcome Screen configured via Discord REST API');
+            } catch (restError) {
+                console.error('Discord REST API Welcome Screen failed:', restError.message);
+                console.log('📋 Welcome Screen data prepared (requires manual Discord setup)');
+            }
             
         } catch (error) {
             console.error('Error setting up welcome screen:', error);
@@ -438,13 +453,28 @@ class CommunityManager {
                 });
             }
 
-            // Try to set the server guide via Discord API
+            // Try to set the server guide via Discord REST API
             try {
-                // Note: This requires the guild to have COMMUNITY feature enabled
-                await guild.setServerGuide(serverGuideOptions);
-                console.log('📖 Server Guide configured via Discord API');
+                const { REST, Routes } = require('discord.js');
+                const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+                
+                // Note: Server Guide API is limited and may not support all features
+                const guideData = {
+                    welcome_message: serverGuideOptions.welcomeMessage,
+                    new_member_actions: serverGuideOptions.newMemberActions.map(action => ({
+                        channel_id: action.channelId,
+                        title: action.title,
+                        description: action.description,
+                        emoji: action.emoji
+                    }))
+                };
+                
+                await rest.patch(Routes.guildOnboarding(guild.id), {
+                    body: guideData
+                });
+                console.log('📖 Server Guide configured via Discord REST API');
             } catch (apiError) {
-                console.error('Discord API Server Guide setup failed:', apiError.message);
+                console.error('Discord REST API Server Guide setup failed:', apiError.message);
                 console.log('📖 Server Guide data prepared (requires manual Discord setup)');
                 
                 // Save the configuration for manual setup
@@ -492,15 +522,33 @@ class CommunityManager {
             ];
 
             try {
-                // Set onboarding configuration via Discord API
-                await guild.setOnboarding({
-                    prompts: onboardingQuestions,
+                // Set onboarding configuration via Discord REST API
+                const { REST, Routes } = require('discord.js');
+                const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+                
+                const onboardingData = {
+                    prompts: onboardingQuestions.map(q => ({
+                        type: q.type,
+                        options: q.choices.map(choice => ({
+                            label: choice.label,
+                            emoji: choice.emoji,
+                            description: choice.description
+                        })),
+                        title: q.label,
+                        single_select: q.type === 1,
+                        required: q.required,
+                        in_onboarding: true
+                    })),
                     enabled: true,
                     mode: 1 // ADVANCED mode for custom questions
+                };
+                
+                await rest.put(Routes.guildOnboarding(guild.id), {
+                    body: onboardingData
                 });
-                console.log('🎯 Onboarding questions configured via Discord API');
+                console.log('🎯 Onboarding questions configured via Discord REST API');
             } catch (apiError) {
-                console.error('Discord API Onboarding setup failed:', apiError.message);
+                console.error('Discord REST API Onboarding setup failed:', apiError.message);
                 console.log('🎯 Onboarding system ready (integrated with existing system)');
                 
                 // Save configuration for manual setup
