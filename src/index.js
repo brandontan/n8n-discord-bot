@@ -14,6 +14,7 @@ const SpotlightManager = require('./modules/spotlightManager');
 const GuildStateManager = require('./modules/guildStateManager');
 const OnboardingManager = require('./modules/onboardingManager');
 const GamificationManager = require('./modules/gamificationManager');
+const CommunityManager = require('./modules/communityManager');
 const { assignRoleCommand, removeRoleCommand, listRolesCommand, syncProBuilderCommand } = require('./commands/roleCommands');
 const { listChannelsCommand, channelInfoCommand, syncChannelPermissionsCommand, interviewCommand } = require('./commands/channelCommands');
 const { testSpotlightCommand, spotlightStatusCommand, spotlightConfigCommand, spotlightControlCommand } = require('./commands/spotlightCommands');
@@ -41,6 +42,7 @@ const spotlightManager = new SpotlightManager();
 const stateManager = new GuildStateManager();
 const onboardingManager = new OnboardingManager();
 const gamificationManager = new GamificationManager();
+const communityManager = new CommunityManager();
 const interactiveHandler = new InteractiveHandler();
 const vegasHandler = new VegasHandler();
 
@@ -70,6 +72,7 @@ client.once('ready', async () => {
             
             const commands = [
                 setupCommand.toJSON(),
+                communityManager.getSetupCommunityCommand().toJSON(),
                 assignRoleCommand.toJSON(),
                 removeRoleCommand.toJSON(),
                 listRolesCommand.toJSON(),
@@ -697,6 +700,12 @@ client.on('interactionCreate', async interaction => {
                 ephemeral: true
             });
         }
+    }
+    
+    // Handle setup-community command
+    if (interaction.commandName === 'setup-community') {
+        await communityManager.handleSetupCommunityCommand(interaction);
+        return;
     }
     
     // Handle assign-role command
