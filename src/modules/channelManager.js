@@ -550,23 +550,27 @@ class ChannelManager {
                 results.totalChannels = blueprint.channels.categories.reduce((sum, cat) => sum + (cat.channels?.length || 0), 0);
             }
 
-            // Get missing categories and channels that need to be created/fixed
-            const missingCategories = await this.stateManager.getMissingCategories(guild.id, blueprint.channels?.categories || []);
-            const missingChannels = await this.stateManager.getMissingChannels(guild.id, blueprint.channels?.categories || []);
+            // FORCE CREATION - bypassing broken detection logic
+            console.log('[SETUP] FORCING channel creation - bypassing detection logic');
             
-            if (missingCategories.length === 0 && missingChannels.length === 0) {
-                console.log('All categories and channels already exist and are properly configured.');
-                // Still update skipped counts
-                if (blueprint.channels?.categories) {
-                    for (const categoryConfig of blueprint.channels.categories) {
-                        results.skippedCategories.push(categoryConfig.name);
-                        if (categoryConfig.channels) {
-                            for (const channelConfig of categoryConfig.channels) {
-                                results.skippedChannels.push(channelConfig.name);
-                            }
+            // Always create all channels from blueprint
+            const missingCategories = blueprint.channels?.categories || [];
+            const missingChannels = [];
+            
+            if (blueprint.channels?.categories) {
+                for (const category of blueprint.channels.categories) {
+                    if (category.channels) {
+                        for (const channel of category.channels) {
+                            missingChannels.push({ ...channel, categoryName: category.name });
                         }
                     }
                 }
+            }
+            
+            console.log(`[SETUP] Will create ${missingCategories.length} categories and ${missingChannels.length} channels`);
+            
+            if (missingCategories.length === 0 && missingChannels.length === 0) {
+                console.log('[SETUP] ERROR: No categories or channels found in blueprint!');
                 return results;
             }
 
