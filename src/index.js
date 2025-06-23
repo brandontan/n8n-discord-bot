@@ -72,6 +72,7 @@ client.once('ready', async () => {
             
             const commands = [
                 setupCommand.toJSON(),
+                communityManager.getSetupCommunityCommand().toJSON(),
                 assignRoleCommand.toJSON(),
                 removeRoleCommand.toJSON(),
                 listRolesCommand.toJSON(),
@@ -726,6 +727,11 @@ client.on('interactionCreate', async interaction => {
         }
     }
     
+    // Handle setup-community command
+    if (interaction.commandName === 'setup-community') {
+        await communityManager.handleSetupCommunityCommand(interaction);
+        return;
+    }
     
     // Handle assign-role command
     if (interaction.commandName === 'assign-role') {
