@@ -72,7 +72,6 @@ client.once('ready', async () => {
             
             const commands = [
                 setupCommand.toJSON(),
-                communityManager.getSetupCommunityCommand().toJSON(),
                 assignRoleCommand.toJSON(),
                 removeRoleCommand.toJSON(),
                 listRolesCommand.toJSON(),
@@ -521,7 +520,13 @@ client.on('interactionCreate', async interaction => {
                         `⏱️ This may take a moment...`
             });
             
+            console.log('[SETUP] Starting cleanup phase...');
             const cleanupResult = await channelManager.deleteExistingBotCategories(interaction.guild);
+            console.log(`[SETUP] Cleanup complete: ${cleanupResult.deletedCategories.length} categories, ${cleanupResult.deletedChannelsCount} channels removed`);
+            
+            if (cleanupResult.deletedCategories.length > 0) {
+                console.log(`[SETUP] Deleted categories: ${cleanupResult.deletedCategories.join(', ')}`);
+            }
             
             // Step 2: Setup roles based on blueprint with error handling
             await interaction.editReply({
@@ -531,7 +536,9 @@ client.on('interactionCreate', async interaction => {
                         `⏱️ Almost there...`
             });
             
+            console.log('[SETUP] Starting role setup phase...');
             const roleResult = await roleManager.setupGuildRoles(interaction.guild);
+            console.log(`[SETUP] Role setup complete: ${roleResult.created.length} created, ${roleResult.failed.length} failed, ${roleResult.skipped.length} skipped`);
             
             // Step 3: Setup channels and categories based on blueprint with error handling
             await interaction.editReply({
@@ -542,7 +549,24 @@ client.on('interactionCreate', async interaction => {
                         `⏱️ Building your amazing community!`
             });
             
+            console.log('[SETUP] Starting channel creation phase...');
             const channelResult = await channelManager.setupGuildChannels(interaction.guild);
+            console.log(`[SETUP] Channel creation complete:`);
+            console.log(`  - Categories: ${channelResult.createdCategories.length} created, ${channelResult.failedCategories.length} failed`);
+            console.log(`  - Channels: ${channelResult.createdChannels.length} created, ${channelResult.failedChannels.length} failed`);
+            
+            if (channelResult.createdCategories.length > 0) {
+                console.log(`[SETUP] Created categories: ${channelResult.createdCategories.join(', ')}`);
+            }
+            if (channelResult.createdChannels.length > 0) {
+                console.log(`[SETUP] Created channels: ${channelResult.createdChannels.slice(0, 10).join(', ')}${channelResult.createdChannels.length > 10 ? '...' : ''}`);
+            }
+            if (channelResult.errors && channelResult.errors.length > 0) {
+                console.log(`[SETUP] Channel creation errors:`);
+                channelResult.errors.forEach(error => {
+                    console.log(`  - ${error.code}: ${error.hint.title} - ${error.channel || error.category || 'Unknown'}`);
+                });
+            }
             
             // Create comprehensive results message with error handling
             const resultMessage = [
@@ -702,11 +726,6 @@ client.on('interactionCreate', async interaction => {
         }
     }
     
-    // Handle setup-community command
-    if (interaction.commandName === 'setup-community') {
-        await communityManager.handleSetupCommunityCommand(interaction);
-        return;
-    }
     
     // Handle assign-role command
     if (interaction.commandName === 'assign-role') {
