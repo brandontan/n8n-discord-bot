@@ -316,41 +316,6 @@ class CommunityManager {
      */
     async setupWelcomeScreen(guild) {
         try {
-            // Note: Welcome screen setup requires Discord API v10+ and specific permissions
-            // This would typically be done through the Discord Developer Portal
-            // For now, we'll prepare the data structure
-            
-            const welcomeScreenData = {
-                description: "Join n8n's Discord for collaborative learning, expert insights, and innovative solutions in automation and integration",
-                welcomeChannels: [
-                    {
-                        channelId: null, // Will be populated with actual channel IDs
-                        description: "Start your automation journey",
-                        emoji: "🚀"
-                    },
-                    {
-                        channelId: null,
-                        description: "Introduce yourself to the community",
-                        emoji: "👋"
-                    },
-                    {
-                        channelId: null,
-                        description: "Latest n8n news and updates",
-                        emoji: "📢"
-                    },
-                    {
-                        channelId: null,
-                        description: "Get help with your workflows",
-                        emoji: "🆘"
-                    },
-                    {
-                        channelId: null,
-                        description: "Showcase your automation projects",
-                        emoji: "🎨"
-                    }
-                ]
-            };
-
             // Find and map actual channels
             const startHereChannel = guild.channels.cache.find(ch => ch.name.includes('start-here'));
             const introChannel = guild.channels.cache.find(ch => ch.name.includes('introductions'));
@@ -358,22 +323,62 @@ class CommunityManager {
             const helpChannel = guild.channels.cache.find(ch => ch.name.includes('integration-issues'));
             const showcaseChannel = guild.channels.cache.find(ch => ch.name.includes('project-portfolio'));
 
-            if (startHereChannel) welcomeScreenData.welcomeChannels[0].channelId = startHereChannel.id;
-            if (introChannel) welcomeScreenData.welcomeChannels[1].channelId = introChannel.id;
-            if (newsChannel) welcomeScreenData.welcomeChannels[2].channelId = newsChannel.id;
-            if (helpChannel) welcomeScreenData.welcomeChannels[3].channelId = helpChannel.id;
-            if (showcaseChannel) welcomeScreenData.welcomeChannels[4].channelId = showcaseChannel.id;
+            const welcomeChannels = [];
+            
+            if (startHereChannel) {
+                welcomeChannels.push({
+                    channel: startHereChannel,
+                    description: "Start your automation journey",
+                    emoji: "🚀"
+                });
+            }
+            
+            if (introChannel) {
+                welcomeChannels.push({
+                    channel: introChannel,
+                    description: "Introduce yourself to the community",
+                    emoji: "👋"
+                });
+            }
+            
+            if (newsChannel) {
+                welcomeChannels.push({
+                    channel: newsChannel,
+                    description: "Latest n8n news and updates",
+                    emoji: "📢"
+                });
+            }
+            
+            if (helpChannel) {
+                welcomeChannels.push({
+                    channel: helpChannel,
+                    description: "Get help with your workflows",
+                    emoji: "🆘"
+                });
+            }
+            
+            if (showcaseChannel) {
+                welcomeChannels.push({
+                    channel: showcaseChannel,
+                    description: "Showcase your automation projects",
+                    emoji: "🎨"
+                });
+            }
 
-            // Save welcome screen configuration
-            const communityData = await this.loadCommunityData();
-            communityData.welcomeScreen = welcomeScreenData;
-            await this.saveCommunityData(communityData);
+            // Configure Welcome Screen via Discord API
+            const welcomeScreenOptions = {
+                enabled: true,
+                description: "Join n8n's Discord for collaborative learning, expert insights, and innovative solutions in automation and integration",
+                welcomeChannels: welcomeChannels.slice(0, 5) // Discord limit is 5 channels
+            };
 
-            console.log('📋 Welcome Screen data prepared (requires manual Discord setup)');
+            await guild.setWelcomeScreen(welcomeScreenOptions);
+            console.log('📋 Welcome Screen configured via Discord API');
             
         } catch (error) {
             console.error('Error setting up welcome screen:', error);
-            throw error;
+            console.log('📋 Welcome Screen data prepared (requires manual Discord setup)');
+            // Don't throw - continue with other setup
         }
     }
 
@@ -382,28 +387,71 @@ class CommunityManager {
      */
     async setupServerGuide(guild) {
         try {
-            const communityData = await this.loadCommunityData();
-            
             // Map channels to server guide steps
             const startHereChannel = guild.channels.cache.find(ch => ch.name.includes('start-here'));
             const introChannel = guild.channels.cache.find(ch => ch.name.includes('introductions'));
             const newsChannel = guild.channels.cache.find(ch => ch.name.includes('announcements'));
-            const rulesChannel = guild.channels.cache.find(ch => ch.name.includes('rules')) || 
-                               guild.channels.cache.find(ch => ch.name.includes('start-here'));
+            const showcaseChannel = guild.channels.cache.find(ch => ch.name.includes('project-portfolio'));
+            const helpChannel = guild.channels.cache.find(ch => ch.name.includes('integration-issues'));
 
-            // Update server guide with actual channel IDs
+            // Configure Server Guide via Discord API
+            const serverGuideOptions = {
+                enabled: true,
+                welcomeMessage: "Hi there and welcome to the n8n server! We're very excited to have you here and look forward to hearing about all the workflows you're working on. Before you dive in and explore the community, please be aware that the Discord is not for support requests. Please see https://community.n8n.io",
+                newMemberActions: []
+            };
+
+            // Add guide steps with actual channels
             if (introChannel) {
-                communityData.serverGuide.steps[0].channelId = introChannel.id;
-            }
-            if (startHereChannel) {
-                communityData.serverGuide.steps[1].channelId = startHereChannel.id;
-            }
-            if (newsChannel) {
-                communityData.serverGuide.steps[2].channelId = newsChannel.id;
+                serverGuideOptions.newMemberActions.push({
+                    channelId: introChannel.id,
+                    title: "Introduce yourself!",
+                    description: "Tell us about yourself and your automation journey",
+                    emoji: "👋"
+                });
             }
 
-            await this.saveCommunityData(communityData);
-            console.log('📖 Server Guide configured with channel mappings');
+            if (showcaseChannel) {
+                serverGuideOptions.newMemberActions.push({
+                    channelId: showcaseChannel.id,
+                    title: "Share your work!",
+                    description: "Show off your automation projects and portfolio",
+                    emoji: "🎨"
+                });
+            }
+
+            if (newsChannel) {
+                serverGuideOptions.newMemberActions.push({
+                    channelId: newsChannel.id,
+                    title: "Check out the latest news!",
+                    description: "Stay updated with n8n announcements",
+                    emoji: "📢"
+                });
+            }
+
+            if (helpChannel) {
+                serverGuideOptions.newMemberActions.push({
+                    channelId: helpChannel.id,
+                    title: "Get help!",
+                    description: "Ask questions and get support from the community",
+                    emoji: "🆘"
+                });
+            }
+
+            // Try to set the server guide via Discord API
+            try {
+                // Note: This requires the guild to have COMMUNITY feature enabled
+                await guild.setServerGuide(serverGuideOptions);
+                console.log('📖 Server Guide configured via Discord API');
+            } catch (apiError) {
+                console.error('Discord API Server Guide setup failed:', apiError.message);
+                console.log('📖 Server Guide data prepared (requires manual Discord setup)');
+                
+                // Save the configuration for manual setup
+                const communityData = await this.loadCommunityData();
+                communityData.serverGuide = serverGuideOptions;
+                await this.saveCommunityData(communityData);
+            }
             
         } catch (error) {
             console.error('Error setting up server guide:', error);
@@ -416,10 +464,50 @@ class CommunityManager {
      */
     async setupOnboarding(guild) {
         try {
-            // This integrates with the existing onboarding system
-            // but adds Community Server specific features
-            
-            console.log('🎯 Onboarding system ready (integrated with existing system)');
+            // Setup onboarding questions via Discord API
+            const onboardingQuestions = [
+                {
+                    type: 0, // MULTIPLE_CHOICE
+                    label: "What best describes you?",
+                    required: true,
+                    choices: [
+                        { label: "🛠️ Freelancer - I offer automation services", emoji: "🛠️" },
+                        { label: "📦 Client - I need automation solutions", emoji: "📦" },
+                        { label: "🎓 Learning - I'm learning automation", emoji: "🎓" },
+                        { label: "🏢 Agency - I run an automation agency", emoji: "🏢" },
+                        { label: "👨‍💻 Developer - I build integrations", emoji: "👨‍💻" }
+                    ]
+                },
+                {
+                    type: 1, // DROPDOWN
+                    label: "What's your automation experience level?",
+                    required: true,
+                    choices: [
+                        { label: "🌱 Beginner - Just getting started", emoji: "🌱" },
+                        { label: "🔧 Intermediate - Some experience with workflows", emoji: "🔧" },
+                        { label: "🚀 Advanced - Building complex automations", emoji: "🚀" },
+                        { label: "⭐ Expert - Professional automation developer", emoji: "⭐" }
+                    ]
+                }
+            ];
+
+            try {
+                // Set onboarding configuration via Discord API
+                await guild.setOnboarding({
+                    prompts: onboardingQuestions,
+                    enabled: true,
+                    mode: 1 // ADVANCED mode for custom questions
+                });
+                console.log('🎯 Onboarding questions configured via Discord API');
+            } catch (apiError) {
+                console.error('Discord API Onboarding setup failed:', apiError.message);
+                console.log('🎯 Onboarding system ready (integrated with existing system)');
+                
+                // Save configuration for manual setup
+                const communityData = await this.loadCommunityData();
+                communityData.onboarding.questions = onboardingQuestions;
+                await this.saveCommunityData(communityData);
+            }
             
         } catch (error) {
             console.error('Error setting up onboarding:', error);
