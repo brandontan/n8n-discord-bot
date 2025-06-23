@@ -519,6 +519,17 @@ class ChannelManager {
             
             await this.initializeDataStorage();
             const blueprint = await this.loadBlueprint();
+            console.log(`[SETUP] Blueprint loaded successfully`);
+            console.log(`[SETUP] Blueprint has ${blueprint.channels?.categories?.length || 0} categories defined`);
+            
+            if (blueprint.channels?.categories) {
+                blueprint.channels.categories.forEach((cat, idx) => {
+                    console.log(`[SETUP] Category ${idx + 1}: ${cat.name} (${cat.channels?.length || 0} channels, private: ${cat.private})`);
+                });
+            } else {
+                console.log('[SETUP] ERROR: No categories found in blueprint!');
+            }
+            
             const channelData = await this.loadChannelData();
             
             // Initialize guild data if not exists
