@@ -1,4 +1,12 @@
 require('dotenv').config();
+
+// Environment validation
+if (!process.env.DISCORD_TOKEN) {
+    console.error('❌ DISCORD_TOKEN environment variable is required');
+    console.error('Please set your Discord bot token in the environment variables.');
+    process.exit(1);
+}
+
 const { Client, GatewayIntentBits, SlashCommandBuilder, REST, Routes } = require('discord.js');
 const RoleManager = require('./modules/roleManager');
 const ChannelManager = require('./modules/channelManager');
@@ -10,7 +18,7 @@ const { assignRoleCommand, removeRoleCommand, listRolesCommand, syncProBuilderCo
 const { listChannelsCommand, channelInfoCommand, syncChannelPermissionsCommand, interviewCommand } = require('./commands/channelCommands');
 const { testSpotlightCommand, spotlightStatusCommand, spotlightConfigCommand, spotlightControlCommand } = require('./commands/spotlightCommands');
 const { manualOnboardingCommand, onboardingStatusCommand, onboardingStatsCommand, reOnboardCommand, testWelcomeCommand, testInteractiveCommand, createWelcomeCommand } = require('./commands/onboardingCommands');
-const { reactionRoleCommand, pollCommand, skillAssessmentCommand, autoModCommand, interactiveHelpCommand, activityCommand, profileCommand, leaderboardCommand, moneyCommand } = require('./commands/interactiveCommands');
+const { reactionRoleCommand, pollCommand, skillAssessmentCommand, autoModCommand, interactiveHelpCommand, activityCommand, leaderboardCommand, moneyCommand } = require('./commands/interactiveCommands');
 const { progressCommand, levelInfoCommand, badgesCommand, rewardsCommand, awardPointsCommand, discoverCommand, challengesCommand, enhancedProfileCommand, weeklyProgressCommand, motivationCommand } = require('./commands/gamificationCommands');
 const InteractiveHandler = require('./handlers/interactiveHandler');
 const { faqCommand, signboardCommand, showcaseCommand, tipCommand, slotCommand, eightBallCommand, celebrateCommand, moodCommand } = require('./commands/vegasCommands');
@@ -87,7 +95,6 @@ client.once('ready', async () => {
                 autoModCommand.toJSON(),
                 interactiveHelpCommand.toJSON(),
                 activityCommand.toJSON(),
-                profileCommand.toJSON(),
                 leaderboardCommand.toJSON(),
                 moneyCommand.toJSON(),
                 progressCommand.toJSON(),
@@ -445,49 +452,68 @@ client.on('interactionCreate', async interaction => {
     
     if (!interaction.isChatInputCommand()) return;
     
+    console.log(`[INTERACTION] Command received: ${interaction.commandName} from user: ${interaction.user.tag}`);
+    
     if (interaction.commandName === 'setup') {
-        // Check if the user is the server owner
-        if (interaction.user.id !== interaction.guild.ownerId) {
-            await interaction.reply({
-                content: 'Only the server owner can use this command.',
-                ephemeral: true
-            });
-            return;
-        }
-        
-        const isDryRun = stateManager.isDryRun();
-        console.log(`${isDryRun ? '[DRY RUN] ' : ''}Setup command received from server owner: ${interaction.user.tag} in guild: ${interaction.guild.name}`);
-        
-        await interaction.reply({
-            content: `${isDryRun ? '🧪 **[DRY RUN MODE]** ' : ''}🎨 **Enhanced Community Setup Initiated!** 🚀\n\n` +
-                    `${isDryRun ? '🧪 No actual changes will be made. Actions will be logged only.' : '🗑️ Cleaning up old structure...\n🎯 Building colorful, interactive channels...\n💫 Creating maximum community engagement!'}\n\n` +
-                    `⏱️ This will take a moment for the best experience!`,
-            ephemeral: true
-        });
+        console.log(`[SETUP] Setup command started by ${interaction.user.tag} (ID: ${interaction.user.id})`);
+        console.log(`[SETUP] Guild owner ID: ${interaction.guild.ownerId}`);
+        console.log(`[SETUP] User is owner: ${interaction.user.id === interaction.guild.ownerId}`);
         
         try {
-            // Step 1: Clean up existing bot-created categories for fresh rebuild
-            const cleanupResult = await channelManager.deleteExistingBotCategories(interaction.guild);
-            
-            if (cleanupResult.deletedCategories.length > 0 || isDryRun) {
-                await interaction.followUp({
-                    content: `${isDryRun ? '🧪 **[DRY RUN]** ' : ''}🗑️ **Cleanup Complete!**\n\n` +
-                            `${isDryRun ? 'Would delete' : 'Deleted'}: ${cleanupResult.deletedCategories.length} categories, ${cleanupResult.deletedChannelsCount} channels\n\n` +
-                            `🎯 **Ready for fresh, beautiful rebuild!**`,
+            // Check if the user is the server owner
+            if (interaction.user.id !== interaction.guild.ownerId) {
+                await interaction.reply({
+                    content: 'Only the server owner can use this command.',
                     ephemeral: true
                 });
+                return;
             }
             
-            // Step 2: Setup roles based on blueprint with error handling
-            const roleResult = await roleManager.setupGuildRoles(interaction.guild);
+            console.log('[SETUP] Owner check passed, sending immediate reply...');
             
-            // Update user about role completion and starting channel setup
-            await interaction.followUp({
-                content: `${isDryRun ? '🧪 ' : ''}✅ **Role Setup Complete!**\n🎨 **Building colorful channels with emojis...**`,
+            // Send immediate response to prevent timeout
+            await interaction.reply({
+                content: '🎨 **Setup Started!** 🚀\n\n⏱️ Working on it... This will take a moment!',
                 ephemeral: true
             });
             
+            console.log('[SETUP] Initial reply sent successfully');
+            
+            const isDryRun = stateManager.isDryRun();
+            console.log(`${isDryRun ? '[DRY RUN] ' : ''}Setup processing for guild: ${interaction.guild.name}`);
+            
+            // Update with progress
+            await interaction.editReply({
+                content: '🎨 **Setup Started!** 🚀\n\n🗑️ **Step 1:** Cleaning up old structure...'
+            });
+            // Step 1: Clean up existing bot-created categories for fresh rebuild
+            await interaction.editReply({
+                content: `${isDryRun ? '🧪 **[DRY RUN MODE]** ' : ''}🎨 **Enhanced Community Setup Initiated!** 🚀\n\n` +
+                        `🗑️ **Step 1:** Cleaning up old structure...\n` +
+                        `⏱️ This may take a moment...`
+            });
+            
+            const cleanupResult = await channelManager.deleteExistingBotCategories(interaction.guild);
+            
+            // Step 2: Setup roles based on blueprint with error handling
+            await interaction.editReply({
+                content: `${isDryRun ? '🧪 **[DRY RUN MODE]** ' : ''}🎨 **Enhanced Community Setup Initiated!** 🚀\n\n` +
+                        `✅ **Step 1:** Cleanup complete (${cleanupResult.deletedCategories.length} categories, ${cleanupResult.deletedChannelsCount} channels)\n` +
+                        `🎭 **Step 2:** Setting up roles...\n` +
+                        `⏱️ Almost there...`
+            });
+            
+            const roleResult = await roleManager.setupGuildRoles(interaction.guild);
+            
             // Step 3: Setup channels and categories based on blueprint with error handling
+            await interaction.editReply({
+                content: `${isDryRun ? '🧪 **[DRY RUN MODE]** ' : ''}🎨 **Enhanced Community Setup Initiated!** 🚀\n\n` +
+                        `✅ **Step 1:** Cleanup complete\n` +
+                        `✅ **Step 2:** Roles configured (${roleResult.created.length} created)\n` +
+                        `🎨 **Step 3:** Creating forum channels with tags...\n` +
+                        `⏱️ Building your amazing community!`
+            });
+            
             const channelResult = await channelManager.setupGuildChannels(interaction.guild);
             
             // Create comprehensive results message with error handling
@@ -575,10 +601,29 @@ client.on('interactionCreate', async interaction => {
                 resultMessage.push(`${isDryRun ? '🧪 **Dry run completed with simulated issues.**' : '⚠️ **Setup mostly complete!** Some items failed due to permission issues. See above for solutions.\n\n🎉 Your beautiful channels are ready for community engagement!'}`);
             }
             
-            // Split long messages to avoid Discord's character limit
+            // Send final comprehensive results - use editReply for the final status
             const messageContent = resultMessage.join('\n');
             if (messageContent.length > 2000) {
-                // Split into multiple messages
+                // For long messages, edit the reply with summary and send details as follow-up
+                const summaryMessage = [
+                    `${isDryRun ? '🧪 **[DRY RUN]** ' : ''}🎉 **Enhanced Community Setup ${roleResult.success && channelResult.success ? 'Complete' : 'Completed with Issues'}!** 🌟\n`,
+                    '**📋 Summary:**',
+                    `• Roles: ${roleResult.created.length} created, ${roleResult.failed.length} failed`,
+                    `• Categories: ${channelResult.createdCategories.length} created, ${channelResult.failedCategories.length} failed`,
+                    `• Channels: ${channelResult.createdChannels.length} created, ${channelResult.failedChannels.length} failed`,
+                    '',
+                    allErrors.length === 0 ? 
+                        `${isDryRun ? '🧪 **Dry run completed successfully!** No actual changes were made.' : '🎯 **Ready for Amazing Community Engagement!** 🚀\n\nYour server now features beautiful emoji-enhanced channels, interactive forum discussions, and professional marketplace structure!'}` :
+                        '⚠️ **Setup mostly complete!** Some items failed due to permission issues. See detailed report below.',
+                    '',
+                    '📋 **Detailed report sent as follow-up message...**'
+                ];
+                
+                await interaction.editReply({
+                    content: summaryMessage.join('\n')
+                });
+                
+                // Send detailed chunks as follow-up
                 const chunks = [];
                 let currentChunk = '';
                 
@@ -595,14 +640,8 @@ client.on('interactionCreate', async interaction => {
                     chunks.push(currentChunk);
                 }
                 
-                // Send first chunk
-                await interaction.followUp({
-                    content: chunks[0],
-                    ephemeral: true
-                });
-                
                 // Send remaining chunks with a small delay
-                for (let i = 1; i < chunks.length; i++) {
+                for (let i = 0; i < chunks.length; i++) {
                     await new Promise(resolve => setTimeout(resolve, 500));
                     await interaction.followUp({
                         content: chunks[i],
@@ -610,9 +649,8 @@ client.on('interactionCreate', async interaction => {
                     });
                 }
             } else {
-                await interaction.followUp({
-                    content: messageContent,
-                    ephemeral: true
+                await interaction.editReply({
+                    content: messageContent
                 });
             }
             

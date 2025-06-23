@@ -116,22 +116,7 @@ const activityCommand = new SlashCommandBuilder()
                 { name: 'Last 30 days', value: '30d' }
             ));
 
-// User Profile Command
-const profileCommand = new SlashCommandBuilder()
-    .setName('profile')
-    .setDescription('View or edit your community profile')
-    .addSubcommand(subcommand =>
-        subcommand
-            .setName('view')
-            .setDescription('View a user profile')
-            .addUserOption(option =>
-                option.setName('user')
-                    .setDescription('User to view (optional, defaults to you)')
-                    .setRequired(false)))
-    .addSubcommand(subcommand =>
-        subcommand
-            .setName('edit')
-            .setDescription('Edit your profile with interactive form'));
+// Note: Profile command moved to gamificationCommands.js to avoid duplication
 
 // Leaderboard Command (Community Focus)
 const leaderboardCommand = new SlashCommandBuilder()
@@ -232,38 +217,7 @@ const moneyCommand = new SlashCommandBuilder()
             .setName('stats')
             .setDescription('View community financial statistics'));
 
-// Enhanced Profile Command with Financial Data
-const enhancedProfileCommand = new SlashCommandBuilder()
-    .setName('profile')
-    .setDescription('View or edit your community profile')
-    .addSubcommand(subcommand =>
-        subcommand
-            .setName('view')
-            .setDescription('View a user profile')
-            .addUserOption(option =>
-                option.setName('user')
-                    .setDescription('User to view (optional, defaults to you)')
-                    .setRequired(false)))
-    .addSubcommand(subcommand =>
-        subcommand
-            .setName('edit')
-            .setDescription('Edit your profile with interactive form'))
-    .addSubcommand(subcommand =>
-        subcommand
-            .setName('showcase')
-            .setDescription('Add a project showcase')
-            .addStringOption(option =>
-                option.setName('title')
-                    .setDescription('Project title')
-                    .setRequired(true))
-            .addStringOption(option =>
-                option.setName('description')
-                    .setDescription('Project description')
-                    .setRequired(true))
-            .addStringOption(option =>
-                option.setName('link')
-                    .setDescription('Project link or demo')
-                    .setRequired(false)))
+// Enhanced Profile Command removed - using gamificationCommands.js version instead
 
 module.exports = {
     reactionRoleCommand,
@@ -272,7 +226,6 @@ module.exports = {
     autoModCommand,
     interactiveHelpCommand,
     activityCommand,
-    profileCommand: enhancedProfileCommand,
     leaderboardCommand,
     moneyCommand
 };

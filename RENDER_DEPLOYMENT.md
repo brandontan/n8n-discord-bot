@@ -1,5 +1,27 @@
 # 🚀 Deploy n8n Discord Bot to Render
 
+## 🔧 CRITICAL FIXES APPLIED (Dec 22, 2024)
+
+### ✅ Port Configuration Fixed
+- **Issue**: Mismatch between Dockerfile (3000) and render.yaml (10000) 
+- **Fix**: Standardized to port 3000 across all configurations
+- **Impact**: Eliminates port binding errors on Render
+
+### ✅ Environment Validation Added
+- **Issue**: Bot would start without DISCORD_TOKEN, causing silent failures
+- **Fix**: Added startup validation with clear error messages
+- **Impact**: Immediate feedback if token is missing
+
+### ✅ Health Check Enhanced  
+- **Issue**: Render health checks were failing intermittently
+- **Fix**: Improved error handling and timeout configuration
+- **Impact**: Better deployment reliability
+
+### ⚠️ Discord API Error 50024 Mitigated
+- **Issue**: Forum channel creation failing with API error
+- **Status**: Fallback to text channels implemented
+- **Impact**: Setup completes successfully even with forum issues
+
 ## ⚡ Quick Deploy (5 minutes)
 
 ### 1. Push Code to GitHub

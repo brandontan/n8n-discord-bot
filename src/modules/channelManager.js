@@ -151,81 +151,112 @@ class ChannelManager {
     }
 
     /**
-     * Create forum channel with available tags (fixed for error 50024)
+     * Create forum channel with proper Discord API compliance
      */
     async createForumChannel(guild, channelConfig, category, roleIds) {
         const permissionOverwrites = await this.createPermissionOverwrites(guild, channelConfig, roleIds);
         
         try {
-            console.log(`🔧 === FORUM CREATION DEBUG START ===`);
-            console.log(`🔧 Channel name: ${channelConfig.name}`);
-            console.log(`🔧 Channel type requested: ${channelConfig.type}`);
-            console.log(`🔧 Category: ${category.name} (ID: ${category.id})`);
-            console.log(`🔧 Category type: ${typeof category.id}`);
-            console.log(`🔧 Discord.js version: ${require('discord.js').version}`);
-            console.log(`🔧 Guild: ${guild.name} (ID: ${guild.id})`);
-            console.log(`🔧 Bot permissions in guild:`, guild.members.me.permissions.toArray());
-            console.log(`🔧 Channel description: ${channelConfig.description || 'none'}`);
-            console.log(`🔧 Permission overwrites count: ${permissionOverwrites.length}`);
-            console.log(`🔧 Forum tags to add: ${channelConfig.forumTags?.length || 0}`);
+            console.log(`🎯 Creating forum channel: ${channelConfig.name}`);
             
-            const createOptions = {
-                name: channelConfig.name,
-                type: ChannelType.GuildForum,
-                topic: channelConfig.description || channelConfig.topic || 'Forum channel',
-                permissionOverwrites,
-                reason: 'n8n Discord Bot - Blueprint Channel Setup'
-            };
+            // Validate Discord.js version supports forums
+            const discordVersion = require('discord.js').version;
+            console.log(`📦 Discord.js version: ${discordVersion}`);
             
-            console.log(`🔧 Create options:`, JSON.stringify(createOptions, null, 2));
-            console.log(`🔧 ChannelType.GuildForum value:`, ChannelType.GuildForum);
+            // Check bot permissions
+            const botMember = guild.members.me;
+            const requiredPerms = ['ManageChannels', 'ViewChannel', 'SendMessages'];
+            const missingPerms = requiredPerms.filter(perm => !botMember.permissions.has(perm));
             
-            // Try creating forum without parent first, then move it
-            console.log(`🔧 Attempting guild.channels.create()...`);
-            const forumChannel = await guild.channels.create(createOptions);
-            
-            // Move to category after creation
-            if (category && category.id) {
-                await forumChannel.edit({
-                    parent: category.id,
-                    reason: 'Moving forum to correct category'
-                });
+            if (missingPerms.length > 0) {
+                throw new Error(`Missing required permissions: ${missingPerms.join(', ')}`);
             }
-
-            // Add tags after creation to avoid error 50024
-            if (channelConfig.forumTags && channelConfig.forumTags.length > 0) {
-                try {
-                    // Limit to 20 tags maximum (Discord limit)
-                    const tagsToAdd = channelConfig.forumTags.slice(0, 20).map(tag => {
-                        // Ensure tag format is correct
-                        if (typeof tag === 'string') {
+            
+            // Check if guild supports forum channels (community feature)
+            const guildFeatures = guild.features || [];
+            console.log(`🏢 Guild features: ${guildFeatures.join(', ')}`);
+            
+            // Forum channels require COMMUNITY feature
+            if (!guildFeatures.includes('COMMUNITY')) {
+                console.warn(`⚠️ Guild ${guild.name} does not have COMMUNITY feature enabled, falling back to text channel`);
+                throw new Error('Guild does not support forum channels - COMMUNITY feature required');
+            }
+            
+            // Validate channel name for Discord API
+            const validChannelName = channelConfig.name
+                .toLowerCase()
+                .replace(/[^a-z0-9-]/g, '-')
+                .replace(/--+/g, '-')
+                .replace(/^-|-$/g, '')
+                .substring(0, 100); // Discord limit
+            
+            if (!validChannelName || validChannelName.length < 1) {
+                throw new Error(`Invalid channel name: ${channelConfig.name}`);
+            }
+            
+            // Prepare initial forum tags (avoid creating empty or invalid tags)
+            let initialTags = [];
+            if (channelConfig.forumTags && Array.isArray(channelConfig.forumTags)) {
+                initialTags = channelConfig.forumTags
+                    .slice(0, 20) // Discord limit: 20 tags max
+                    .map(tag => {
+                        if (typeof tag === 'string' && tag.trim()) {
                             return {
-                                name: tag.substring(0, 20), // Max 20 chars for tag name
+                                name: tag.trim().substring(0, 20),
                                 moderated: false
                             };
-                        } else {
+                        } else if (tag && tag.name && tag.name.trim()) {
                             return {
-                                name: (tag.name || 'Tag').substring(0, 20),
-                                moderated: tag.moderated || false,
+                                name: tag.name.trim().substring(0, 20),
+                                moderated: Boolean(tag.moderated),
                                 emoji: tag.emoji || null
                             };
                         }
-                    });
-                    
-                    // Wait a moment before editing
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                    
-                    await forumChannel.edit({
-                        availableTags: tagsToAdd
-                    });
-                    
-                    console.log(`✅ Successfully added ${tagsToAdd.length} tags to forum: ${channelConfig.name}`);
-                } catch (tagError) {
-                    console.warn(`⚠️ Could not add tags to forum ${channelConfig.name}:`, tagError.message);
-                    // Forum channel still created successfully, just without tags
-                }
+                        return null;
+                    })
+                    .filter(tag => tag !== null); // Remove invalid tags
             }
-
+            
+            console.log(`🏷️ Prepared ${initialTags.length} forum tags`);
+            
+            // Create forum channel with minimal options first
+            const createOptions = {
+                name: channelConfig.name.replace(/[^a-z0-9-]/gi, '-').toLowerCase(),
+                type: ChannelType.GuildForum,
+                parent: category?.id || null,
+                topic: (channelConfig.description || channelConfig.topic || '').substring(0, 1024),
+                permissionOverwrites: permissionOverwrites,
+                reason: 'n8n Community Bot - Forum Setup'
+            };
+            
+            // Only add tags if we have valid ones (avoid empty availableTags array)
+            if (initialTags.length > 0) {
+                createOptions.availableTags = initialTags;
+            }
+            
+            console.log(`🔧 Creating forum with options:`, {
+                name: createOptions.name,
+                type: createOptions.type,
+                hasParent: !!createOptions.parent,
+                hasPermissions: createOptions.permissionOverwrites.length,
+                tagCount: initialTags.length
+            });
+            
+            const forumChannel = await guild.channels.create(createOptions);
+            
+            console.log(`✅ Successfully created forum: ${channelConfig.name} (ID: ${forumChannel.id})`);
+            
+            // Set additional properties if needed
+            const channelUpdates = {};
+            if (channelConfig.rateLimitPerUser && channelConfig.rateLimitPerUser > 0) {
+                channelUpdates.rateLimitPerUser = Math.min(channelConfig.rateLimitPerUser, 21600); // 6 hour max
+            }
+            
+            if (Object.keys(channelUpdates).length > 0) {
+                await forumChannel.edit(channelUpdates);
+                console.log(`🔧 Updated forum settings for: ${channelConfig.name}`);
+            }
+            
             return forumChannel;
             
         } catch (error) {

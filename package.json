@@ -12,7 +12,9 @@
     "dev": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dry-run": "DRY_RUN=true node src/index.js",
-    "check-env": "node -e \"console.log('Environment check:', { token: !!process.env.DISCORD_TOKEN, tz: process.env.TZ || 'UTC' })\""
+    "check-env": "node -e \"console.log('Environment check:', { token: !!process.env.DISCORD_TOKEN, tz: process.env.TZ || 'UTC' })\"",
+    "fix-forums": "node scripts/fix-forum-channels.js",
+    "health": "curl -f http://localhost:${PORT:-3000}/health || exit 1"
   },
   "keywords": [
     "discord",
