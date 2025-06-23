@@ -8,7 +8,13 @@
 
 ### **Step 2: Add Welcome Message**
 ```
-Hi there and welcome to the n8n server! We're very excited to have you here and look forward to hearing about all the workflows you're working on. Before you dive in and explore the community, please be aware that the Discord is not for support requests. Please see https://community.n8n.io
+Welcome to the n8n Professional Network! 🚀
+
+This community connects n8n automation experts, freelancers, and clients for collaboration, knowledge sharing, and business opportunities. Whether you're looking to hire talent, offer your services, or learn advanced techniques, you'll find your place here.
+
+💼 For technical support and general n8n questions, please use the official community forum at https://community.n8n.io
+
+This Discord focuses on professional networking, project collaboration, and career opportunities in the n8n ecosystem.
 ```
 
 ### **Step 3: Add These 5 New Member Actions**
